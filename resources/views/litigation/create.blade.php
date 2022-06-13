@@ -10,29 +10,7 @@
     @endif
     <form class="needs-validation" novalidate method="post" action="{{url('customer')}}">
         @csrf
-        <ul class="nav nav-tabs">
-            <li class="nav-item">
-                <a href="#" class="nav-link">
-                    Borrower Profile
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="#" class="nav-link ">Personal Guarantee</a>
-            </li>
-            <li class="nav-item">
-                <a href="#" class="nav-link">Other Than Guarantee</a>
-            </li>
-            <li class="nav-item">
-                <a href="#" class="nav-link ">Insurance</a>
-            </li>
-            <li class="nav-item">
-                <a href="#" class="nav-link active">Litigation Status</a>
-            </li>
-            <li class="nav-item">
-                <a href="#" class="nav-link ">Installments</a>
-            </li>
-
-        </ul>
+        @include('theme.customer')
 
         <br>
 

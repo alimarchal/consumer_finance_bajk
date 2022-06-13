@@ -36,7 +36,9 @@ class CustomerController extends Controller
      */
     public function store(StoreCustomerRequest $request)
     {
-        //
+        Customer::create($request->all());
+        session()->flash('message', 'Borrower successfully created.');
+        return to_route('complaint.index');
     }
 
     /**
@@ -47,7 +49,8 @@ class CustomerController extends Controller
      */
     public function show(Customer $customer)
     {
-        //
+
+        return view('customer.show', compact('customer'));
     }
 
     /**

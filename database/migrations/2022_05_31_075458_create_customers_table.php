@@ -15,10 +15,15 @@ return new class extends Migration
     {
         Schema::create('customers', function (Blueprint $table) {
             $table->id();
-            $table->string('region', 10)->nullable();
-            $table->string("zone", 15)->nullable();
-            $table->string("district", 25)->nullable();
-            $table->string("branch", 30)->nullable();
+
+            $table->unsignedBigInteger('branch_id');
+            $table->foreign('branch_id')->references('id')->on('branches');
+
+//            $table->string('region', 10)->nullable();
+//            $table->string("zone", 15)->nullable();
+//            $table->string("district", 25)->nullable();
+//            $table->string("branch", 30)->nullable();
+
             $table->string('name')->nullable();
             $table->string('son_daughter_wife', 20)->nullable();
             $table->string('gender', 6)->nullable();
@@ -34,12 +39,12 @@ return new class extends Migration
             // this must include branch code....
             $table->string('account_cd_saving', 20)->nullable();
             // Facility detail
-            $table->string('nature_of_facility_availed')->nullable();
             $table->string('type_of_facility_approved')->nullable();
+            $table->string('nature_of_facility_availed')->nullable();
             $table->string('renewal_enhancement_fresh_sanction')->nullable();
-            $table->string('amount_sanctioned')->nullable();
+            $table->string('amount_sanctioned',14,2)->default(0.00);
 
-            $table->string('amount_enhanced')->nullable();
+            $table->decimal('amount_enhanced',14,2)->default(0.00);
             $table->date('sanction_date')->nullable();
             $table->integer('tenure_of_loan_in_months')->nullable();
             //monthly_quarterly_lump_sump
@@ -48,16 +53,18 @@ return new class extends Migration
             $table->string('no_of_installments')->nullable();
             $table->date('dac_issuance_date')->nullable();
             $table->date('disbursement_date')->nullable();
-            $table->decimal('amount_disbursed',10,2)->nullable();
+            $table->decimal('amount_disbursed',14,2)->default(0.00);
 
             $table->date('expiry_date_as_per_dac')->nullable();
-            $table->date('mark_up_rate')->nullable();
-            $table->date('branch_manager_name_while_sanctioning')->nullable();
+            $table->decimal('mark_up_rate',10,2)->default(0.00);
+            $table->string('branch_manager_name_while_sanctioning')->default(0.00);
             // installment
-            $table->string('principle_amount')->nullable();
-            $table->string('markup_amount')->nullable();
-            $table->string('installment_insurance')->nullable();
-            $table->string('total_installment')->nullable();
+            $table->decimal('principle_amount',14,2)->default(0.00);
+            $table->decimal('markup_amount', 14,2)->default(0.00);
+            $table->decimal('installment_insurance', 14,2)->default(0.00);
+            $table->decimal('total_installment', 14,2)->default(0.00);
+
+            $table->string('status')->nullable();
 
             $table->timestamps();
         });

@@ -14,9 +14,12 @@ class Facility extends Component
         'Agriculture Finance',
     ];
 
+    public $customer = null;
+
     public $type_of_facility = [];
     public $type_of_facility_flag = false;
 
+    public $check_flag = false;
     public $nature_of_facility_selected = null;
 
     public function render()
@@ -26,7 +29,7 @@ class Facility extends Component
 
     public function nature_of_facility($event)
     {
-
+        $this->check_flag = true;
         if ($event != null) {
             if ($event == 'Consumer Finance') {
                 $this->type_of_facility = [

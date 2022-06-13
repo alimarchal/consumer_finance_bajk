@@ -16,7 +16,7 @@ class GuaranteeController extends Controller
      */
     public function index(Customer $customer)
     {
-        //
+        return view('guarantee.create',compact('customer'));
     }
 
     /**
@@ -26,7 +26,7 @@ class GuaranteeController extends Controller
      */
     public function create()
     {
-        return view('guarantee.create');
+//
     }
 
     /**
@@ -48,7 +48,7 @@ class GuaranteeController extends Controller
      */
     public function show(Guarantee $guarantee)
     {
-        //
+//
     }
 
     /**
