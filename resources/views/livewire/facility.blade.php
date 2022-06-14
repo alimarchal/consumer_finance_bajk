@@ -7,7 +7,7 @@
                 name="type_of_facility_approved" wire:change="nature_of_facility($event.target.value)">
             <option value="">None</option>
             @foreach($nature_of_facility as $nf)
-                <option value="{{$nf}}"  @if($customer->type_of_facility_approved == $nf) selected @endif >
+                <option value="{{$nf}}"  @if(!empty($customer) && $customer->type_of_facility_approved == $nf) selected @endif >
                     {{$nf}}
                 </option>
             @endforeach
@@ -24,7 +24,7 @@
 
             @if($type_of_facility_flag)
                 @foreach($type_of_facility as $tf)
-                    <option value="{{$tf}}" @if($customer->nature_of_facility_availed == $tf) selected @endif  >
+                    <option value="{{$tf}}" @if(!empty($customer) && $customer->nature_of_facility_availed == $tf) selected @endif  >
                         {{$tf}}
                     </option>
                 @endforeach
@@ -39,14 +39,14 @@
 
         <select class="form-control select2bs4" required id="renewal_enhancement_fresh_sanction" style="width: 100%;" name="renewal_enhancement_fresh_sanction">
             <option value="">None</option>
-            <option value="Renewal" @if($customer->renewal_enhancement_fresh_sanction == "Renewal") selected @endif >Renewal</option>
-            <option value="Enhancement" @if($customer->renewal_enhancement_fresh_sanction == "Enhancement") selected @endif >Enhancement</option>
-            <option value="Fresh Sanction" @if($customer->renewal_enhancement_fresh_sanction == "Fresh Sanction") selected @endif >Fresh Sanction</option>
+            <option value="Renewal" @if(!empty($customer) && $customer->renewal_enhancement_fresh_sanction == "Renewal") selected @endif >Renewal</option>
+            <option value="Enhancement" @if(!empty($customer) && $customer->renewal_enhancement_fresh_sanction == "Enhancement") selected @endif >Enhancement</option>
+            <option value="Fresh Sanction" @if(!empty($customer) && $customer->renewal_enhancement_fresh_sanction == "Fresh Sanction") selected @endif >Fresh Sanction</option>
         </select>
     </div>
     <div class="col-md-3 mb-3">
         <label for="amount_sanctioned"><strong>Amount Sanctioned</strong></label>
         <input type="number" class="form-control" id="amount_sanctioned" required
-               name="amount_sanctioned" step="0.01" min="0" value="{{$customer->amount_sanctioned}}">
+               name="amount_sanctioned" step="0.01" min="0" @if(!empty($customer)) value="{{$customer->amount_sanctioned}}" @endif>
     </div>
 </div>

@@ -1,6 +1,6 @@
 @extends('theme.main')
 @section('breadcrumb')
-    test
+    Customer Details
 @endsection
 
 @section('customHeaderScripts')
@@ -19,8 +19,9 @@
 
     @include('theme.customer')
 
-    <form method="post" action="{{route('customer.store')}}">
+    <form method="post" action="{{route('customer.update', $customer->id)}}">
         @csrf
+        @method('put')
         <br>
         {{--                @livewire('branch-list')--}}
 
@@ -132,15 +133,15 @@
             </div>
             <div class="col-md-3 mb-3">
                 <label for="sanction_date"><strong>Sanctioned Date</strong></label>
-                <input type="date" class="form-control" id="sanction_date" required name="sanction_date">
+                <input type="date" class="form-control" id="sanction_date" required name="sanction_date" value="{{$customer->sanction_date}}">
             </div>
             <div class="col-md-3 mb-3">
                 <label for="tenure_of_loan_in_months"><strong>Tenure of Loan in Months</strong></label>
 
-                <select class="form-control select2bs4" required id="tenure_of_loan_in_months" style="width: 100%;" name="tenure_of_loan_in_months">
+                <select class="form-control select2bs4" required id="tenure_of_loan_in_months" style="width: 100%;" name="tenure_of_loan_in_months" >
                     <option value="">None</option>
                     @for($i = 1; $i <= 60; $i++)
-                        <option value="{{$i}}">{{$i}} Months</option>
+                        <option value="{{$i}}" @if($customer->tenure_of_loan_in_months) selected @endif>{{$i}} Months</option>
                     @endfor
                 </select>
 
@@ -149,61 +150,43 @@
                 <label for="installment_type"><strong>Installment Type</strong></label>
                 <select class="form-control select2bs4" required id="installment_type" style="width: 100%;" name="installment_type">
                     <option value="">None</option>
-                    <option value="Monthly">Monthly</option>
-                    <option value="Quarterly">Quarterly</option>
-                    <option value="Lump sump">Lump sump</option>
+                    <option value="Monthly"  @if($customer->installment_type == "Monthly") selected @endif >Monthly</option>
+                    <option value="Quarterly"  @if($customer->installment_type == "Quarterly") selected @endif >Quarterly</option>
+                    <option value="Lump sump"  @if($customer->installment_type == "Lump sump") selected @endif >Lump sump</option>
                 </select>
             </div>
             <div class="col-md-3 mb-3">
                 <label for="no_of_installments"><strong>No of Installment</strong></label>
                 <input type="text" class="form-control" id="no_of_installments" required
-                       name="no_of_installments">
-                <div class="invalid-feedback">
-                    Please provide a No of Installment.
-                </div>
+                       name="no_of_installments" value="{{$customer->no_of_installments}}">
             </div>
             <div class="col-md-3 mb-3">
                 <label for="dac_issuance_date"><strong>DAC Issuance Date</strong></label>
                 <input type="date" class="form-control" id="dac_issuance_date" required
-                       name="dac_issuance_date">
-                <div class="invalid-feedback">
-                    Please provide a Dac Issuance Date.
-                </div>
+                       name="dac_issuance_date" value="{{$customer->dac_issuance_date}}">
             </div>
             <div class="col-md-3 mb-3">
                 <label for="disbursement_date"><strong>DAC Disbursement Date</strong></label>
                 <input type="date" class="form-control" id="disbursement_date" required
-                       name="disbursement_date">
-                <div class="invalid-feedback">
-                    Please provide a DAC Disbursement Date.
-                </div>
+                       name="disbursement_date" value="{{$customer->disbursement_date}}">
             </div>
             <div class="col-md-3 mb-3">
                 <label for="amount_disbursed"><strong>Amount Disbursed</strong></label>
                 <input type="number" class="form-control" id="amount_disbursed" required
-                       name="amount_disbursed">
-                <div class="invalid-feedback">
-                    Please provide a Amount Disbursed.
-                </div>
+                       name="amount_disbursed" value="{{$customer->amount_disbursed}}">
             </div>
             <div class="col-md-3 mb-3">
                 <label for="expiry_date_as_per_dac"><strong>Expiry Date as per DAC</strong></label>
-                <input type="date" class="form-control" id="expiry_date_as_per_dac" required name="expiry_date_as_per_dac">
-                <div class="invalid-feedback">
-                    Please provide a Sanctioned Date.
-                </div>
+                <input type="date" class="form-control" id="expiry_date_as_per_dac" required name="expiry_date_as_per_dac"  value="{{$customer->expiry_date_as_per_dac}}">
             </div>
             <div class="col-md-3 mb-3">
                 <label for="mark_up_rate"><strong>Markup Rate</strong></label>
-                <input type="text" class="form-control" id="mark_up_rate" required name="mark_up_rate">
+                <input type="text" class="form-control" id="mark_up_rate" required name="mark_up_rate"  value="{{$customer->mark_up_rate}}">
             </div>
             <div class="col-md-3 mb-3">
                 <label for="branch_manager_name_while_sanctioning"><strong>Branch Manager Name</strong></label>
                 <input type="text" class="form-control" id="branch_manager_name_while_sanctioning" required
-                       name="branch_manager_name_while_sanctioning">
-                <div class="invalid-feedback">
-                    Please provide a Branch Manager Name.
-                </div>
+                       name="branch_manager_name_while_sanctioning"  value="{{$customer->branch_manager_name_while_sanctioning}}">
             </div>
         </div>
 
@@ -212,9 +195,8 @@
         <h2 class="text-danger text-center">Installment</h2>
         <hr class="bg-danger">
 
-        <livewire:installment />
 
-
+        @livewire('installment', ['customer' => $customer])
 
         <hr class="bg-danger">
         <h3 class="text-center text-danger">Valuation</h3>
@@ -224,12 +206,12 @@
             <div class="col-md-6 mb-2">
                 <label><strong>Evaluator Company</strong></label>
                 <input type="text" class="form-control" required id="valuation_evaluator_company"
-                       name="valuation_evaluator_company">
+                       name="valuation_evaluator_company" value="{{$customer->valuation_evaluator_company}}">
             </div>
             <div class="col-md-6 mb-3">
                 <label><strong>Date of Valuation</strong></label>
                 <input type="date" class="form-control" required id="valuation_date_of_valuation"
-                       name="valuation_date_of_valuation">
+                       name="valuation_date_of_valuation" value="{{$customer->valuation_date_of_valuation}}">
             </div>
         </div>
 
@@ -715,7 +697,7 @@
         </div>
         -->
 
-        <button class="btn btn-primary" type="submit">Save & Next</button>
+        <button class="btn btn-primary" type="submit">Update & Next</button>
     </form>
 @endsection
 

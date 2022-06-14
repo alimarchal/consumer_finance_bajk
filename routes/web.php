@@ -35,6 +35,7 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
     Route::controller(\App\Http\Controllers\CustomerController::class)->group(function () {
         Route::get('/customer/create', 'create')->name('customer.create');
         Route::post('/customer', 'store')->name('customer.store');
+        Route::put('/customer/{customer}', 'update')->name('customer.update');
         Route::get('/customer/{customer}', 'show')->name('customer.show');
     });
 
@@ -43,7 +44,7 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
     });
 
     Route::controller(\App\Http\Controllers\OtherGuaranteeController::class)->group(function () {
-        Route::get('/customer/{id}/otherGuarantee', 'index')->name('otherGuarantee.index');
+        Route::get('/customer/{customer}/otherGuarantee', 'index')->name('otherGuarantee.index');
     });
 
     Route::controller(\App\Http\Controllers\InsuranceController::class)->group(function () {

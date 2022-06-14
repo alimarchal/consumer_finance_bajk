@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreLitigationRequest;
 use App\Http\Requests\UpdateLitigationRequest;
+use App\Models\Customer;
 use App\Models\Litigation;
 
 class LitigationController extends Controller
@@ -13,9 +14,9 @@ class LitigationController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Customer $customer)
     {
-        //
+        return view('litigation.index', compact('customer'));
     }
 
     /**
@@ -25,7 +26,7 @@ class LitigationController extends Controller
      */
     public function create()
     {
-        return view('litigation.create');
+        return view('litigation.index');
     }
 
     /**

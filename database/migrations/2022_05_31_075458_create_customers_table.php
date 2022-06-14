@@ -63,6 +63,8 @@ return new class extends Migration
             $table->decimal('markup_amount', 14,2)->default(0.00);
             $table->decimal('installment_insurance', 14,2)->default(0.00);
             $table->decimal('total_installment', 14,2)->default(0.00);
+            $table->string('valuation_evaluator_company')->nullable();
+            $table->date('valuation_date_of_valuation')->nullable();
 
             $table->string('status')->nullable();
 

@@ -15,24 +15,13 @@
         <br>
 
         <div class="form-row">
-            <div class="col-md-3 mb-2">
-                <label><strong>Insurance Company</strong></label>
-                <input type="text" class="form-control" id="validationCustom50" title=""
-                       name="customer[insurance_company]">
+            <div class="col-md-6 mb-2">
+                <label><strong>Claim Amount</strong></label>
+                <input type="text" class="form-control" id="validationCustom48" title="" name="customer[insurance_claim_outstanding_claim_amount]">
             </div>
-            <div class="col-md-3 mb-3">
-                <label><strong>Date of Insurance</strong></label>
-                <input type="date" class="form-control" id="validationCustom51" title="" name="customer[insurance_date_of_insurance]">
-            </div>
-            <div class="col-md-3 mb-2">
-                <label><strong>Insurance Amount</strong></label>
-                <input type="text" class="form-control" id="validationCustom52" title=""
-                       name="customer[insurance_insurance_amount]">
-            </div>
-            <div class="col-md-3 mb-3">
-                <label><strong>Date of Expiry of Insurance</strong></label>
-                <input type="date" class="form-control" id="validationCustom53" title=""
-                       name="customer[insurance_date_of_expiry_of_insurance]">
+            <div class="col-md-6 mb-3">
+                <label><strong>Date of Claim</strong></label>
+                <input type="date" class="form-control" id="validationCustom54" title="" name="customer[insurance_claim_outstanding_date_of_claim]">
             </div>
         </div>
 
@@ -501,4 +490,26 @@
 
         <button class="btn btn-primary" type="submit">Save & Next</button>
     </form>
+
+    <br>
+    <h2 class="text-center">Litigation</h2>
+    <hr>
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Claim Amount </th>
+            <th scope="col">Date of Claim </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <th scope="row">1</th>
+            <td>1</td>
+            <td>1</td>
+            <td>1</td>
+        </tr>
+        </tbody>
+    </table>
+
 @endsection

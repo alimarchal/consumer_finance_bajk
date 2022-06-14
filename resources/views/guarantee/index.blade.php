@@ -14,21 +14,78 @@
 
         <br>
 
+
         <div class="form-row">
-            <div class="col-md-6 mb-2">
-                <label><strong>Claim Amount</strong></label>
-                <input type="text" class="form-control" id="validationCustom48" title="" name="customer[insurance_claim_outstanding_claim_amount]">
+            <div class="col-md-3 mb-2">
+                <label><strong>Name</strong></label>
+                <input type="text" class="form-control" id="validationCustom27" title="" name="customer[personal_guarantee_no_1_detail_name]">
             </div>
-            <div class="col-md-6 mb-3">
-                <label><strong>Date of Claim</strong></label>
-                <input type="date" class="form-control" id="validationCustom54" title="" name="customer[insurance_claim_outstanding_date_of_claim]">
+            <div class="col-md-3 mb-3">
+                <label><strong>CNIC Number</strong></label>
+                <input type="text" class="form-control" id="validationCustom28" title="" name="customer[personal_guarantee_no_1_detail_cnic]">
+            </div>
+            <div class="col-md-3 mb-3">
+                <label><strong>Contact Number</strong></label>
+                <input type="text" class="form-control" id="validationCustom29" title=""
+                       name="customer[personal_guarantee_no_1_detail_contact]">
+            </div>
+
+
+            <div class="col-md-3 mb-3">
+                <label><strong>Department/Business</strong></label>
+                <input type="text" class="form-control" id="validationCustom30" title=""
+                       name="customer[personal_guarantee_no_1_detail_dept_business]">
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col-md-3 mb-2">
+                <label><strong>Business/Dept/Address</strong></label>
+                <textarea name="customer[personal_guarantee_no_1_detail_dept_business_address]" class="form-control" id="validationCustom31"
+                          title=""></textarea>
+            </div>
+            <div class="col-md-3 mb-2">
+                <label><strong>Guarantor Address</strong></label>
+                <textarea name="customer[personal_guarantee_no_1_detail_address]" class="form-control" id="validationCustom32" title=""></textarea>
+            </div>
+            <div class="col-md-3 mb-3">
+                <label><strong>BPS</strong></label>
+                <input type="text" class="form-control" id="validationCustom33" title="" name="customer[personal_guarantee_no_1_detail_bps]">
+            </div>
+            <div class="col-md-3 mb-3">
+                <label><strong>PP Number</strong></label>
+                <input type="text" class="form-control" id="validationCustom34" title="" name="customer[personal_guarantee_no_1_detail_pp_if_salaried]">
+            </div>
+        </div>
+        <button class="btn btn-primary" type="submit">Save & Next</button>
+    </form>
+
+    <hr>
+
+
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="card">
+                <div class="card-body">
+                    <span class="btn btn-primary">Guarantor No 1</span><br><br>
+                    <p class="card-text"><span class="font-weight-bold">Name</span> : Special title treatment</p>
+                    <p class="card-text"><span class="font-weight-bold">CNIC</span> : Special title treatment</p>
+                    <p class="card-text"><span class="font-weight-bold">Contact Number</span> : Special title treatment</p>
+                    <p class="card-text"><span class="font-weight-bold">Department/Business</span> : text below as a natural lead-in to additional content.</p>
+                    <p class="card-text"><span class="font-weight-bold">Business/Dept/Address</span> : text below as a natural lead-in to additional content.</p>
+                    <p class="card-text"><span class="font-weight-bold">Business/Dept/Address</span> : text below as a natural lead-in to additional content.</p>
+                    <p class="card-text"><span class="font-weight-bold">Guarantor Address</span> : text below as a natural lead-in to additional content.</p>
+                    <p class="card-text"><span class="font-weight-bold">BPS</span> : text below as a natural lead-in to additional content.</p>
+                    <p class="card-text"><span class="font-weight-bold">PP Number</span> : text below as a natural lead-in to additional content.</p>
+
+                </div>
             </div>
         </div>
 
 
+    </div>
+    </div>
 
-
-        <!--
+    <!--
 
 
                                     <div class="col-md-3 mb-3">
@@ -247,47 +304,7 @@
             </div>
 
             <div class="card-body">
-                <div class="form-row">
-                    <div class="col-md-3 mb-2">
-                        <label><strong>Name</strong></label>
-                        <input type="text" class="form-control" id="validationCustom27" title="" name="customer[personal_guarantee_no_1_detail_name]">
-                    </div>
-                    <div class="col-md-3 mb-3">
-                        <label><strong>CNIC Number</strong></label>
-                        <input type="text" class="form-control" id="validationCustom28" title="" name="customer[personal_guarantee_no_1_detail_cnic]">
-                    </div>
-                    <div class="col-md-3 mb-3">
-                        <label><strong>Contact Number</strong></label>
-                        <input type="text" class="form-control" id="validationCustom29" title=""
-                               name="customer[personal_guarantee_no_1_detail_contact]">
-                    </div>
 
-
-                    <div class="col-md-3 mb-3">
-                        <label><strong>Department/Business</strong></label>
-                        <input type="text" class="form-control" id="validationCustom30" title=""
-                               name="customer[personal_guarantee_no_1_detail_dept_business]">
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="col-md-3 mb-2">
-                        <label><strong>Business/Dept/Address</strong></label>
-                        <textarea name="customer[personal_guarantee_no_1_detail_dept_business_address]" class="form-control" id="validationCustom31"
-                                  title=""></textarea>
-                    </div>
-                    <div class="col-md-3 mb-2">
-                        <label><strong>Guarantor Address</strong></label>
-                        <textarea name="customer[personal_guarantee_no_1_detail_address]" class="form-control" id="validationCustom32" title=""></textarea>
-                    </div>
-                    <div class="col-md-3 mb-3">
-                        <label><strong>BPS</strong></label>
-                        <input type="text" class="form-control" id="validationCustom33" title="" name="customer[personal_guarantee_no_1_detail_bps]">
-                    </div>
-                    <div class="col-md-3 mb-3">
-                        <label><strong>PP Number</strong></label>
-                        <input type="text" class="form-control" id="validationCustom34" title="" name="customer[personal_guarantee_no_1_detail_pp_if_salaried]">
-                    </div>
-                </div>
             </div>
         </div>
 
@@ -488,6 +505,4 @@
         </div>
         -->
 
-        <button class="btn btn-primary" type="submit">Save & Next</button>
-    </form>
 @endsection

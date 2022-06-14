@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreOtherGuaranteeRequest;
 use App\Http\Requests\UpdateOtherGuaranteeRequest;
+use App\Models\Customer;
 use App\Models\OtherGuarantee;
 
 class OtherGuaranteeController extends Controller
@@ -13,11 +14,10 @@ class OtherGuaranteeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Customer $customer)
     {
-        //
+        return view('otherGuarantee.index',compact('customer'));
     }
-
     /**
      * Show the form for creating a new resource.
      *
@@ -25,7 +25,7 @@ class OtherGuaranteeController extends Controller
      */
     public function create()
     {
-        return view('otherGuarantee.create');
+        return view('otherGuarantee.index');
     }
 
     /**

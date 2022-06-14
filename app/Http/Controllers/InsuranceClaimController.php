@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreInsuranceClaimRequest;
 use App\Http\Requests\UpdateInsuranceClaimRequest;
+use App\Models\Customer;
 use App\Models\InsuranceClaim;
 
 class InsuranceClaimController extends Controller
@@ -13,9 +14,9 @@ class InsuranceClaimController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Customer $customer)
     {
-        //
+        return view('insuranceClaim.index', compact('customer'));
     }
 
     /**
@@ -25,7 +26,7 @@ class InsuranceClaimController extends Controller
      */
     public function create()
     {
-        return view('insuranceClaim.create');
+        return view('insuranceClaim.index');
     }
 
     /**

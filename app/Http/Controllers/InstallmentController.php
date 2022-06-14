@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreInstallmentRequest;
 use App\Http\Requests\UpdateInstallmentRequest;
+use App\Models\Customer;
 use App\Models\Installment;
 
 class InstallmentController extends Controller
@@ -13,9 +14,10 @@ class InstallmentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Customer $customer)
     {
-        //
+
+        return view('installment.index', compact('customer'));
     }
 
     /**
@@ -25,7 +27,7 @@ class InstallmentController extends Controller
      */
     public function create()
     {
-        return view('installment.create');
+        return view('installment.index');
     }
 
     /**

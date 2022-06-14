@@ -43,5 +43,7 @@ class Customer extends Model
         'markup_amount',
         'installment_insurance',
         'total_installment',
+        'valuation_evaluator_company',
+        'valuation_date_of_valuation',
     ];
 }

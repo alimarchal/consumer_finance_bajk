@@ -17,7 +17,7 @@
         </div>
     @endif
 
-    @include('theme.customer')
+    @include('theme.generalCustomer')
 
     <form method="post" action="{{route('customer.store')}}">
         @csrf
