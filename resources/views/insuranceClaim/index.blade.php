@@ -1,6 +1,6 @@
 @extends('theme.main')
 @section('breadcrumb')
-    test
+    Borrower Profile / Claim Outstanding
 @endsection
 @section('body')
     @if(session()->has('message'))
@@ -8,24 +8,31 @@
             {{ session()->get('message') }}
         </div>
     @endif
-    <form class="needs-validation" novalidate method="post" action="{{url('customer')}}">
+    <form method="post" action="{{route('insuranceClaim.store', $customer->id)}}">
         @csrf
         @include('theme.customer')
 
         <br>
 
         <div class="form-row">
-            <div class="col-md-6 mb-2">
-                <label><strong>Claim Amount</strong></label>
-                <input type="text" class="form-control" id="validationCustom48" title="" name="customer[insurance_claim_outstanding_claim_amount]">
+            <div class="col-md-4 mb-2">
+                <label for="insurance_id"><strong>Insurance Company</strong></label>
+                <select class="form-control" id="insurance_id" style="width: 100%;" name="insurance_id" required>
+                    <option value="">None</option>
+                    @foreach($customer->insurance as $inc)
+                        <option value="{{$inc->id}}">{{$inc->insurance_company}}</option>
+                    @endforeach
+                </select>
             </div>
-            <div class="col-md-6 mb-3">
-                <label><strong>Date of Claim</strong></label>
-                <input type="date" class="form-control" id="validationCustom54" title="" name="customer[insurance_claim_outstanding_date_of_claim]">
+            <div class="col-md-4 mb-2">
+                <label for="claim_amount"><strong>Claim Amount</strong></label>
+                <input type="number" min="0.00" step="0.01" class="form-control" id="claim_amount" title="" name="claim_amount">
+            </div>
+            <div class="col-md-4 mb-3">
+                <label for="date_of_claim"><strong>Date of Claim</strong></label>
+                <input type="date" class="form-control" id="date_of_claim" name="date_of_claim">
             </div>
         </div>
-
-
 
 
         <!--
@@ -488,28 +495,35 @@
         </div>
         -->
 
-        <button class="btn btn-primary" type="submit">Save & Next</button>
+        <button class="btn btn-primary float-right" type="submit">Save</button>
     </form>
 
     <br>
-    <h2 class="text-center">Litigation</h2>
-    <hr>
-    <table class="table">
-        <thead>
-        <tr>
-            <th scope="col">#</th>
-            <th scope="col">Claim Amount </th>
-            <th scope="col">Date of Claim </th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-            <th scope="row">1</th>
-            <td>1</td>
-            <td>1</td>
-            <td>1</td>
-        </tr>
-        </tbody>
-    </table>
+    @if($customer->insurance->isNotEmpty())
+        <h2 class="text-center" style="border-top: 1px solid red; border-bottom: 1px solid red; padding: 10px; margin-bottom: 30px; margin-top: 30px;">
+            Claim Outstanding
+        </h2>
+        <table class="table table-bordered border-collapse">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Insurance Company</th>
+                <th scope="col">Claim Amount</th>
+                <th scope="col">Date of Claim</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach($customer->claim_outstanding as $co)
+                <tr>
+                    <th scope="row">{{$loop->iteration}}</th>
+                    <td>{{\App\Models\Insurance::find($co->insurance_id)->insurance_company}}</td>
+                    <td>{{$co->claim_amount}}</td>
+                    <td>{{\Carbon\Carbon::parse($co->date_of_claim)->format('d-m-Y')}}</td>
+                </tr>
+            @endforeach
+
+            </tbody>
+        </table>
+    @endif
 
 @endsection

@@ -15,6 +15,12 @@ return new class extends Migration
     {
         Schema::create('insurances', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('customer_id');
+            $table->foreign('customer_id')->references('id')->on('customers');
+            $table->string('insurance_company')->nullable();
+            $table->string('date_of_insurance')->nullable();
+            $table->decimal('insurance_amount',14,2)->nullable();
+            $table->string('date_of_expiry_of_insurance')->nullable();
             $table->timestamps();
         });
     }

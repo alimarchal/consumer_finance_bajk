@@ -8,4 +8,16 @@ use Illuminate\Database\Eloquent\Model;
 class Installment extends Model
 {
     use HasFactory;
+
+    public $fillable = [
+        'customer_id',
+        'date',
+        'no_of_installment',
+        'days_passed_overdue',
+        'principal_amount',
+        'mark_up_amount',
+        'penalty_charges',
+        'total_principal_markup_penalty',
+        'category_of_default',
+    ];
 }

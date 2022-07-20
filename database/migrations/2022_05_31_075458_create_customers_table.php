@@ -56,15 +56,16 @@ return new class extends Migration
             $table->decimal('amount_disbursed',14,2)->default(0.00);
 
             $table->date('expiry_date_as_per_dac')->nullable();
+            $table->decimal('kibor_rate',10,2)->default(0.00);
+            $table->decimal('bank_spread_rate',10,2)->default(0.00);
             $table->decimal('mark_up_rate',10,2)->default(0.00);
+            $table->string('secure_unsecure_loan')->nullable();
             $table->string('branch_manager_name_while_sanctioning')->default(0.00);
             // installment
             $table->decimal('principle_amount',14,2)->default(0.00);
             $table->decimal('markup_amount', 14,2)->default(0.00);
             $table->decimal('installment_insurance', 14,2)->default(0.00);
             $table->decimal('total_installment', 14,2)->default(0.00);
-            $table->string('valuation_evaluator_company')->nullable();
-            $table->date('valuation_date_of_valuation')->nullable();
 
             $table->string('status')->nullable();
 

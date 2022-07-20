@@ -36,9 +36,12 @@ class GuaranteeController extends Controller
      * @param  \App\Http\Requests\StoreGuaranteeRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreGuaranteeRequest $request)
+    public function store(StoreGuaranteeRequest $request, Customer $customer)
     {
-        //
+        $request->merge(['customer_id' => $customer->id]);
+        $gurantee = Guarantee::create($request->all());
+        session()->flash('message', 'Security / Personal Guarantee data has been successfully saved.');
+        return to_route('guarantee.index', $customer->id);
     }
 
     /**

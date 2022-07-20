@@ -36,9 +36,12 @@ class InstallmentController extends Controller
      * @param  \App\Http\Requests\StoreInstallmentRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreInstallmentRequest $request)
+    public function store(StoreInstallmentRequest $request, Customer $customer)
     {
-        //
+        $request->merge(['customer_id' => $customer->id]);
+        $litigation = Installment::create($request->all());
+        session()->flash('message', 'Installment data has been successfully posted.');
+        return to_route('installment.index', $customer->id);
     }
 
     /**

@@ -15,6 +15,13 @@ return new class extends Migration
     {
         Schema::create('other_guarantees', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('customer_id');
+            $table->foreign('customer_id')->references('id')->on('customers');
+            $table->string('primary')->nullable();
+            $table->string('secondary')->nullable();
+            $table->string('market_value')->nullable();
+            $table->string('fsv')->nullable();
+            $table->string('ownership')->nullable();
             $table->timestamps();
         });
     }

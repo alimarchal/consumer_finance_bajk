@@ -15,6 +15,15 @@ return new class extends Migration
     {
         Schema::create('insurance_claims', function (Blueprint $table) {
             $table->id();
+
+            $table->unsignedBigInteger('customer_id');
+            $table->foreign('customer_id')->references('id')->on('customers');
+
+            $table->unsignedBigInteger('insurance_id');
+            $table->foreign('insurance_id')->references('id')->on('insurances');
+
+            $table->decimal('claim_amount',14,2)->nullable();
+            $table->date('date_of_claim')->nullable();
             $table->timestamps();
         });
     }

@@ -1,6 +1,6 @@
 @extends('theme.main')
 @section('breadcrumb')
-    test
+    Borrower Profile / Installment
 @endsection
 @section('body')
     @if(session()->has('message'))
@@ -8,568 +8,200 @@
             {{ session()->get('message') }}
         </div>
     @endif
-    <form class="needs-validation" novalidate method="post" action="{{url('customer')}}">
+
+    <form method="post" action="{{route('installment.store', $customer->id)}}">
         @csrf
         @include('theme.customer')
 
         <br>
 
+        <div class="form-row">
 
-        <div class="row invoice-info" id="app">
-            <div class="col-sm-4 invoice-col">
-                <br>
-                <address>
-                    <strong>Customer Name:</strong> <br>
-                    <strong>Application / Loan #:</strong> <br>
-                    <strong>Loan Amount:</strong> <br>
-
-                </address>
+            <div class="col-md-3 mb-2">
+                <label for="date"><strong>Date</strong></label>
+                <input type="date" class="form-control" id="date" name="date">
             </div>
-            <!-- /.col -->
-            <div class="col-sm-4 invoice-col">
-                <br>
-                <address>
-                    <strong>Loan Start Date:&nbsp;&nbsp;&nbsp;</strong>
-                    <br>
-                    <strong>Loan End Date: &nbsp;&nbsp;&nbsp;&nbsp;</strong>
-                    <br>
-                    <strong>Equal Monthly Installment: </strong><br>
-                </address>
+
+
+            <div class="col-md-3 mb-3">
+                <label for="no_of_installment"><strong>No of Installment</strong></label>
+                <select class="form-control select2bs4" required id="no_of_installment" style="width: 100%;" name="no_of_installment">
+                    <option value="">None</option>
+                    @for($i = 1; $i <= 240; $i++)
+                        <option value="{{$i}}">{{$i}}</option>
+                    @endfor
+                </select>
             </div>
-            <!-- /.col -->
-            <div class="col-sm-4 invoice-col"><br>
-                <strong>No of Installments: </strong><br>
-                {{--            <b>Invoice #007612</b><br>--}}
+
+
+
+            <div class="col-md-3 mb-3">
+                <label for="days_passed_overdue"><strong>Days Passed Overdue</strong></label>
+                <select class="form-control select2bs4" required id="days_passed_overdue" style="width: 100%;" name="days_passed_overdue">
+                    <option value="">None</option>
+                    @for($i = 1; $i <= 240; $i++)
+                        <option value="{{$i}}">{{$i}}</option>
+                    @endfor
+                </select>
             </div>
-            <form action="{{url('customer/'. ' '.'/installment')}}" method="post" class="p-2">
-                @csrf
-                <div class="form-row">
-                    <div class="col-md-3 mb-3">
-                        <label><strong>Installment Number</strong></label>
-                        <input type="text" class="form-control" name="installment[no_of_installment]" readonly
-                               value="">
-                    </div>
-                    <div class="col-md-3 mb-3">
-                        <label><strong>Due Date</strong></label>
-                        @php
-                            // $last_installment_date = \Carbon\Carbon::createFromDate($customer->last_installment_date)->addMonth();
-                            // $installment_due_date = \Carbon\Carbon::createFromDate($customer->installment_due_date)->addMonth();
-                            // $new_due_date = $installment_due_date->format('Y-') . $last_installment_date->format('m-') .  $installment_due_date->format('d') ;
-                            // $date  = \Carbon\Carbon::createFromDate($new_due_date);
-                            // $now = \Carbon\Carbon::now();
-                            // $diff = $date->diffInDays($now);
-                        @endphp
-{{--                        {$new_due_date}}--}}
-                        <input type="date" class="form-control" name="installment[due_date]" value="{" readonly>
-                    </div>
-                    <div class="col-md-3 mb-3">
-                        <label><strong>Markup</strong></label>
-                        <input type="text" class="form-control" name="installment[markup]" @input="markUp">
-                    </div>
-                    <div class="col-md-3 mb-3">
-                        <label><strong>Insurance</strong></label>
-                        <input type="text" class="form-control" name="installment[insurance]" @input="insuranceFunc">
-                    </div>
-                    <div class="col-md-3 mb-3">
-                        <label><strong>Principal</strong></label>
-                        <input type="text" class="form-control" name="installment[principal]" @input="principalFunc">
-                    </div>
-                    {{--                <div class="col-md-3 mb-3">--}}
-                    {{--                    <label><strong>Outstanding Principal</strong></label>--}}
-                    <input type="hidden" class="form-control" name="installment[outstanding_principal]" value="">
-                    {{--                </div>--}}
-                    <div class="col-md-3 mb-3">
-                        <label><strong>Total Monthly Payment</strong></label>
-                        <input type="text" class="form-control" name="installment[total_monthly_payment]" :value="totalPrincipal" readonly>
-                    </div>
-
-                    <div class="col-md-3 mb-3">
-                        <label><strong>Payment Date</strong></label>
-                        <input type="date" class="form-control" name="installment[payment_date]" value="{{date('Y-m-d')}}" readonly>
-                    </div>
-                    {{--                <div class="col-md-3 mb-3">--}}
-                    {{--                    <label><strong>Delayed Days</strong></label>--}}
-                    <input type="hidden" class="form-control" name="installment[delayed_days]" value="" readonly>
-                    {{--                </div>--}}
-                </div>
-                <!-- this row will not appear when printing -->
-                <div class="row no-print">
-                    <div class="col-12">
-                        <a onclick="window.print()" class="btn btn-default"><i class="fas fa-print"></i> Print</a>
-                        <button type="submit" class="btn btn-success float-right"><i class="far fa-credit-card"></i> Submit
-                            Payment
-                        </button>
-                    </div>
-                </div>
-            </form>
-
-        </div>
 
 
 
-            <!--
+            <div class="col-md-3 mb-2">
+                <label for="principal_amount"><strong>Principal</strong></label>
+                <input type="number" step="0.01" class="form-control" id="principal_amount" name="principal_amount">
+            </div>
+
+            <div class="col-md-3 mb-2">
+                <label for="mark_up_amount"><strong>Mark-Up</strong></label>
+                <input type="number" step="0.01" class="form-control" id="mark_up_amount" name="mark_up_amount">
+            </div>
+
+            <div class="col-md-3 mb-2">
+                <label for="penalty_charges"><strong>Penalty Charges</strong></label>
+                <input type="number" step="0.01" class="form-control" id="penalty_charges" name="penalty_charges">
+            </div>
 
 
-                                    <div class="col-md-3 mb-3">
-                        <label><strong>Installment Deposit Date</strong></label>
-                        <input type="date" class="form-control" id="validationCustom52" title="" name="customer[installment_deposit_date]" required>
-                        <div class="invalid-feedback">
-                            Please provide a Installment Deposit Date.
-                        </div>
-                    </div>
-                    <div class="col-md-3 mb-3">
-                        <label><strong>Installment Due Date</strong></label>
-                        <input type="date" class="form-control" id="validationCustom52" name="customer[installment_due_date]">
-                        <div class="invalid-feedback">
-                            Please provide Installment Due Date.
-                        </div>
-                    </div>
+            <div class="col-md-3 mb-2">
+                <label for="total_principal_markup_penalty"><strong>Total</strong></label>
+                <input type="number" step="0.01" class="form-control" id="total_principal_markup_penalty" name="total_principal_markup_penalty">
+            </div>
 
 
-                <hr class="bg-danger">
-                <h2 class="text-danger text-center">Previous Months Installment</h2>
-                <hr class="bg-danger">
-                <div class="form-row">
-                    <div class="col-md-3 mb-3">
-                        <label><strong>No of Installment</strong></label>
-                        <input type="text" class="form-control" name="customer[previous_months_no_of_installment]">
-                        <div class="invalid-feedback">
-                            Please provide a Branch Manager Name.
-                        </div>
-                    </div>
-                    <div class="col-md-3 mb-3">
-                        <label><strong>Days Passed Overdue</strong></label>
-                        <input type="text" class="form-control" name="customer[previous_months_days_passed_overdue]">
-                        <div class="invalid-feedback">
-                            Please provide a Branch Manager Name.
-                        </div>
-                    </div>
-                    <div class="col-md-3 mb-3">
-                        <label><strong>Principle (a)</strong></label>
-                        <input type="text" class="form-control" name="customer[previous_months_principle_a]">
-                        <div class="invalid-feedback">
-                            Please provide a Branch Manager Name.
-                        </div>
-                    </div>
-                    <div class="col-md-3 mb-3">
-                        <label><strong>Markup (b)</strong></label>
-                        <input type="text" class="form-control" name="customer[previous_months_mark_up_b]">
-                        <div class="invalid-feedback">
-                            Please provide a Branch Manager Name.
-                        </div>
-                    </div>
-                    <div class="col-md-3 mb-3">
-                        <label><strong>Penalty Charges (c)</strong></label>
-                        <input type="text" class="form-control" name="customer[previous_months_penalty_charges_c]">
-                        <div class="invalid-feedback">
-                            Please provide a Branch Manager Name.
-                        </div>
-                    </div>
-                    <div class="col-md-3 mb-3">
-                        <label><strong>Total (a+b+c)</strong></label>
-                        <input type="text" class="form-control" name="customer[previous_months_total_abc]">
-                        <div class="invalid-feedback">
-                            Please provide a Branch Manager Name.
-                        </div>
-                    </div>
-                    <div class="col-md-3 mb-3">
-                        <label><strong>Category of Default</strong></label>
-                        <input type="text" class="form-control" name="customer[previous_months_category_of_default]">
-                    </div>
-                </div>
 
-                <hr class="bg-danger">
-                <h2 class="text-danger text-center">Current Month Installment</h2>
-                <hr class="bg-danger">
-                <div class="form-row">
-                    <div class="col-md-3 mb-3">
-                        <label><strong>No of Installment</strong></label>
-                        <input type="text" class="form-control" name="customer[current_months_no_of_installment]">
-                        <div class="invalid-feedback">
-                            Please provide a Branch Manager Name.
-                        </div>
-                    </div>
-                    <div class="col-md-3 mb-3">
-                        <label><strong>Days Passed Overdue</strong></label>
-                        <input type="text" class="form-control" name="customer[current_months_day_passed_overdue]">
-                        <div class="invalid-feedback">
-                            Please provide a Branch Manager Name.
-                        </div>
-                    </div>
-                    <div class="col-md-3 mb-3">
-                        <label><strong>Principle (a)</strong></label>
-                        <input type="text" class="form-control" name="customer[current_months_principle_a]">
-                        <div class="invalid-feedback">
-                            Please provide a Branch Manager Name.
-                        </div>
-                    </div>
-                    <div class="col-md-3 mb-3">
-                        <label><strong>Markup (b)</strong></label>
-                        <input type="text" class="form-control" name="customer[current_months_mark_up_b]">
-                        <div class="invalid-feedback">
-                            Please provide a Branch Manager Name.
-                        </div>
-                    </div>
-                    <div class="col-md-3 mb-3">
-                        <label><strong>Penalty Charges (c)</strong></label>
-                        <input type="text" class="form-control" name="customer[current_months_penalty_charges_c]">
-                        <div class="invalid-feedback">
-                            Please provide a Branch Manager Name.
-                        </div>
-                    </div>
-                    <div class="col-md-3 mb-3">
-                        <label><strong>Total (a+b+c)</strong></label>
-                        <input type="text" class="form-control" name="customer[current_months_total_abc]">
-                        <div class="invalid-feedback">
-                            Please provide a Branch Manager Name.
-                        </div>
-                    </div>
-                    <div class="col-md-3 mb-3">
-                        <label><strong>Category of Default</strong></label>
-                        <input type="text" class="form-control" name="customer[current_months_category_of_default]">
-                    </div>
-                </div>
-
-
-                <hr class="bg-danger">
-                <div class="form-row">
-                    <div class="col-md-3 mb-3">
-                        <label><strong>Adjustment Recovery During the Month Principle Amount</strong></label>
-                        <input type="text" class="form-control" name="customer[adjustment_recovery_during_the_month_principle_amount]">
-                        <div class="invalid-feedback">
-                            Please provide a Branch Manager Name.
-                        </div>
-                    </div>
-                    <div class="col-md-3 mb-3">
-                        <label><strong>Partial Cash Recovery</strong></label>
-                        <input type="text" class="form-control" name="customer[partial_cash_recovery]">
-                        <div class="invalid-feedback">
-                            Please provide a Branch Manager Name.
-                        </div>
-                    </div>
-                    <div class="col-md-3 mb-3">
-                        <label><strong>Facility outstanding amount secured principle previous</strong></label>
-                        <input type="text" class="form-control" name="customer[facility_outstanding_amount_secured_principle_previous]">
-                        <div class="invalid-feedback">
-                            Please provide a Branch Manager Name.
-                        </div>
-                    </div>
-                    <div class="col-md-3 mb-3">
-                        <label><strong>{{ucfirst(str_replace('_',' ','facility_outstanding_amount_secured_principle_current'))}}</strong></label>
-                        <input type="text" class="form-control" name="customer[facility_outstanding_amount_secured_principle_current]">
-                        <div class="invalid-feedback">
-                            Please provide a Branch Manager Name.
-                        </div>
-                    </div>
-                    <div class="col-md-3 mb-3">
-                        <label><strong>{{ucfirst(str_replace('_',' ','facility_outstanding_amount_unsecured_principle_previous'))}}</strong></label>
-                        <input type="text" class="form-control" name="customer[facility_outstanding_amount_unsecured_principle_previous]">
-                        <div class="invalid-feedback">
-                            Please provide a Branch Manager Name.
-                        </div>
-                    </div>
-                    <div class="col-md-3 mb-3">
-                        <label><strong>{{ucfirst(str_replace('_',' ','facility_outstanding_amount_unsecured_principle_current'))}}</strong></label>
-                        <input type="text" class="form-control" name="customer[facility_outstanding_amount_unsecured_principle_current]">
-                        <div class="invalid-feedback">
-                            Please provide a Branch Manager Name.
-                        </div>
-                    </div>
-                    <div class="col-md-3 mb-3">
-                        <label><strong>NPL Amount</strong></label>
-                        <input type="text" class="form-control" name="customer[npl_amount]">
-                        <div class="invalid-feedback">
-                            Please provide a Branch Manager Name.
-                        </div>
-                    </div>
-                    <div class="col-md-3 mb-3">
-                        <label><strong>{{ucfirst(str_replace('_',' ','markup_detail_markup_receivable_4600'))}}</strong></label>
-                        <input type="text" class="form-control" name="customer[markup_detail_markup_receivable_4600]">
-                        <div class="invalid-feedback">
-                            Please provide a Branch Manager Name.
-                        </div>
-                    </div>
-                    <div class="col-md-3 mb-3">
-                        <label><strong>{{ucfirst(str_replace('_',' ','markup_detail_mark_up_recovered_since_01_01_2019_till_date'))}}</strong></label>
-                        <input type="text" class="form-control" name="customer[markup_detail_mark_up_recovered_since_01_01_2019_till_date]">
-                        <div class="invalid-feedback">
-                            Please provide a Branch Manager Name.
-                        </div>
-                    </div>
-                    <div class="col-md-3 mb-3">
-                        <label><strong>{{ucfirst(str_replace('_',' ','markup_detail_mark_up_recoverable_a_c_5008'))}}</strong></label>
-                        <input type="text" class="form-control" name="customer[markup_detail_mark_up_recoverable_a_c_5008]">
-                        <div class="invalid-feedback">
-                            Please provide a Branch Manager Name.
-                        </div>
-                    </div>
-                    <div class="col-md-3 mb-3">
-                        <label><strong>{{ucfirst(str_replace('_',' ','markup_detail_mark_up_reserve_a_c_2305'))}}</strong></label>
-                        <input type="text" class="form-control" name="customer[markup_detail_mark_up_reserve_a_c_2305]">
-                        <div class="invalid-feedback">
-                            Please provide a Branch Manager Name.
-                        </div>
-                    </div>
-                </div>
-
+            <div class="col-md-3 mb-3">
+                <label for="category_of_default"><strong>Category</strong></label>
+                <select class="form-control select2bs4" required id="category_of_default" style="width: 100%;" name="category_of_default">
+                    <option value="">None</option>
+                    <option value="Regular" selected>Regular</option>
+                    <option value="Irregular">Irregular</option>
+                    <option value="Sub Standard">Sub Standard</option>
+                    <option value="Doubtful">Doubtful</option>
+                    <option value="Loss">Loss</option>
+                </select>
             </div>
         </div>
-
-
-        <div class="card card-default">
-            <div class="card-header">
-                <div class="card-tools">
-                    <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
-                </div>
-                <br>
-                <h3 class="text-center text-danger" title="63">Guarantor Number 1 Details</h3>
-            </div>
-
-            <div class="card-body">
-                <div class="form-row">
-                    <div class="col-md-3 mb-2">
-                        <label><strong>Name</strong></label>
-                        <input type="text" class="form-control" id="validationCustom27" title="" name="customer[personal_guarantee_no_1_detail_name]">
-                    </div>
-                    <div class="col-md-3 mb-3">
-                        <label><strong>CNIC Number</strong></label>
-                        <input type="text" class="form-control" id="validationCustom28" title="" name="customer[personal_guarantee_no_1_detail_cnic]">
-                    </div>
-                    <div class="col-md-3 mb-3">
-                        <label><strong>Contact Number</strong></label>
-                        <input type="text" class="form-control" id="validationCustom29" title=""
-                               name="customer[personal_guarantee_no_1_detail_contact]">
-                    </div>
-
-
-                    <div class="col-md-3 mb-3">
-                        <label><strong>Department/Business</strong></label>
-                        <input type="text" class="form-control" id="validationCustom30" title=""
-                               name="customer[personal_guarantee_no_1_detail_dept_business]">
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="col-md-3 mb-2">
-                        <label><strong>Business/Dept/Address</strong></label>
-                        <textarea name="customer[personal_guarantee_no_1_detail_dept_business_address]" class="form-control" id="validationCustom31"
-                                  title=""></textarea>
-                    </div>
-                    <div class="col-md-3 mb-2">
-                        <label><strong>Guarantor Address</strong></label>
-                        <textarea name="customer[personal_guarantee_no_1_detail_address]" class="form-control" id="validationCustom32" title=""></textarea>
-                    </div>
-                    <div class="col-md-3 mb-3">
-                        <label><strong>BPS</strong></label>
-                        <input type="text" class="form-control" id="validationCustom33" title="" name="customer[personal_guarantee_no_1_detail_bps]">
-                    </div>
-                    <div class="col-md-3 mb-3">
-                        <label><strong>PP Number</strong></label>
-                        <input type="text" class="form-control" id="validationCustom34" title="" name="customer[personal_guarantee_no_1_detail_pp_if_salaried]">
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="card card-default">
-            <div class="card-header">
-                <div class="card-tools">
-                    <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
-                </div>
-                <br>
-                <h3 class="text-center text-danger" title="63">Guarantor Number 2 Details</h3>
-            </div>
-
-            <div class="card-body">
-                <div class="form-row">
-                    <div class="col-md-3 mb-2">
-                        <label><strong>Name</strong></label>
-                        <input type="text" class="form-control" id="validationCustom35" title="" name="customer[personal_guarantee_no_2_detail_name]">
-                    </div>
-                    <div class="col-md-3 mb-3">
-                        <label><strong>CNIC Number</strong></label>
-                        <input type="text" class="form-control" id="validationCustom36" title="" name="customer[personal_guarantee_no_2_detail_cnic]">
-                    </div>
-                    <div class="col-md-3 mb-3">
-                        <label><strong>Contact Number</strong></label>
-                        <input type="text" class="form-control" id="validationCustom37" title=""
-                               name="customer[personal_guarantee_no_2_detail_contact]">
-                    </div>
-                    <div class="col-md-3 mb-3">
-                        <label><strong>Department/Business</strong></label>
-                        <input type="text" class="form-control" id="validationCustom38" title=""
-                               name="customer[personal_guarantee_no_2_detail_dept_business]">
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="col-md-3 mb-2">
-                        <label><strong>Business/Dept/Address</strong></label>
-                        <textarea name="customer[personal_guarantee_no_2_detail_dept_business_address]" class="form-control" id="validationCustom39"
-                                  title=""></textarea>
-                    </div>
-                    <div class="col-md-3 mb-2">
-                        <label><strong>Guarantor Address</strong></label>
-                        <textarea name="customer[personal_guarantee_no_2_detail_address]" class="form-control" id="validationCustom40" title=""></textarea>
-                    </div>
-                    <div class="col-md-3 mb-3">
-                        <label><strong>BPS</strong></label>
-                        <input type="text" class="form-control" id="validationCustom41" title="" name="customer[personal_guarantee_no_2_detail_bps]">
-                    </div>
-                    <div class="col-md-3 mb-3">
-                        <label><strong>PP Number</strong></label>
-                        <input type="text" class="form-control" id="validationCustom42" title="" name="customer[personal_guarantee_no_2_detail_pp_if_salaried]">
-                    </div>
-                </div>
-            </div>
-        </div>
-
-
-        <div class="card card-default">
-            <div class="card-header">
-                <div class="card-tools">
-                    <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
-                </div>
-                <br>
-                <h3 class="text-center text-danger">Other Than Personal Guarantee</h4>
-            </div>
-
-            <div class="card-body">
-
-                <div class="form-row">
-                    <div class="col-md-4 mb-2">
-                        <label><strong>Primary</strong></label>
-                        <input type="text" class="form-control" id="validationCustom43" title=""
-                               name="customer[other_than_personal_guarantee_primary]">
-                    </div>
-                    <div class="col-md-4 mb-3">
-                        <label><strong>Secondary</strong></label>
-                        <input type="text" class="form-control" id="validationCustom44" title=""
-                               name="customer[other_than_personal_guarantee_secondary]">
-                    </div>
-                    <div class="col-md-4 mb-">
-                        <label><strong>Type of Security</strong></label>
-                        <input type="text" class="form-control" id="validationCustom45" title=""
-                               name="customer[other_than_personal_guarantee_type_of_security]">
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="col-md-6 mb-2">
-                        <label><strong>FSV</strong></label>
-                        <input type="text" class="form-control" id="validationCustom46" title=""
-                               name="customer[other_than_personal_guarantee_fsv]">
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <label><strong>Ownership</strong></label>
-                        <input type="text" class="form-control" id="validationCustom47" title=""
-                               name="customer[other_than_personal_guarantee_ownership]">
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="card card-default">
-            <div class="card-header">
-                <div class="card-tools">
-                    <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
-                </div>
-                <br>
-                <h3 class="text-center text-danger">Valuation</h3>
-            </div>
-
-
-            <div class="card-body">
-
-                <div class="form-row">
-                    <div class="col-md-6 mb-2">
-                        <label><strong>Evaluator Company</strong></label>
-                        <input type="text" class="form-control" id="validationCustom48" title=""
-                               name="customer[valuation_evaluator_company]">
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <label><strong>Date of Valuation</strong></label>
-                        <input type="date" class="form-control" id="validationCustom49" title=""
-                               name="customer[valuation_date_of_valuation]">
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="card card-default">
-            <div class="card-header">
-                <div class="card-tools">
-                    <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
-                </div>
-                <br>
-                <h3 class="text-center text-danger">Insurance</h3>
-            </div>
-
-
-                <div class="form-row">
-                    <div class="col-md-6 mb-2">
-                        <label><strong>Claim Amount</strong></label>
-                        <input type="text" class="form-control" id="validationCustom48" title="" name="customer[insurance_claim_outstanding_claim_amount]">
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <label><strong>Date of Claim</strong></label>
-                        <input type="date" class="form-control" id="validationCustom54" title="" name="customer[insurance_claim_outstanding_date_of_claim]">
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="card card-default">
-            <div class="card-header">
-                <div class="card-tools">
-                    <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
-                </div>
-                <br>
-                <h3 class="text-center text-danger">NPL Recovery Remarks</h3>
-            </div>
-
-            <div class="card-body">
-                <div class="form-row">
-                    <div class="col-md-12 mb-2">
-                        <label for="validationCustom54" title="92"><strong>NPL Recovery Remarks</strong></label>
-                        <textarea name="customer[npl_recovery_remarks]" class="form-control"></textarea>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="card card-default">
-            <div class="card-header">
-                <div class="card-tools">
-                    <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
-                </div>
-                <br>
-                <h3 class="text-center text-danger">Litigation Status</h3>
-            </div>
-
-            <div class="card-body">
-
-
-
-                <div class="form-row">
-                    <div class="col-md-4 mb-2">
-                        <label><strong>Name of Court</strong></label>
-                        <input type="text" class="form-control" id="validationCustom50" title=""
-                               name="customer[litigation_status_name_of_court]">
-                    </div>
-                    <div class="col-md-4 mb-3">
-                        <label><strong>Recovery Status (Full or Partial)</strong></label>
-                        <input type="text" class="form-control" id="validationCustom51" title=""
-                               name="customer[litigation_status_recovery_status_full_or_partial]">
-                    </div>
-                    <div class="col-md-4 mb-2">
-                        <label><strong>Date of Final Settlement</strong></label>
-                        <input type="date" class="form-control" id="validationCustom52" title=""
-                               name="customer[litigation_status_date_of_final_settlement]">
-                    </div>
-                    <input type="hidden" name="customer[status]" value="Regular">
-                </div>
-            </div>
-        </div>
-        -->
-
-            <button class="btn btn-primary" type="submit">Save & Next</button>
+        <button class="btn btn-primary float-right" type="submit">Save</button>
     </form>
+
+
+    <br>
+    @if($customer->installments->isNotEmpty())
+        <h2 class="text-center" style="border-top: 1px solid red; border-bottom: 1px solid red; padding: 10px; margin-bottom: 30px; margin-top: 30px;">
+            Installment</h2>
+        <table class="table table-bordered border-collapse">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Date</th>
+                <th scope="col">No of Installment</th>
+                <th scope="col">Days Passed Overdue</th>
+                <th scope="col">Principal</th>
+                <th scope="col">Mark-Up</th>
+                <th scope="col">Penalty Charges</th>
+                <th scope="col">Total</th>
+                <th scope="col">Category</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach($customer->installments as $co)
+                <tr>
+                    <th scope="row">{{$loop->iteration}}</th>
+                    <td>{{$co->date}}</td>
+                    <td>{{$co->no_of_installment}}</td>
+                    <td>{{$co->days_passed_overdue}}</td>
+                    <td>{{$co->principal_amount}}</td>
+                    <td>{{$co->mark_up_amount}}</td>
+                    <td>{{$co->penalty_charges}}</td>
+                    <td>{{$co->total_principal_markup_penalty}}</td>
+                    <td>{{$co->category_of_default}}</td>
+                </tr>
+            @endforeach
+
+            </tbody>
+        </table>
+    @endif
+@endsection
+
+
+@section('customFooterScripts')
+    <script>
+        $(function () {
+            //Initialize Select2 Elements
+            $('.select2').select2()
+
+            //Initialize Select2 Elements
+            $('.select2bs4').select2({
+                theme: 'bootstrap4'
+            })
+
+            //Datemask dd/mm/yyyy
+            $('#datemask').inputmask('dd/mm/yyyy', {'placeholder': 'dd/mm/yyyy'})
+            //Datemask2 mm/dd/yyyy
+            $('#datemask2').inputmask('mm/dd/yyyy', {'placeholder': 'mm/dd/yyyy'})
+            //Money Euro
+            $('[data-mask]').inputmask()
+
+            //Date picker
+            $('#reservationdate').datetimepicker({
+                format: 'L'
+            });
+
+            //Date and time picker
+            $('#reservationdatetime').datetimepicker({icons: {time: 'far fa-clock'}});
+
+            //Date range picker
+            $('#reservation').daterangepicker()
+            //Date range picker with time picker
+            $('#reservationtime').daterangepicker({
+                timePicker: true,
+                timePickerIncrement: 30,
+                locale: {
+                    format: 'MM/DD/YYYY hh:mm A'
+                }
+            })
+            //Date range as a button
+            $('#daterange-btn').daterangepicker(
+                {
+                    ranges: {
+                        'Today': [moment(), moment()],
+                        'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                        'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+                        'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+                        'This Month': [moment().startOf('month'), moment().endOf('month')],
+                        'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+                    },
+                    startDate: moment().subtract(29, 'days'),
+                    endDate: moment()
+                },
+                function (start, end) {
+                    $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'))
+                }
+            )
+
+            //Timepicker
+            $('#timepicker').datetimepicker({
+                format: 'LT'
+            })
+
+            //Bootstrap Duallistbox
+            $('.duallistbox').bootstrapDualListbox()
+
+            //Colorpicker
+            $('.my-colorpicker1').colorpicker()
+            //color picker with addon
+            $('.my-colorpicker2').colorpicker()
+
+            $('.my-colorpicker2').on('colorpickerChange', function (event) {
+                $('.my-colorpicker2 .fa-square').css('color', event.color.toString());
+            })
+
+            $("input[data-bootstrap-switch]").each(function () {
+                $(this).bootstrapSwitch('state', $(this).prop('checked'));
+            })
+
+        })
+
+    </script>
 @endsection

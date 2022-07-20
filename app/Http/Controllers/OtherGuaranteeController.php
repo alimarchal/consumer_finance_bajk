@@ -34,9 +34,12 @@ class OtherGuaranteeController extends Controller
      * @param  \App\Http\Requests\StoreOtherGuaranteeRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreOtherGuaranteeRequest $request)
+    public function store(StoreOtherGuaranteeRequest $request, Customer $customer)
     {
-        //
+        $request->merge(['customer_id' => $customer->id]);
+        $gurantee = OtherGuarantee::create($request->all());
+        session()->flash('message', '>Other than personal guarantee data has been successfully saved.');
+        return to_route('otherGuarantee.index', $customer->id);
     }
 
     /**

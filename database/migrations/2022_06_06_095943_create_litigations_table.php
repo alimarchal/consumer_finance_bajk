@@ -15,6 +15,11 @@ return new class extends Migration
     {
         Schema::create('litigations', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('customer_id');
+            $table->foreign('customer_id')->references('id')->on('customers');
+            $table->string('name_of_court')->nullable();
+            $table->string('recovery_status')->nullable();
+            $table->date('date_of_final_settlement')->nullable();
             $table->timestamps();
         });
     }

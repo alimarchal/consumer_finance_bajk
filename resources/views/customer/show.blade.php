@@ -1,6 +1,6 @@
 @extends('theme.main')
 @section('breadcrumb')
-    Customer Details
+    Borrower Profile
 @endsection
 
 @section('customHeaderScripts')
@@ -177,43 +177,73 @@
             </div>
             <div class="col-md-3 mb-3">
                 <label for="expiry_date_as_per_dac"><strong>Expiry Date as per DAC</strong></label>
-                <input type="date" class="form-control" id="expiry_date_as_per_dac" required name="expiry_date_as_per_dac"  value="{{$customer->expiry_date_as_per_dac}}">
+                <input type="date" class="form-control" value="{{$customer->expiry_date_as_per_dac}}" id="expiry_date_as_per_dac" required name="expiry_date_as_per_dac" >
             </div>
+
             <div class="col-md-3 mb-3">
-                <label for="mark_up_rate"><strong>Markup Rate</strong></label>
-                <input type="text" class="form-control" id="mark_up_rate" required name="mark_up_rate"  value="{{$customer->mark_up_rate}}">
+                <label for="kibor_rate"><strong>KIBOR Rate</strong></label>
+                <input type="number" step="0.01" min="0.00" value="{{$customer->kibor_rate}}" class="form-control" id="kibor_rate" required name="kibor_rate">
             </div>
+
+            <div class="col-md-3 mb-3">
+                <label for="bank_spread_rate"><strong>Bank Spread Rate</strong></label>
+                <input type="number" step="0.01" min="0.00" value="{{$customer->bank_spread_rate}}" class="form-control" id="bank_spread_rate" required name="bank_spread_rate">
+            </div>
+
+            <div class="col-md-3 mb-3">
+                <label for="mark_up_rate"><strong>Total Markup Rate <sub>(KIBOR+SPREAD)</sub> </strong></label>
+                <input type="number" step="0.01" min="0.00" class="form-control" value="{{$customer->mark_up_rate}}"  id="mark_up_rate" required name="mark_up_rate">
+            </div>
+
+            <div class="col-md-3 mb-2">
+                <label for="secure_unsecure_loan"><strong>Facility (Secure/Unsecure Principal)</strong></label>
+                <select class="form-control select2bs4" required id="secure_unsecure_loan"  style="width: 100%;" name="secure_unsecure_loan">
+                    <option value="">None</option>
+                    <option value="Secure" @if($customer->secure_unsecure_loan == 'Secure') selected @endif >Secure Principal</option>
+                    <option value="Unsecure" @if($customer->secure_unsecure_loan == 'Unsecure') selected @endif>Unsecure Principal</option>
+                </select>
+            </div>
+
             <div class="col-md-3 mb-3">
                 <label for="branch_manager_name_while_sanctioning"><strong>Branch Manager Name</strong></label>
-                <input type="text" class="form-control" id="branch_manager_name_while_sanctioning" required
-                       name="branch_manager_name_while_sanctioning"  value="{{$customer->branch_manager_name_while_sanctioning}}">
+                <input type="text" class="form-control" id="branch_manager_name_while_sanctioning" disabled required name="branch_manager_name_while_sanctioning"  value="{{$customer->branch_manager_name_while_sanctioning}}">
             </div>
+
+
+            <div class="col-md-3 mb-3">
+                <label for="principle_amount"><strong>Principal Outstanding</strong></label>
+                <input type="text" class="form-control" id="principle_amount" disabled  value="{{$customer->principle_amount}}"
+                       name="principle_amount">
+            </div>
+
+
+
         </div>
 
 
-        <hr class="bg-danger">
-        <h2 class="text-danger text-center">Installment</h2>
-        <hr class="bg-danger">
+{{--        <hr class="bg-danger">--}}
+{{--        <h2 class="text-danger text-center">Installment</h2>--}}
+{{--        <hr class="bg-danger">--}}
 
 
-        @livewire('installment', ['customer' => $customer])
+{{--        @livewire('installment', ['customer' => $customer])--}}
 
-        <hr class="bg-danger">
-        <h3 class="text-center text-danger">Valuation</h3>
-        <hr class="bg-danger">
+{{--        <hr class="bg-danger">--}}
+{{--        <h3 class="text-center text-danger">Valuation</h3>--}}
+{{--        <hr class="bg-danger">--}}
 
-        <div class="form-row">
-            <div class="col-md-6 mb-2">
-                <label><strong>Evaluator Company</strong></label>
-                <input type="text" class="form-control" required id="valuation_evaluator_company"
-                       name="valuation_evaluator_company" value="{{$customer->valuation_evaluator_company}}">
-            </div>
-            <div class="col-md-6 mb-3">
-                <label><strong>Date of Valuation</strong></label>
-                <input type="date" class="form-control" required id="valuation_date_of_valuation"
-                       name="valuation_date_of_valuation" value="{{$customer->valuation_date_of_valuation}}">
-            </div>
-        </div>
+{{--        <div class="form-row">--}}
+{{--            <div class="col-md-6 mb-2">--}}
+{{--                <label><strong>Evaluator Company</strong></label>--}}
+{{--                <input type="text" class="form-control" required id="valuation_evaluator_company"--}}
+{{--                       name="valuation_evaluator_company" value="{{$customer->valuation_evaluator_company}}">--}}
+{{--            </div>--}}
+{{--            <div class="col-md-6 mb-3">--}}
+{{--                <label><strong>Date of Valuation</strong></label>--}}
+{{--                <input type="date" class="form-control" required id="valuation_date_of_valuation"--}}
+{{--                       name="valuation_date_of_valuation" value="{{$customer->valuation_date_of_valuation}}">--}}
+{{--            </div>--}}
+{{--        </div>--}}
 
 
         <!--
@@ -697,7 +727,7 @@
         </div>
         -->
 
-        <button class="btn btn-primary" type="submit">Update & Next</button>
+        <button class="btn btn-primary float-right" type="submit">Update & Next</button>
     </form>
 @endsection
 

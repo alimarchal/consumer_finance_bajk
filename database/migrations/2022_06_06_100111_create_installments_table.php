@@ -15,6 +15,19 @@ return new class extends Migration
     {
         Schema::create('installments', function (Blueprint $table) {
             $table->id();
+
+            $table->unsignedBigInteger('customer_id');
+            $table->foreign('customer_id')->references('id')->on('customers');
+
+            $table->date('date')->nullable();
+            $table->decimal('no_of_installment',14,2)->nullable();
+            $table->decimal('days_passed_overdue',14,2)->nullable();
+            $table->decimal('principal_amount',14,2)->nullable();
+            $table->decimal('mark_up_amount',14,2)->nullable();
+            $table->decimal('penalty_charges',14,2)->nullable();
+            $table->decimal('total_principal_markup_penalty',14,2)->nullable();
+            $table->string('category_of_default')->nullable();
+
             $table->timestamps();
         });
     }

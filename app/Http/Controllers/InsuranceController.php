@@ -35,9 +35,12 @@ class InsuranceController extends Controller
      * @param  \App\Http\Requests\StoreInsuranceRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreInsuranceRequest $request)
+    public function store(StoreInsuranceRequest $request, Customer $customer)
     {
-        //
+        $request->merge(['customer_id' => $customer->id]);
+        $insurance = Insurance::create($request->all());
+        session()->flash('message', 'Insurance data has been successfully saved.');
+        return to_route('insurance.index', $customer->id);
     }
 
     /**

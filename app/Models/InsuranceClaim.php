@@ -8,4 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class InsuranceClaim extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'customer_id',
+        'insurance_id',
+        'claim_amount',
+        'date_of_claim',
+    ];
 }

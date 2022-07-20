@@ -1,6 +1,6 @@
 @extends('theme.main')
 @section('breadcrumb')
-    test
+    Borrower Profile / Personal Guarantee
 @endsection
 @section('body')
     @if(session()->has('message'))
@@ -8,7 +8,7 @@
             {{ session()->get('message') }}
         </div>
     @endif
-    <form class="needs-validation" novalidate method="post" action="{{url('customer')}}">
+    <form class="needs-validation" novalidate method="post" action="{{route('guarantee.store', $customer->id)}}">
         @csrf
         @include('theme.customer')
 
@@ -17,73 +17,73 @@
 
         <div class="form-row">
             <div class="col-md-3 mb-2">
-                <label><strong>Name</strong></label>
-                <input type="text" class="form-control" id="validationCustom27" title="" name="customer[personal_guarantee_no_1_detail_name]">
+                <label for="name"><strong>Name</strong></label>
+                <input type="text" class="form-control" id="name" name="name">
             </div>
             <div class="col-md-3 mb-3">
-                <label><strong>CNIC Number</strong></label>
-                <input type="text" class="form-control" id="validationCustom28" title="" name="customer[personal_guarantee_no_1_detail_cnic]">
+                <label for="cnic"><strong>CNIC Number</strong></label>
+                <input type="text" class="form-control" id="cnic" name="cnic">
             </div>
             <div class="col-md-3 mb-3">
-                <label><strong>Contact Number</strong></label>
-                <input type="text" class="form-control" id="validationCustom29" title=""
-                       name="customer[personal_guarantee_no_1_detail_contact]">
+                <label for="contact"><strong>Contact Number</strong></label>
+                <input type="text" class="form-control" id="contact" name="contact">
             </div>
 
 
             <div class="col-md-3 mb-3">
-                <label><strong>Department/Business</strong></label>
-                <input type="text" class="form-control" id="validationCustom30" title=""
-                       name="customer[personal_guarantee_no_1_detail_dept_business]">
+                <label for="department_business"><strong>Department/Business</strong></label>
+                <input type="text" class="form-control" id="department_business" name="department_business">
             </div>
         </div>
         <div class="form-row">
             <div class="col-md-3 mb-2">
-                <label><strong>Business/Dept/Address</strong></label>
-                <textarea name="customer[personal_guarantee_no_1_detail_dept_business_address]" class="form-control" id="validationCustom31"
-                          title=""></textarea>
+                <label for="business_department_address"><strong>Business/Dept/Address</strong></label>
+                <textarea name="business_department_address" class="form-control" id="business_department_address"></textarea>
             </div>
             <div class="col-md-3 mb-2">
-                <label><strong>Guarantor Address</strong></label>
-                <textarea name="customer[personal_guarantee_no_1_detail_address]" class="form-control" id="validationCustom32" title=""></textarea>
+                <label for="guarantor_address"><strong>Guarantor Address</strong></label>
+                <textarea name="guarantor_address" class="form-control" id="guarantor_address"></textarea>
             </div>
             <div class="col-md-3 mb-3">
-                <label><strong>BPS</strong></label>
-                <input type="text" class="form-control" id="validationCustom33" title="" name="customer[personal_guarantee_no_1_detail_bps]">
+                <label for="bps"><strong>BPS</strong></label>
+                <input type="text" class="form-control" id="bps" name="bps">
             </div>
             <div class="col-md-3 mb-3">
-                <label><strong>PP Number</strong></label>
-                <input type="text" class="form-control" id="validationCustom34" title="" name="customer[personal_guarantee_no_1_detail_pp_if_salaried]">
+                <label for="pp_no"><strong>PP Number</strong></label>
+                <input type="text" class="form-control" id="pp_no" name="pp_no">
             </div>
         </div>
-        <button class="btn btn-primary" type="submit">Save & Next</button>
+        <br>
+        <button class="btn btn-primary float-right" type="submit">Update & Next</button>
+        <br>
     </form>
 
-    <hr>
-
-
+@if($customer->guarantee->isNotEmpty())
+<h2 class="text-center " style="border-top: 1px solid red; border-bottom: 1px solid red; padding: 10px; margin-bottom: 30px; margin-top: 30px;">Security Personal Guarantee</h2>
     <div class="row">
-        <div class="col-sm-6">
-            <div class="card">
-                <div class="card-body">
-                    <span class="btn btn-primary">Guarantor No 1</span><br><br>
-                    <p class="card-text"><span class="font-weight-bold">Name</span> : Special title treatment</p>
-                    <p class="card-text"><span class="font-weight-bold">CNIC</span> : Special title treatment</p>
-                    <p class="card-text"><span class="font-weight-bold">Contact Number</span> : Special title treatment</p>
-                    <p class="card-text"><span class="font-weight-bold">Department/Business</span> : text below as a natural lead-in to additional content.</p>
-                    <p class="card-text"><span class="font-weight-bold">Business/Dept/Address</span> : text below as a natural lead-in to additional content.</p>
-                    <p class="card-text"><span class="font-weight-bold">Business/Dept/Address</span> : text below as a natural lead-in to additional content.</p>
-                    <p class="card-text"><span class="font-weight-bold">Guarantor Address</span> : text below as a natural lead-in to additional content.</p>
-                    <p class="card-text"><span class="font-weight-bold">BPS</span> : text below as a natural lead-in to additional content.</p>
-                    <p class="card-text"><span class="font-weight-bold">PP Number</span> : text below as a natural lead-in to additional content.</p>
+        @foreach($customer->guarantee as $guarantee)
+            <div class="col-sm-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="text-center"><span class="font-weight-bold text-center underline">Guarantor No {{$loop->iteration}}</span></h5>
+                        <p class="card-text"><span class="font-weight-bold">Name</span>: {{$guarantee->name}}</p>
+                        <p class="card-text"><span class="font-weight-bold">CNIC</span>: {{$guarantee->cnic}}</p>
+                        <p class="card-text"><span class="font-weight-bold">Contact Number</span>: {{$guarantee->contact}}</p>
+                        <p class="card-text"><span class="font-weight-bold">Department/Business</span>: {{$guarantee->department_business}}</p>
 
+                        <p class="card-text"><span class="font-weight-bold">Business/Dept/Address</span>: {{$guarantee->business_department_address}}</p>
+                        <p class="card-text"><span class="font-weight-bold">Business/Dept/Address</span>: {{$guarantee->guarantor_address}}</p>
+                        <p class="card-text"><span class="font-weight-bold">BPS</span>: {{$guarantee->bps}}</p>
+                        <p class="card-text"><span class="font-weight-bold">BPS</span>: {{$guarantee->pp_no}}</p>
+
+                    </div>
                 </div>
             </div>
-        </div>
-
+        @endforeach
 
     </div>
-    </div>
+@endif
+
 
     <!--
 

@@ -35,9 +35,12 @@ class LitigationController extends Controller
      * @param  \App\Http\Requests\StoreLitigationRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreLitigationRequest $request)
+    public function store(StoreLitigationRequest $request, Customer $customer)
     {
-        //
+        $request->merge(['customer_id' => $customer->id]);
+        $litigation = Litigation::create($request->all());
+        session()->flash('message', 'Litigation data has been successfully saved.');
+        return to_route('litigation.index', $customer->id);
     }
 
     /**

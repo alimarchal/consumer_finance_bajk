@@ -35,9 +35,13 @@ class InsuranceClaimController extends Controller
      * @param  \App\Http\Requests\StoreInsuranceClaimRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreInsuranceClaimRequest $request)
+    public function store(StoreInsuranceClaimRequest $request, Customer $customer)
     {
-        //
+        $request->merge(['customer_id' => $customer->id]);
+
+        $claim_outstanding = InsuranceClaim::create($request->all());
+        session()->flash('message', 'Claim outstanding data has been successfully saved.');
+        return to_route('insuranceClaim.index', $customer->id);
     }
 
     /**
