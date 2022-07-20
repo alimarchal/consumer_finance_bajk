@@ -31,7 +31,7 @@
                 <select class="form-control select2bs4" id="branch_id" style="width: 100%;" name="branch_id" required>
                     <option value="">None</option>
                     @foreach(\App\Models\Branch::all() as $branch)
-                        <option value="{{$branch->id}}"  @if($branch->id == $customer->branch_id) selected @endif >{{$branch->code}} - {{$branch->region}} - {{$branch->zone}} - {{$branch->district}} - {{$branch->name}}</option>
+                        <option value="{{$branch->id}}" @if($branch->id == $customer->branch_id) selected @endif >{{$branch->code}} - {{$branch->region}} - {{$branch->zone}} - {{$branch->district}} - {{$branch->name}}</option>
                     @endforeach
 
                 </select>
@@ -57,7 +57,7 @@
             </div>
             <div class="col-md-3 mb-2">
                 <label for="business_department_profession"><strong>Business/Department/Profession</strong></label>
-                <input name="business_department_profession" class="form-control"  value="{{$customer->son_daughter_wife}}" id="business_department_profession"
+                <input name="business_department_profession" class="form-control" value="{{$customer->son_daughter_wife}}" id="business_department_profession"
                        required>
                 <div class="invalid-feedback">
                     Please provide a Business/Department/Profession.
@@ -65,58 +65,56 @@
             </div>
             <div class="col-md-3 mb-3">
                 <label for="designation"><strong>Designation </strong></label>
-                <input type="text" class="form-control" id="designation"  value="{{$customer->son_daughter_wife}}" title="" name="designation" required>
+                <input type="text" class="form-control" id="designation" value="{{$customer->son_daughter_wife}}" title="" name="designation" required>
                 <div class="invalid-feedback">
                     Please provide a Designation.
                 </div>
             </div>
             <div class="col-md-3 mb-3">
                 <label for="pp_number"><strong>PP Number</strong></label>
-                <input type="text" class="form-control" id="pp_number"  value="{{$customer->pp_number}}" name="pp_number" required>
+                <input type="text" class="form-control" id="pp_number" value="{{$customer->pp_number}}" name="pp_number" required>
                 <div class="invalid-feedback">
                     Please provide a Designation.
                 </div>
             </div>
             <div class="col-md-3 mb-3">
                 <label for="date_of_birth"><strong>Date of Birth</strong></label>
-                <input type="date" class="form-control" id="date_of_birth"  value="{{$customer->date_of_birth}}" name="date_of_birth" required>
+                <input type="date" class="form-control" id="date_of_birth" value="{{$customer->date_of_birth}}" name="date_of_birth" required>
 
             </div>
             <div class="col-md-3 mb-3">
                 <label for="office_business_address"><strong>Office/Business Address</strong></label>
-                <input class="form-control" id="office_business_address"  value="{{$customer->office_business_address}}" required
+                <input class="form-control" id="office_business_address" value="{{$customer->office_business_address}}" required
                        name="office_business_address">
 
             </div>
             <div class="col-md-3 mb-2">
                 <label for="present_address"><strong>Present Address</strong></label>
-                <input class="form-control" id="present_address"  value="{{$customer->present_address}}" required
+                <input class="form-control" id="present_address" value="{{$customer->present_address}}" required
                        name="present_address">
 
             </div>
             <div class="col-md-3 mb-3">
                 <label for="permanent_address"><strong>Permanent Address</strong></label>
-                <input class="form-control" id="permanent_address"  value="{{$customer->permanent_address}}" required
+                <input class="form-control" id="permanent_address" value="{{$customer->permanent_address}}" required
                        name="permanent_address">
 
             </div>
             <div class="col-md-3 mb-3">
                 <label for="customer_cnic"><strong>CNIC</strong></label>
-                <input type="text" class="form-control" id="customer_cnic"  value="{{$customer->customer_cnic}}" title="" name="customer_cnic">
+                <input type="text" class="form-control cnic_mask" id="customer_cnic" value="{{$customer->customer_cnic}}" title="" name="customer_cnic">
             </div>
             <div class="col-md-3 mb-3">
                 <label for="customer_contact_number"><strong>Contact Number</strong></label>
-                <input type="text" class="form-control" id="customer_contact_number"  value="{{$customer->customer_contact_number}}" required name="customer_contact_number">
+                <input type="text" class="form-control" id="customer_contact_number" value="{{$customer->customer_contact_number}}" required name="customer_contact_number">
 
             </div>
             <div class="col-md-3 mb-2">
                 <label for="account_cd_saving"><strong>Ac Number/CD/Saving</strong></label>
-                <input type="text" class="form-control" id="account_cd_saving"  value="{{$customer->account_cd_saving}}" required name="account_cd_saving">
+                <input type="text" class="form-control" id="account_cd_saving" value="{{$customer->account_cd_saving}}" required name="account_cd_saving">
 
             </div>
         </div>
-
-
 
 
         <hr class="bg-danger">
@@ -138,7 +136,7 @@
             <div class="col-md-3 mb-3">
                 <label for="tenure_of_loan_in_months"><strong>Tenure of Loan in Months</strong></label>
 
-                <select class="form-control select2bs4" required id="tenure_of_loan_in_months" style="width: 100%;" name="tenure_of_loan_in_months" >
+                <select class="form-control select2bs4" required id="tenure_of_loan_in_months" style="width: 100%;" name="tenure_of_loan_in_months">
                     <option value="">None</option>
                     @for($i = 1; $i <= 60; $i++)
                         <option value="{{$i}}" @if($customer->tenure_of_loan_in_months) selected @endif>{{$i}} Months</option>
@@ -150,9 +148,9 @@
                 <label for="installment_type"><strong>Installment Type</strong></label>
                 <select class="form-control select2bs4" required id="installment_type" style="width: 100%;" name="installment_type">
                     <option value="">None</option>
-                    <option value="Monthly"  @if($customer->installment_type == "Monthly") selected @endif >Monthly</option>
-                    <option value="Quarterly"  @if($customer->installment_type == "Quarterly") selected @endif >Quarterly</option>
-                    <option value="Lump sump"  @if($customer->installment_type == "Lump sump") selected @endif >Lump sump</option>
+                    <option value="Monthly" @if($customer->installment_type == "Monthly") selected @endif >Monthly</option>
+                    <option value="Quarterly" @if($customer->installment_type == "Quarterly") selected @endif >Quarterly</option>
+                    <option value="Lump sump" @if($customer->installment_type == "Lump sump") selected @endif >Lump sump</option>
                 </select>
             </div>
             <div class="col-md-3 mb-3">
@@ -177,7 +175,16 @@
             </div>
             <div class="col-md-3 mb-3">
                 <label for="expiry_date_as_per_dac"><strong>Expiry Date as per DAC</strong></label>
-                <input type="date" class="form-control" value="{{$customer->expiry_date_as_per_dac}}" id="expiry_date_as_per_dac" required name="expiry_date_as_per_dac" >
+                <input type="date" class="form-control" value="{{$customer->expiry_date_as_per_dac}}" id="expiry_date_as_per_dac" required name="expiry_date_as_per_dac">
+            </div>
+
+            <div class="col-md-3 mb-2">
+                <label for="kibor_or_fixed"><strong>KIBOR / Fixed</strong></label>
+                <select class="form-control select2bs4" required id="kibor_or_fixed" style="width: 100%;" name="kibor_or_fixed">
+                    <option value="">None</option>
+                    <option value="1" @if($customer->kibor_or_fixed == 1) selected @endif >KIBOR</option>
+                    <option value="0" @if($customer->kibor_or_fixed == 0) selected @endif >Fixed</option>
+                </select>
             </div>
 
             <div class="col-md-3 mb-3">
@@ -192,12 +199,12 @@
 
             <div class="col-md-3 mb-3">
                 <label for="mark_up_rate"><strong>Total Markup Rate <sub>(KIBOR+SPREAD)</sub> </strong></label>
-                <input type="number" step="0.01" min="0.00" class="form-control" value="{{$customer->mark_up_rate}}"  id="mark_up_rate" required name="mark_up_rate">
+                <input type="number" step="0.01" min="0.00" class="form-control" value="{{$customer->mark_up_rate}}" id="mark_up_rate" readonly required name="mark_up_rate">
             </div>
 
             <div class="col-md-3 mb-2">
                 <label for="secure_unsecure_loan"><strong>Facility (Secure/Unsecure Principal)</strong></label>
-                <select class="form-control select2bs4" required id="secure_unsecure_loan"  style="width: 100%;" name="secure_unsecure_loan">
+                <select class="form-control select2bs4" required id="secure_unsecure_loan" style="width: 100%;" name="secure_unsecure_loan">
                     <option value="">None</option>
                     <option value="Secure" @if($customer->secure_unsecure_loan == 'Secure') selected @endif >Secure Principal</option>
                     <option value="Unsecure" @if($customer->secure_unsecure_loan == 'Unsecure') selected @endif>Unsecure Principal</option>
@@ -206,44 +213,43 @@
 
             <div class="col-md-3 mb-3">
                 <label for="branch_manager_name_while_sanctioning"><strong>Branch Manager Name</strong></label>
-                <input type="text" class="form-control" id="branch_manager_name_while_sanctioning" disabled required name="branch_manager_name_while_sanctioning"  value="{{$customer->branch_manager_name_while_sanctioning}}">
+                <input type="text" class="form-control" id="branch_manager_name_while_sanctioning" disabled required name="branch_manager_name_while_sanctioning" value="{{$customer->branch_manager_name_while_sanctioning}}">
             </div>
 
 
             <div class="col-md-3 mb-3">
                 <label for="principle_amount"><strong>Principal Outstanding</strong></label>
-                <input type="text" class="form-control" id="principle_amount" disabled  value="{{$customer->principle_amount}}"
+                <input type="text" class="form-control" id="principle_amount" disabled value="{{$customer->principle_amount}}"
                        name="principle_amount">
             </div>
-
 
 
         </div>
 
 
-{{--        <hr class="bg-danger">--}}
-{{--        <h2 class="text-danger text-center">Installment</h2>--}}
-{{--        <hr class="bg-danger">--}}
+        {{--        <hr class="bg-danger">--}}
+        {{--        <h2 class="text-danger text-center">Installment</h2>--}}
+        {{--        <hr class="bg-danger">--}}
 
 
-{{--        @livewire('installment', ['customer' => $customer])--}}
+        {{--        @livewire('installment', ['customer' => $customer])--}}
 
-{{--        <hr class="bg-danger">--}}
-{{--        <h3 class="text-center text-danger">Valuation</h3>--}}
-{{--        <hr class="bg-danger">--}}
+        {{--        <hr class="bg-danger">--}}
+        {{--        <h3 class="text-center text-danger">Valuation</h3>--}}
+        {{--        <hr class="bg-danger">--}}
 
-{{--        <div class="form-row">--}}
-{{--            <div class="col-md-6 mb-2">--}}
-{{--                <label><strong>Evaluator Company</strong></label>--}}
-{{--                <input type="text" class="form-control" required id="valuation_evaluator_company"--}}
-{{--                       name="valuation_evaluator_company" value="{{$customer->valuation_evaluator_company}}">--}}
-{{--            </div>--}}
-{{--            <div class="col-md-6 mb-3">--}}
-{{--                <label><strong>Date of Valuation</strong></label>--}}
-{{--                <input type="date" class="form-control" required id="valuation_date_of_valuation"--}}
-{{--                       name="valuation_date_of_valuation" value="{{$customer->valuation_date_of_valuation}}">--}}
-{{--            </div>--}}
-{{--        </div>--}}
+        {{--        <div class="form-row">--}}
+        {{--            <div class="col-md-6 mb-2">--}}
+        {{--                <label><strong>Evaluator Company</strong></label>--}}
+        {{--                <input type="text" class="form-control" required id="valuation_evaluator_company"--}}
+        {{--                       name="valuation_evaluator_company" value="{{$customer->valuation_evaluator_company}}">--}}
+        {{--            </div>--}}
+        {{--            <div class="col-md-6 mb-3">--}}
+        {{--                <label><strong>Date of Valuation</strong></label>--}}
+        {{--                <input type="date" class="form-control" required id="valuation_date_of_valuation"--}}
+        {{--                       name="valuation_date_of_valuation" value="{{$customer->valuation_date_of_valuation}}">--}}
+        {{--            </div>--}}
+        {{--        </div>--}}
 
 
         <!--
@@ -733,7 +739,38 @@
 
 
 @section('customFooterScripts')
+    <script src="https://emis.ajk.gov.pk/assets/js/jquery.mask.js" defer></script>
     <script>
+
+        $(document).ready(function () {
+            $kibor_value = 0
+            $bank_spread_rate = 0
+            $total_value = $kibor_value + $bank_spread_rate;
+
+            $("#kibor_rate").change(function () {
+                $kibor_value = parseFloat($(this).val(), 2);
+                $bank_spread_rate = parseFloat($("#bank_spread_rate").val());
+                $total_value = $kibor_value + $bank_spread_rate;
+                $("#mark_up_rate").val(parseFloat($total_value));
+            });
+
+            $("#bank_spread_rate").change(function () {
+
+                $bank_spread_rate = parseFloat($(this).val(), 2);
+                $kibor_value = parseFloat($("#kibor_rate").val());
+                $total_value = $kibor_value + $bank_spread_rate;
+                $("#mark_up_rate").val(parseFloat($total_value));
+                // alert($total_value);
+            });
+        });
+
+        $(document).ready(function () {
+            $('.select2').select2();
+            $('.cnic_mask').mask('00000-0000000-0');
+            $('.number_mask').mask('0000-0000000');
+            $('.phone_mask').mask('00000-000000');
+        });
+
         $(function () {
             //Initialize Select2 Elements
             $('.select2').select2()
@@ -744,9 +781,9 @@
             })
 
             //Datemask dd/mm/yyyy
-            $('#datemask').inputmask('dd/mm/yyyy', { 'placeholder': 'dd/mm/yyyy' })
+            $('#datemask').inputmask('dd/mm/yyyy', {'placeholder': 'dd/mm/yyyy'})
             //Datemask2 mm/dd/yyyy
-            $('#datemask2').inputmask('mm/dd/yyyy', { 'placeholder': 'mm/dd/yyyy' })
+            $('#datemask2').inputmask('mm/dd/yyyy', {'placeholder': 'mm/dd/yyyy'})
             //Money Euro
             $('[data-mask]').inputmask()
 
@@ -756,7 +793,7 @@
             });
 
             //Date and time picker
-            $('#reservationdatetime').datetimepicker({ icons: { time: 'far fa-clock' } });
+            $('#reservationdatetime').datetimepicker({icons: {time: 'far fa-clock'}});
 
             //Date range picker
             $('#reservation').daterangepicker()
@@ -771,16 +808,16 @@
             //Date range as a button
             $('#daterange-btn').daterangepicker(
                 {
-                    ranges   : {
-                        'Today'       : [moment(), moment()],
-                        'Yesterday'   : [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-                        'Last 7 Days' : [moment().subtract(6, 'days'), moment()],
+                    ranges: {
+                        'Today': [moment(), moment()],
+                        'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                        'Last 7 Days': [moment().subtract(6, 'days'), moment()],
                         'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-                        'This Month'  : [moment().startOf('month'), moment().endOf('month')],
-                        'Last Month'  : [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+                        'This Month': [moment().startOf('month'), moment().endOf('month')],
+                        'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
                     },
                     startDate: moment().subtract(29, 'days'),
-                    endDate  : moment()
+                    endDate: moment()
                 },
                 function (start, end) {
                     $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'))
@@ -800,11 +837,11 @@
             //color picker with addon
             $('.my-colorpicker2').colorpicker()
 
-            $('.my-colorpicker2').on('colorpickerChange', function(event) {
+            $('.my-colorpicker2').on('colorpickerChange', function (event) {
                 $('.my-colorpicker2 .fa-square').css('color', event.color.toString());
             })
 
-            $("input[data-bootstrap-switch]").each(function(){
+            $("input[data-bootstrap-switch]").each(function () {
                 $(this).bootstrapSwitch('state', $(this).prop('checked'));
             })
 

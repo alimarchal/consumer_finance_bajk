@@ -82,6 +82,15 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
     });
 
 
+    Route::controller(\App\Http\Controllers\UserController::class)->group(function () {
+        Route::get('/users', 'index')->name('users.index');
+        Route::get('/users/create', 'create')->name('users.create');
+        Route::post('/users', 'store')->name('users.store');
+        Route::get('/users/{user}/edit', 'edit')->name('users.edit');
+        Route::put('/users/{user}', 'update')->name('users.update');
+    });
+
+
 });
 
 

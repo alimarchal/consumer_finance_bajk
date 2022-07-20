@@ -185,8 +185,8 @@
                 </li>
 
 
-                <li class="nav-item">
-                    <a href="#" class="nav-link ">
+                <li class="nav-item  @if(request()->routeIs(['users.index','users.create'])) menu-open @endif">
+                    <a href="#" class="nav-link @if(request()->routeIs(['users.index','users.create'])) active @endif">
                         <i class="nav-icon fas fa-user"></i>
                         <p>
                             User Management
@@ -195,13 +195,13 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="{{route('customer.create')}}" class="nav-link @if(request()->routeIs('customer.create')) active @endif">
+                            <a href="{{route('users.create')}}" class="nav-link @if(request()->routeIs('users.create')) active @endif">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Create New User</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{route('customer.index')}}" class="nav-link   @if(request()->routeIs('customer.index')) active @endif ">
+                            <a href="{{route('users.index')}}" class="nav-link   @if(request()->routeIs('users.index')) active @endif ">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Search User</p>
                             </a>

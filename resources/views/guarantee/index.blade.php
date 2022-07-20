@@ -72,7 +72,7 @@
                         <p class="card-text"><span class="font-weight-bold">Department/Business</span>: {{$guarantee->department_business}}</p>
 
                         <p class="card-text"><span class="font-weight-bold">Business/Dept/Address</span>: {{$guarantee->business_department_address}}</p>
-                        <p class="card-text"><span class="font-weight-bold">Business/Dept/Address</span>: {{$guarantee->guarantor_address}}</p>
+                        <p class="card-text"><span class="font-weight-bold">Guarantor Address</span>: {{$guarantee->guarantor_address}}</p>
                         <p class="card-text"><span class="font-weight-bold">BPS</span>: {{$guarantee->bps}}</p>
                         <p class="card-text"><span class="font-weight-bold">BPS</span>: {{$guarantee->pp_no}}</p>
 

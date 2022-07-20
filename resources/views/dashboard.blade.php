@@ -187,7 +187,7 @@
                                     {{\App\Models\User::count()}}
                                 </h3>
 
-                                <p>System Users</p>
+                                <p>Total Amount Outstanding</p>
                             </div>
                             <div class="icon">
                                 <i class="ion ion-stats-bars"></i>
@@ -202,7 +202,74 @@
                             <div class="inner">
                                 <h3>44</h3>
 
-                                <p>User Registrations</p>
+                                <p>Total Active User</p>
+                            </div>
+                            <div class="icon">
+                                <i class="ion ion-person-add"></i>
+                            </div>
+                            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                        </div>
+                    </div>
+                    <!-- ./col -->
+{{--                    <div class="col-lg-3 col-6">--}}
+{{--                        <!-- small box -->--}}
+{{--                        <div class="small-box bg-danger">--}}
+{{--                            <div class="inner">--}}
+{{--                                <h3>65</h3>--}}
+
+{{--                                <p>Unique Visitors</p>--}}
+{{--                            </div>--}}
+{{--                            <div class="icon">--}}
+{{--                                <i class="ion ion-pie-graph"></i>--}}
+{{--                            </div>--}}
+{{--                            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
+                    <!-- ./col -->
+                </div>
+
+<h2 class="text-center">Credit Portfolio (Outstanding Amount)</h2>
+                <div class="row">
+                    <div class="col-lg-3 col-6">
+                        <!-- small box -->
+                        <div class="small-box bg-info">
+                            <div class="inner">
+                                <h3>{{\App\Models\Customer::count()}}</h3>
+                                <p>Consumer Financing</p>
+                            </div>
+                            <div class="icon">
+                                <i class="ion ion-person-add"></i>
+                            </div>
+                            <a href="{{route('customer.index')}}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                        </div>
+                    </div>
+                    <!-- ./col -->
+                    <div class="col-lg-3 col-6">
+                        <!-- small box -->
+                        <div class="small-box bg-success">
+                            <div class="inner">
+                                <h3>
+                                    {{\App\Models\User::count()}}
+                                </h3>
+
+                                <p>Commercial / SME Financing</p>
+                            </div>
+                            <div class="icon">
+                                <i class="ion ion-stats-bars"></i>
+                            </div>
+                            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                        </div>
+                    </div>
+                    <!-- ./col -->
+                    <div class="col-lg-3 col-6">
+                        <!-- small box -->
+                        <div class="small-box bg-warning">
+                            <div class="inner">
+                                <h3>44</h3>
+
+                                <p>
+                                    Micro Financing
+                                </p>
                             </div>
                             <div class="icon">
                                 <i class="ion ion-person-add"></i>
@@ -217,7 +284,7 @@
                             <div class="inner">
                                 <h3>65</h3>
 
-                                <p>Unique Visitors</p>
+                                <p>Agriculture Financing</p>
                             </div>
                             <div class="icon">
                                 <i class="ion ion-pie-graph"></i>
@@ -228,6 +295,72 @@
                     <!-- ./col -->
                 </div>
                 <!-- /.row -->
+                <h2 class="text-center">Credit Portfolio (No of Accounts)</h2>
+                <div class="row">
+                    <div class="col-lg-3 col-6">
+                        <!-- small box -->
+                        <div class="small-box bg-info">
+                            <div class="inner">
+                                <h3>{{\App\Models\Customer::count()}}</h3>
+                                <p>Consumer Financing</p>
+                            </div>
+                            <div class="icon">
+                                <i class="ion ion-person-add"></i>
+                            </div>
+                            <a href="{{route('customer.index')}}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                        </div>
+                    </div>
+                    <!-- ./col -->
+                    <div class="col-lg-3 col-6">
+                        <!-- small box -->
+                        <div class="small-box bg-success">
+                            <div class="inner">
+                                <h3>
+                                    {{\App\Models\User::count()}}
+                                </h3>
+
+                                <p>Commercial / SME Financing</p>
+                            </div>
+                            <div class="icon">
+                                <i class="ion ion-stats-bars"></i>
+                            </div>
+                            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                        </div>
+                    </div>
+                    <!-- ./col -->
+                    <div class="col-lg-3 col-6">
+                        <!-- small box -->
+                        <div class="small-box bg-warning">
+                            <div class="inner">
+                                <h3>44</h3>
+
+                                <p>
+                                    Micro Financing
+                                </p>
+                            </div>
+                            <div class="icon">
+                                <i class="ion ion-person-add"></i>
+                            </div>
+                            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                        </div>
+                    </div>
+                    <!-- ./col -->
+                    <div class="col-lg-3 col-6">
+                        <!-- small box -->
+                        <div class="small-box bg-danger">
+                            <div class="inner">
+                                <h3>65</h3>
+
+                                <p>Agriculture Financing</p>
+                            </div>
+                            <div class="icon">
+                                <i class="ion ion-pie-graph"></i>
+                            </div>
+                            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                        </div>
+                    </div>
+                    <!-- ./col -->
+                </div>
 
             </div><!-- /.container-fluid -->
         </section>

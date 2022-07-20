@@ -11,6 +11,7 @@ class Installment extends Model
 
     public $fillable = [
         'customer_id',
+        'user_id',
         'date',
         'no_of_installment',
         'days_passed_overdue',

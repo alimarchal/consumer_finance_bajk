@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreCustomerRequest;
 use App\Http\Requests\UpdateCustomerRequest;
+use App\Models\Branch;
 use App\Models\Customer;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
@@ -47,6 +48,9 @@ class CustomerController extends Controller
      */
     public function store(StoreCustomerRequest $request)
     {
+        $branch = Branch::find($request->branch_id);
+        $request->merge(['account_cd_saving' => $branch->code  . '-' . $request->account_cd_saving]);
+
         $customer = Customer::create($request->all());
         session()->flash('message', 'Borrower successfully created.');
         return to_route('customer.show', $customer->id);
@@ -60,7 +64,6 @@ class CustomerController extends Controller
      */
     public function show(Customer $customer)
     {
-
         return view('customer.show', compact('customer'));
     }
 
@@ -91,6 +94,17 @@ class CustomerController extends Controller
      */
     public function update(UpdateCustomerRequest $request, Customer $customer)
     {
+
+        $account_data = $request->account_cd_saving;
+        $account_no_branch = explode("-", $account_data);
+        if (count($account_no_branch) > 1) {
+            $branch = Branch::find($request->branch_id);
+            $request->merge(['account_cd_saving' => $branch->code . '-' . $account_no_branch[1]]);
+        } else {
+            $branch = Branch::find($request->branch_id);
+            $request->merge(['account_cd_saving' => $branch->code . '-' . $account_data]);
+        }
+
         $customer->update($request->all());
         session()->flash('message', 'Borrower successfully updated.');
         return to_route('customer.show', $customer->id);

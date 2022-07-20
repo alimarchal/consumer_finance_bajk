@@ -66,6 +66,7 @@ class Customer extends Model
         'disbursement_date',
         'amount_disbursed',
         'expiry_date_as_per_dac',
+        'kibor_or_fixed',
         'kibor_rate',
         'bank_spread_rate',
         'mark_up_rate',

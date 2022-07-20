@@ -19,6 +19,9 @@ return new class extends Migration
             $table->unsignedBigInteger('customer_id');
             $table->foreign('customer_id')->references('id')->on('customers');
 
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users');
+
             $table->date('date')->nullable();
             $table->decimal('no_of_installment',14,2)->nullable();
             $table->decimal('days_passed_overdue',14,2)->nullable();

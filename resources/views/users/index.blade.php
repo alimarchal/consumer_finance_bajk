@@ -14,12 +14,12 @@
     <style>
 
         @media print {
-            .table thead tr td,.table tbody tr td{
+            .table thead tr td, .table tbody tr td {
                 border-width: 1px !important;
                 border-style: solid !important;
                 border-color: black !important;
                 /*padding:0px;*/
-                -webkit-print-color-adjust:exact ;
+                -webkit-print-color-adjust: exact;
             }
 
             table.table-bordered > thead > tr > th {
@@ -58,27 +58,31 @@
     @endif
 
 
-    <form method="get" action="{{route('customer.index')}}">
-        <div class="filters"  style="display:none;">
+    <form method="get" action="{{route('users.index')}}">
+        <div class="filters" style="display:none;">
             <div class="form-row">
                 <div class="form-group col-md-3">
                     <label for="search">Search</label>
                     <input type="text" class="form-control" id="search" name="filter[search_string]" value="{{ empty(request()->filter['search_string']) ? '' : request()->filter['search_string'] }}">
                 </div>
                 <div class="form-group col-md-3">
-                    <label for="cnic">CNIC</label>
-                    <input type="text" class="form-control" id="cnic" name="filter[customer_cnic]" value="">
-                </div>
-                <div class="form-group col-md-3">
-                    <label for="account_no">Account No</label>
-                    <input type="text" class="form-control" id="account_no" name="filter[account_cd_saving]" value="">
-                </div>
-                <div class="form-group col-md-3">
-                    <label for="gender">Gender</label>
-                    <select class="form-control select2bs4" id="gender" name="filter[gender]" style="width:100%">
+                    <label for="status">Status</label>
+                    <select class="form-control select2bs4" id="status" name="filter[status]" style="width:100%">
                         <option value="">None</option>
-                        <option value="Male" >Male</option>
-                        <option value="Female" >Female</option>
+                        <option value="Active">Active</option>
+                        <option value="Deactivate">Deactivate</option>
+                    </select>
+                </div>
+
+
+                <div class="col-md-3">
+                    <label for="branch"><strong>Branch</strong></label>
+                    <select class="form-control select2bs4" id="branch_id" style="width: 100%;" name="filter[branch_id]">
+                        <option value="">None</option>
+                        @foreach(\App\Models\Branch::all() as $branch)
+                            <option value="{{$branch->id}}">{{$branch->code}}-{{$branch->name}}</option>
+                        @endforeach
+
                     </select>
                 </div>
             </div>
@@ -96,62 +100,63 @@
             <div class="col-md-12 p-3">
                 <a href="javascript:;" class="btn btn-primary showModule float-right" data-target="filters">
                     Show Filters</a>
-{{--                <input type="submit" name="search" value="Export" class="btn btn-success float-right mr-2">--}}
+                {{--                <input type="submit" name="search" value="Export" class="btn btn-success float-right mr-2">--}}
             </div>
         </div>
     </form>
-{{--sss | {{ request()->input('filter[search_string]', old('filter[search_string]')) }}--}}
+    {{--sss | {{ request()->input('filter[search_string]', old('filter[search_string]')) }}--}}
 
 
-    <h3 class="text-center">The Bank of Azad Jammu & Kashmir</h3>
+    <h3 class="text-center">The Bank of Azad Jammu & Kashmir
+        <br> All Users List
+    </h3>
     <br>
 
-@if($customers->isNotEmpty())
-<table class="table table-bordered ">
-   <thead>
-   <tr>
-       <th scope="col">#</th>
-       <th scope="col">Name</th>
-       <th scope="col">CNIC</th>
-       <th scope="col">AC Number</th>
-       <th scope="col">Facility</th>
-       <th scope="col">Type</th>
-       <th scope="col">Branch</th>
-       <th scope="col" class="text-center">Action</th>
-       <th scope="col" class="text-center">Installment</th>
-   </tr>
-   </thead>
-   <tbody>
-   @foreach($customers as $customer)
-       <tr>
-           <td scope="row"><strong>{{$loop->iteration}}</strong></td>
-                <td>
-                    <a href="{{route('customer.profile',$customer->id)}}">{{$customer->name}}</a>
-                </td>
-                <td>{{$customer->customer_cnic}}</td>
-                <td>{{$customer->branch->code}}-{{$customer->account_cd_saving}}</td>
-                <td>{{$customer->type_of_facility_approved}}</td>
-                <td>{{$customer->secure_unsecure_loan}}</td>
-                <td>{{$customer->branch->name}}</td>
-                <td class="text-center">
-                    <a href="{{route('customer.show', $customer->id)}}">
-                        <span class="fas fa-edit"></span>
-                    </a>
-                </td>
-
-               <td class="text-center">
-                   <a href="{{route('installment.index', $customer->id)}}">
-                       <span class="fas fa-money-bill"></span>
-                   </a>
-               </td>
+    @if($users->isNotEmpty())
+        <table class="table table-bordered ">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Name</th>
+                <th scope="col">Designation</th>
+                <th scope="col">Email</th>
+                <th scope="col">Branch</th>
+                <th scope="col">Status</th>
+                <th scope="col">Role</th>
+                <th scope="col" class="text-center">Action</th>
             </tr>
-        @endforeach
-        </tbody>
+            </thead>
+            <tbody>
+            @foreach($users as $customer)
+                <tr>
+                    <td scope="row"><strong>{{$loop->iteration}}</strong></td>
+                    <td>
+                        {{$customer->name}}
+                    </td>
+                    <td>{{$customer->designation}}</td>
+                    <td>{{$customer->email}}</td>
+                    <td>
+                        @if(!empty($customer->branch_id))
+                            {{$customer->branch->code}}-{{$customer->branch->name}}
+                        @else
+                            N/A
+                        @endif
+                    </td>
+                    <td>{{$customer->status}}</td>
+                    <td>{{ $customer->roles->pluck('name')[0] }}</td>
+                    <td class="text-center">
+                        <a href="{{route('users.edit', $customer->id)}}">
+                            <span class="fas fa-edit"></span>
+                        </a>
+                    </td>
+                </tr>
+            @endforeach
+            </tbody>
 
 
-    </table>
+        </table>
     @endif
-    {{$customers->links()}}
+    {{$users->links()}}
 @endsection
 
 

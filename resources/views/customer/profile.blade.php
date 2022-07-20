@@ -260,7 +260,7 @@
     @endif
 
     @if($customer->guarantee->isNotEmpty())
-        <table class="table table-bordered border-collapse" >
+        <table class="table table-bordered border-collapse rows-print-as-pages" >
             <thead>
             <tr>
                 <th colspan="9" class="text-center font-weight-bold">Personal Guarantee</th>
@@ -331,7 +331,7 @@
 
     @if($customer->insurance->isNotEmpty())
 
-        <table class="table table-bordered border-collapse rows-print-as-pages">
+        <table class="table table-bordered border-collapse ">
             <thead>
 
             <tr>

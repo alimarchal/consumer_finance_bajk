@@ -9,6 +9,12 @@
         </div>
     @endif
 
+    @if(session()->has('error'))
+        <div class="alert alert-danger">
+            {{ session()->get('error') }}
+        </div>
+    @endif
+
     <form method="post" action="{{route('installment.store', $customer->id)}}">
         @csrf
         @include('theme.customer')
@@ -49,23 +55,23 @@
 
             <div class="col-md-3 mb-2">
                 <label for="principal_amount"><strong>Principal</strong></label>
-                <input type="number" step="0.01" class="form-control" id="principal_amount" name="principal_amount">
+                <input type="number" step="0.01" value="0.00" required class="form-control" id="principal_amount" name="principal_amount">
             </div>
 
             <div class="col-md-3 mb-2">
                 <label for="mark_up_amount"><strong>Mark-Up</strong></label>
-                <input type="number" step="0.01" class="form-control" id="mark_up_amount" name="mark_up_amount">
+                <input type="number" step="0.01" value="0.00" required class="form-control" id="mark_up_amount" name="mark_up_amount">
             </div>
 
             <div class="col-md-3 mb-2">
                 <label for="penalty_charges"><strong>Penalty Charges</strong></label>
-                <input type="number" step="0.01" class="form-control" id="penalty_charges" name="penalty_charges">
+                <input type="number" step="0.01" value="0.00" required class="form-control" id="penalty_charges" name="penalty_charges">
             </div>
 
 
             <div class="col-md-3 mb-2">
                 <label for="total_principal_markup_penalty"><strong>Total</strong></label>
-                <input type="number" step="0.01" class="form-control" id="total_principal_markup_penalty" name="total_principal_markup_penalty">
+                <input type="number" step="0.01" class="form-control" required readonly id="total_principal_markup_penalty" name="total_principal_markup_penalty">
             </div>
 
 
@@ -108,7 +114,7 @@
             @foreach($customer->installments as $co)
                 <tr>
                     <th scope="row">{{$loop->iteration}}</th>
-                    <td>{{$co->date}}</td>
+                    <td>{{\Carbon\Carbon::parse($co->date)->format('d-m-Y')}}</td>
                     <td>{{$co->no_of_installment}}</td>
                     <td>{{$co->days_passed_overdue}}</td>
                     <td>{{$co->principal_amount}}</td>
@@ -127,6 +133,73 @@
 
 @section('customFooterScripts')
     <script>
+
+        $(document).ready(function () {
+
+            $principal_amount = 0;
+            $mark_up_amount = 0;
+            $penalty_charges = 0;
+            $total_principal_markup_penalty = 0;
+
+            $("#principal_amount").change(function() {
+
+                $principal_amount = parseFloat($(this).val(),2);
+                $mark_up_amount = parseFloat($("#mark_up_amount").val(),2);
+                $penalty_charges = parseFloat($("#penalty_charges").val(),2);
+
+                $total_principal_markup_penalty = $principal_amount + $mark_up_amount + $penalty_charges;
+
+                $("#total_principal_markup_penalty").val(parseFloat($total_principal_markup_penalty));
+            });
+
+
+
+            $("#mark_up_amount").change(function() {
+
+                $principal_amount = parseFloat($("#principal_amount").val(),2);
+                $mark_up_amount = parseFloat($(this).val(),2);
+                $penalty_charges = parseFloat($("#penalty_charges").val(),2);
+
+                $total_principal_markup_penalty = $principal_amount + $mark_up_amount + $penalty_charges;
+
+                $("#total_principal_markup_penalty").val(parseFloat($total_principal_markup_penalty));
+            });
+
+
+
+            $("#penalty_charges").change(function() {
+
+                $principal_amount = parseFloat($("#principal_amount").val(),2);
+                $mark_up_amount = parseFloat($("#mark_up_amount").val(),2);
+                $penalty_charges = parseFloat($(this).val(),2);
+
+                $total_principal_markup_penalty = $principal_amount + $mark_up_amount + $penalty_charges;
+
+                $("#total_principal_markup_penalty").val(parseFloat($total_principal_markup_penalty));
+            });
+
+
+            // $kibor_value = 0
+            // $bank_spread_rate = 0
+            // $total_value = $kibor_value + $bank_spread_rate;
+            //
+            // $("#kibor_rate").change(function() {
+            //     $kibor_value = parseFloat($(this).val(),2);
+            //     $bank_spread_rate = parseFloat($("#bank_spread_rate").val());
+            //     $total_value = $kibor_value + $bank_spread_rate;
+            //     $("#mark_up_rate").val(parseFloat($total_value));
+            // });
+            //
+            // $("#bank_spread_rate").change(function() {
+            //
+            //     $bank_spread_rate = parseFloat($(this).val(),2);
+            //     $kibor_value = parseFloat($("#kibor_rate").val());
+            //     $total_value = $kibor_value + $bank_spread_rate;
+            //     $("#mark_up_rate").val(parseFloat($total_value));
+            //     // alert($total_value);
+            // });
+        });
+
         $(function () {
             //Initialize Select2 Elements
             $('.select2').select2()

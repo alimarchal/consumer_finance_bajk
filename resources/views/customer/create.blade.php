@@ -110,7 +110,7 @@
             </div>
             <div class="col-md-3 mb-3">
                 <label for="customer_cnic"><strong>CNIC</strong></label>
-                <input type="text" class="form-control cnic_mask" id="customer_cnic"  name="customer_cnic">
+                <input type="text" class="form-control cnic_mask" id="customer_cnic" name="customer_cnic">
             </div>
             <div class="col-md-3 mb-3">
                 <label for="customer_contact_number"><strong>Contact Number</strong></label>
@@ -201,20 +201,27 @@
                     Please provide a Sanctioned Date.
                 </div>
             </div>
-
+            <div class="col-md-3 mb-2">
+                <label for="kibor_or_fixed"><strong>KIBOR / Fixed</strong></label>
+                <select class="form-control select2bs4" required id="kibor_or_fixed" style="width: 100%;" name="kibor_or_fixed">
+                    <option value="">None</option>
+                    <option value="1">KIBOR</option>
+                    <option value="0">Fixed</option>
+                </select>
+            </div>
             <div class="col-md-3 mb-3">
                 <label for="kibor_rate"><strong>KIBOR Rate</strong></label>
-                <input type="number" step="0.01" min="0.00" class="form-control" id="kibor_rate" required name="kibor_rate">
+                <input type="number" step="0.01" min="0.00" value="0.00" class="form-control" id="kibor_rate" required name="kibor_rate">
             </div>
 
             <div class="col-md-3 mb-3">
                 <label for="bank_spread_rate"><strong>Bank Spread Rate</strong></label>
-                <input type="number" step="0.01" min="0.00" class="form-control" id="bank_spread_rate" required name="bank_spread_rate">
+                <input type="number" step="0.01" min="0.00" class="form-control" value="0.00" id="bank_spread_rate" required name="bank_spread_rate">
             </div>
 
             <div class="col-md-3 mb-3">
                 <label for="mark_up_rate"><strong>Markup Rate <sub>(KIBOR+SPREAD)</sub> </strong></label>
-                <input type="number" step="0.01" min="0.00" class="form-control" id="mark_up_rate" required name="mark_up_rate">
+                <input type="number" step="0.01" min="0.00" class="form-control" id="mark_up_rate" readonly required name="mark_up_rate">
             </div>
 
             <div class="col-md-3 mb-2">
@@ -235,7 +242,7 @@
 
             <div class="col-md-3 mb-3">
                 <label for="principle_amount"><strong>Principal Outstanding</strong></label>
-                <input type="text" class="form-control" id="principle_amount" required
+                <input type="number" step="0.01" class="form-control" id="principle_amount" required
                        name="principle_amount">
             </div>
         </div>
@@ -737,6 +744,28 @@
 @section('customFooterScripts')
     <script src="https://emis.ajk.gov.pk/assets/js/jquery.mask.js" defer></script>
     <script>
+
+        $(document).ready(function () {
+            $kibor_value = 0
+            $bank_spread_rate = 0
+            $total_value = $kibor_value + $bank_spread_rate;
+
+            $("#kibor_rate").change(function() {
+                $kibor_value = parseFloat($(this).val(),2);
+                $bank_spread_rate = parseFloat($("#bank_spread_rate").val());
+                $total_value = $kibor_value + $bank_spread_rate;
+                $("#mark_up_rate").val(parseFloat($total_value));
+            });
+
+            $("#bank_spread_rate").change(function() {
+
+                $bank_spread_rate = parseFloat($(this).val(),2);
+                $kibor_value = parseFloat($("#kibor_rate").val());
+                $total_value = $kibor_value + $bank_spread_rate;
+                $("#mark_up_rate").val(parseFloat($total_value));
+                // alert($total_value);
+            });
+        });
 
         $(document).ready(function () {
             $('.select2').select2();
