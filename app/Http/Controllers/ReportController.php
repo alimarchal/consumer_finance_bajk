@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Branch;
+use App\Models\BranchOutstandingDaily;
 use App\Models\Customer;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -17,7 +18,6 @@ class ReportController extends Controller
      */
     public function branchWisePosition(Request $request)
     {
-
 
         $month_date = null;
         $zone_data = null;
@@ -50,7 +50,7 @@ class ReportController extends Controller
             ->get();
 
         $principal_outstanding_previous_month = DB::table('branch_outstandings')
-            ->select('branch_id', 'branch_outstanding_balance', DB::raw("SUM(branch_outstanding_balance) as branch_outstanding_balance"))
+            ->select('branch_id', 'principle_outstanding', DB::raw("SUM(principle_outstanding) as branch_outstanding_balance"))
             ->whereIn('branch_id', $branches_array)
             ->whereBetween('created_at', [$previous_month->startOfMonth()->format('Y-m-d') . ' 00:00:00.000000', $previous_month->endOfMonth()->format('Y-m-d') . ' 23:59:59.000000'])
             ->groupBy('branch_id')
@@ -58,7 +58,7 @@ class ReportController extends Controller
 
         DB::enableQueryLog();
         $principal_outstanding_last_year = DB::table('branch_outstandings')
-            ->select('branch_id', 'branch_outstanding_balance', DB::raw("SUM(branch_outstanding_balance) as branch_outstanding_balance"))
+            ->select('branch_id', 'principle_outstanding', DB::raw("SUM(principle_outstanding) as branch_outstanding_balance"))
             ->whereIn('branch_id', $branches_array)
             ->whereBetween('created_at', [$last_year->startOfMonth()->format('Y-m-d') . ' 00:00:00.000000', $last_year->endOfMonth()->format('Y-m-d') . ' 23:59:59.000000'])
             ->groupBy('branch_id')

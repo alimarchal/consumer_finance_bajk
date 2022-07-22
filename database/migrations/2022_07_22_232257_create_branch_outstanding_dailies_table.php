@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('branch_outstandings', function (Blueprint $table) {
+        Schema::create('branch_outstanding_dailies', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('branch_id')->nullable();
             $table->foreign('branch_id')->references('id')->on('branches');
@@ -29,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('branch_outstandings');
+        Schema::dropIfExists('branch_outstanding_dailies');
     }
 };
