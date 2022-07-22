@@ -39,6 +39,7 @@
         <li class="nav-item dropdown">
             <a class="nav-link" data-toggle="dropdown" href="#">
                 <i class="far fa-user"></i>
+                {{--                    <span class="badge badge-warning navbar-badge">15</span>--}}
             </a>
             <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
                 <span class="dropdown-item dropdown-header">Account</span>
@@ -60,6 +61,11 @@
             <a class="nav-link" data-widget="fullscreen" href="#" role="button">
                 <i class="fas fa-expand-arrows-alt"></i>
             </a>
+        </li>
+        <li class="nav-item">
+            {{--                <a class="nav-link" data-widget="control-sidebar" data-controlsidebar-slide="true" href="#" role="button">--}}
+            {{--                    <i class="fas fa-th-large"></i>--}}
+            {{--                </a>--}}
         </li>
     </ul>
 </nav>
@@ -91,77 +97,9 @@
                         </p>
                     </a>
                 </li>
-{{--                <li class="nav-item">--}}
-{{--                    <a href="pages/widgets.html" class="nav-link">--}}
-{{--                        <i class="nav-icon fas fa-th"></i>--}}
-{{--                        <p>--}}
-{{--                            Widgets--}}
-{{--                            <span class="right badge badge-danger">New</span>--}}
-{{--                        </p>--}}
-{{--                    </a>--}}
-{{--                </li>--}}
-{{--                <li class="nav-item">--}}
-{{--                    <a href="#" class="nav-link">--}}
-{{--                        <i class="nav-icon fas fa-copy"></i>--}}
-{{--                        <p>--}}
-{{--                            Layout Options--}}
-{{--                            <i class="fas fa-angle-left right"></i>--}}
-{{--                            <span class="badge badge-info right">6</span>--}}
-{{--                        </p>--}}
-{{--                    </a>--}}
-{{--                    <ul class="nav nav-treeview">--}}
-{{--                        <li class="nav-item">--}}
-{{--                            <a href="pages/layout/top-nav.html" class="nav-link">--}}
-{{--                                <i class="far fa-circle nav-icon"></i>--}}
-{{--                                <p>Top Navigation</p>--}}
-{{--                            </a>--}}
-{{--                        </li>--}}
-{{--                        <li class="nav-item">--}}
-{{--                            <a href="pages/layout/top-nav-sidebar.html" class="nav-link">--}}
-{{--                                <i class="far fa-circle nav-icon"></i>--}}
-{{--                                <p>Top Navigation + Sidebar</p>--}}
-{{--                            </a>--}}
-{{--                        </li>--}}
-{{--                        <li class="nav-item">--}}
-{{--                            <a href="pages/layout/boxed.html" class="nav-link">--}}
-{{--                                <i class="far fa-circle nav-icon"></i>--}}
-{{--                                <p>Boxed</p>--}}
-{{--                            </a>--}}
-{{--                        </li>--}}
-{{--                        <li class="nav-item">--}}
-{{--                            <a href="pages/layout/fixed-sidebar.html" class="nav-link">--}}
-{{--                                <i class="far fa-circle nav-icon"></i>--}}
-{{--                                <p>Fixed Sidebar</p>--}}
-{{--                            </a>--}}
-{{--                        </li>--}}
-{{--                        <li class="nav-item">--}}
-{{--                            <a href="pages/layout/fixed-sidebar-custom.html" class="nav-link">--}}
-{{--                                <i class="far fa-circle nav-icon"></i>--}}
-{{--                                <p>Fixed Sidebar <small>+ Custom Area</small></p>--}}
-{{--                            </a>--}}
-{{--                        </li>--}}
-{{--                        <li class="nav-item">--}}
-{{--                            <a href="pages/layout/fixed-topnav.html" class="nav-link">--}}
-{{--                                <i class="far fa-circle nav-icon"></i>--}}
-{{--                                <p>Fixed Navbar</p>--}}
-{{--                            </a>--}}
-{{--                        </li>--}}
-{{--                        <li class="nav-item">--}}
-{{--                            <a href="pages/layout/fixed-footer.html" class="nav-link">--}}
-{{--                                <i class="far fa-circle nav-icon"></i>--}}
-{{--                                <p>Fixed Footer</p>--}}
-{{--                            </a>--}}
-{{--                        </li>--}}
-{{--                        <li class="nav-item">--}}
-{{--                            <a href="pages/layout/collapsed-sidebar.html" class="nav-link">--}}
-{{--                                <i class="far fa-circle nav-icon"></i>--}}
-{{--                                <p>Collapsed Sidebar</p>--}}
-{{--                            </a>--}}
-{{--                        </li>--}}
-{{--                    </ul>--}}
-{{--                </li>--}}
-                <li class="nav-item @if(request()->routeIs(['customer.index','customer.create']))  menu-open @endif">
-                    <a href="#" class="nav-link @if(request()->routeIs(['customer.index','customer.create'])) active @endif">
+
+                <li class="nav-item @if(request()->routeIs(['customer.index','customer.create','customer.profile']))  menu-open @endif">
+                    <a href="#" class="nav-link @if(request()->routeIs(['customer.index','customer.create','customer.profile'])) active @endif">
                         <i class="nav-icon fas fa-user"></i>
                         <p>
                             Borrower
@@ -176,7 +114,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{route('customer.index')}}" class="nav-link   @if(request()->routeIs('customer.index')) active @endif ">
+                            <a href="{{route('customer.index')}}" class="nav-link   @if(request()->routeIs(['customer.index','customer.profile'])) active @endif ">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Search Borrower</p>
                             </a>
@@ -185,33 +123,35 @@
                 </li>
 
 
-                <li class="nav-item  @if(request()->routeIs(['users.index','users.create'])) menu-open @endif">
-                    <a href="#" class="nav-link @if(request()->routeIs(['users.index','users.create'])) active @endif">
-                        <i class="nav-icon fas fa-user"></i>
-                        <p>
-                            User Management
-                            <i class="right fas fa-angle-left"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="{{route('users.create')}}" class="nav-link @if(request()->routeIs('users.create')) active @endif">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Create New User</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{route('users.index')}}" class="nav-link   @if(request()->routeIs('users.index')) active @endif ">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Search User</p>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
+                @can('Full Access')
+                    <li class="nav-item  @if(request()->routeIs(['users.index','users.create'])) menu-open @endif">
+                        <a href="#" class="nav-link @if(request()->routeIs(['users.index','users.create'])) active @endif">
+                            <i class="nav-icon fas fa-user"></i>
+                            <p>
+                                User Management
+                                <i class="right fas fa-angle-left"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="{{route('users.create')}}" class="nav-link @if(request()->routeIs('users.create')) active @endif">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Create New User</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{route('users.index')}}" class="nav-link   @if(request()->routeIs('users.index')) active @endif ">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Search User</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                @endcan
 
 
-                <li class="nav-item">
-                    <a href="#" class="nav-link ">
+                <li class="nav-item @if(request()->routeIs(['report.branch-wise-position'])) menu-open @endif">
+                    <a href="#" class="nav-link @if(request()->routeIs(['report.branch-wise-position'])) active @endif">
                         <i class="nav-icon fas fa-user"></i>
                         <p>
                             Reports
@@ -220,9 +160,9 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="{{route('report.branch-wise-position')}}" class="nav-link @if(request()->routeIs('report.branch-wise-position')) active @endif">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>Branch Wise NPL</p>
+                                <p>Branch Wise Position</p>
                             </a>
                         </li>
 
@@ -230,169 +170,142 @@
                         <li class="nav-item">
                             <a href="#" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>Branch Wise ADV</p>
+                                <p>Overall Bank Position</p>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a href="#" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>Year Wise NPL</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Branch Wise Per</p>
-                            </a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Top Sheet ASL</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Branch Wise ASL</p>
-                            </a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Zonewise Summary</p>
+                                <p>Credit Growth</p>
                             </a>
                         </li>
 
 
                     </ul>
                 </li>
-{{--                <li class="nav-item">--}}
-{{--                    <a href="#" class="nav-link">--}}
-{{--                        <i class="nav-icon fas fa-tree"></i>--}}
-{{--                        <p>--}}
-{{--                            UI Elements--}}
-{{--                            <i class="fas fa-angle-left right"></i>--}}
-{{--                        </p>--}}
-{{--                    </a>--}}
-{{--                    <ul class="nav nav-treeview">--}}
-{{--                        <li class="nav-item">--}}
-{{--                            <a href="pages/UI/general.html" class="nav-link">--}}
-{{--                                <i class="far fa-circle nav-icon"></i>--}}
-{{--                                <p>General</p>--}}
-{{--                            </a>--}}
-{{--                        </li>--}}
-{{--                        <li class="nav-item">--}}
-{{--                            <a href="pages/UI/icons.html" class="nav-link">--}}
-{{--                                <i class="far fa-circle nav-icon"></i>--}}
-{{--                                <p>Icons</p>--}}
-{{--                            </a>--}}
-{{--                        </li>--}}
-{{--                        <li class="nav-item">--}}
-{{--                            <a href="pages/UI/buttons.html" class="nav-link">--}}
-{{--                                <i class="far fa-circle nav-icon"></i>--}}
-{{--                                <p>Buttons</p>--}}
-{{--                            </a>--}}
-{{--                        </li>--}}
-{{--                        <li class="nav-item">--}}
-{{--                            <a href="pages/UI/sliders.html" class="nav-link">--}}
-{{--                                <i class="far fa-circle nav-icon"></i>--}}
-{{--                                <p>Sliders</p>--}}
-{{--                            </a>--}}
-{{--                        </li>--}}
-{{--                        <li class="nav-item">--}}
-{{--                            <a href="pages/UI/modals.html" class="nav-link">--}}
-{{--                                <i class="far fa-circle nav-icon"></i>--}}
-{{--                                <p>Modals & Alerts</p>--}}
-{{--                            </a>--}}
-{{--                        </li>--}}
-{{--                        <li class="nav-item">--}}
-{{--                            <a href="pages/UI/navbar.html" class="nav-link">--}}
-{{--                                <i class="far fa-circle nav-icon"></i>--}}
-{{--                                <p>Navbar & Tabs</p>--}}
-{{--                            </a>--}}
-{{--                        </li>--}}
-{{--                        <li class="nav-item">--}}
-{{--                            <a href="pages/UI/timeline.html" class="nav-link">--}}
-{{--                                <i class="far fa-circle nav-icon"></i>--}}
-{{--                                <p>Timeline</p>--}}
-{{--                            </a>--}}
-{{--                        </li>--}}
-{{--                        <li class="nav-item">--}}
-{{--                            <a href="pages/UI/ribbons.html" class="nav-link">--}}
-{{--                                <i class="far fa-circle nav-icon"></i>--}}
-{{--                                <p>Ribbons</p>--}}
-{{--                            </a>--}}
-{{--                        </li>--}}
-{{--                    </ul>--}}
-{{--                </li>--}}
-{{--                <li class="nav-item">--}}
-{{--                    <a href="#" class="nav-link">--}}
-{{--                        <i class="nav-icon fas fa-edit"></i>--}}
-{{--                        <p>--}}
-{{--                            Forms--}}
-{{--                            <i class="fas fa-angle-left right"></i>--}}
-{{--                        </p>--}}
-{{--                    </a>--}}
-{{--                    <ul class="nav nav-treeview">--}}
-{{--                        <li class="nav-item">--}}
-{{--                            <a href="pages/forms/general.html" class="nav-link">--}}
-{{--                                <i class="far fa-circle nav-icon"></i>--}}
-{{--                                <p>General Elements</p>--}}
-{{--                            </a>--}}
-{{--                        </li>--}}
-{{--                        <li class="nav-item">--}}
-{{--                            <a href="pages/forms/advanced.html" class="nav-link">--}}
-{{--                                <i class="far fa-circle nav-icon"></i>--}}
-{{--                                <p>Advanced Elements</p>--}}
-{{--                            </a>--}}
-{{--                        </li>--}}
-{{--                        <li class="nav-item">--}}
-{{--                            <a href="pages/forms/editors.html" class="nav-link">--}}
-{{--                                <i class="far fa-circle nav-icon"></i>--}}
-{{--                                <p>Editors</p>--}}
-{{--                            </a>--}}
-{{--                        </li>--}}
-{{--                        <li class="nav-item">--}}
-{{--                            <a href="pages/forms/validation.html" class="nav-link">--}}
-{{--                                <i class="far fa-circle nav-icon"></i>--}}
-{{--                                <p>Validation</p>--}}
-{{--                            </a>--}}
-{{--                        </li>--}}
-{{--                    </ul>--}}
-{{--                </li>--}}
-{{--                <li class="nav-item">--}}
-{{--                    <a href="#" class="nav-link">--}}
-{{--                        <i class="nav-icon fas fa-table"></i>--}}
-{{--                        <p>--}}
-{{--                            Tables--}}
-{{--                            <i class="fas fa-angle-left right"></i>--}}
-{{--                        </p>--}}
-{{--                    </a>--}}
-{{--                    <ul class="nav nav-treeview">--}}
-{{--                        <li class="nav-item">--}}
-{{--                            <a href="pages/tables/simple.html" class="nav-link">--}}
-{{--                                <i class="far fa-circle nav-icon"></i>--}}
-{{--                                <p>Simple Tables</p>--}}
-{{--                            </a>--}}
-{{--                        </li>--}}
-{{--                        <li class="nav-item">--}}
-{{--                            <a href="pages/tables/data.html" class="nav-link">--}}
-{{--                                <i class="far fa-circle nav-icon"></i>--}}
-{{--                                <p>DataTables</p>--}}
-{{--                            </a>--}}
-{{--                        </li>--}}
-{{--                        <li class="nav-item">--}}
-{{--                            <a href="pages/tables/jsgrid.html" class="nav-link">--}}
-{{--                                <i class="far fa-circle nav-icon"></i>--}}
-{{--                                <p>jsGrid</p>--}}
-{{--                            </a>--}}
-{{--                        </li>--}}
-{{--                    </ul>--}}
-{{--                </li>--}}
-
+                {{--                <li class="nav-item">--}}
+                {{--                    <a href="#" class="nav-link">--}}
+                {{--                        <i class="nav-icon fas fa-tree"></i>--}}
+                {{--                        <p>--}}
+                {{--                            UI Elements--}}
+                {{--                            <i class="fas fa-angle-left right"></i>--}}
+                {{--                        </p>--}}
+                {{--                    </a>--}}
+                {{--                    <ul class="nav nav-treeview">--}}
+                {{--                        <li class="nav-item">--}}
+                {{--                            <a href="pages/UI/general.html" class="nav-link">--}}
+                {{--                                <i class="far fa-circle nav-icon"></i>--}}
+                {{--                                <p>General</p>--}}
+                {{--                            </a>--}}
+                {{--                        </li>--}}
+                {{--                        <li class="nav-item">--}}
+                {{--                            <a href="pages/UI/icons.html" class="nav-link">--}}
+                {{--                                <i class="far fa-circle nav-icon"></i>--}}
+                {{--                                <p>Icons</p>--}}
+                {{--                            </a>--}}
+                {{--                        </li>--}}
+                {{--                        <li class="nav-item">--}}
+                {{--                            <a href="pages/UI/buttons.html" class="nav-link">--}}
+                {{--                                <i class="far fa-circle nav-icon"></i>--}}
+                {{--                                <p>Buttons</p>--}}
+                {{--                            </a>--}}
+                {{--                        </li>--}}
+                {{--                        <li class="nav-item">--}}
+                {{--                            <a href="pages/UI/sliders.html" class="nav-link">--}}
+                {{--                                <i class="far fa-circle nav-icon"></i>--}}
+                {{--                                <p>Sliders</p>--}}
+                {{--                            </a>--}}
+                {{--                        </li>--}}
+                {{--                        <li class="nav-item">--}}
+                {{--                            <a href="pages/UI/modals.html" class="nav-link">--}}
+                {{--                                <i class="far fa-circle nav-icon"></i>--}}
+                {{--                                <p>Modals & Alerts</p>--}}
+                {{--                            </a>--}}
+                {{--                        </li>--}}
+                {{--                        <li class="nav-item">--}}
+                {{--                            <a href="pages/UI/navbar.html" class="nav-link">--}}
+                {{--                                <i class="far fa-circle nav-icon"></i>--}}
+                {{--                                <p>Navbar & Tabs</p>--}}
+                {{--                            </a>--}}
+                {{--                        </li>--}}
+                {{--                        <li class="nav-item">--}}
+                {{--                            <a href="pages/UI/timeline.html" class="nav-link">--}}
+                {{--                                <i class="far fa-circle nav-icon"></i>--}}
+                {{--                                <p>Timeline</p>--}}
+                {{--                            </a>--}}
+                {{--                        </li>--}}
+                {{--                        <li class="nav-item">--}}
+                {{--                            <a href="pages/UI/ribbons.html" class="nav-link">--}}
+                {{--                                <i class="far fa-circle nav-icon"></i>--}}
+                {{--                                <p>Ribbons</p>--}}
+                {{--                            </a>--}}
+                {{--                        </li>--}}
+                {{--                    </ul>--}}
+                {{--                </li>--}}
+                {{--                <li class="nav-item">--}}
+                {{--                    <a href="#" class="nav-link">--}}
+                {{--                        <i class="nav-icon fas fa-edit"></i>--}}
+                {{--                        <p>--}}
+                {{--                            Forms--}}
+                {{--                            <i class="fas fa-angle-left right"></i>--}}
+                {{--                        </p>--}}
+                {{--                    </a>--}}
+                {{--                    <ul class="nav nav-treeview">--}}
+                {{--                        <li class="nav-item">--}}
+                {{--                            <a href="pages/forms/general.html" class="nav-link">--}}
+                {{--                                <i class="far fa-circle nav-icon"></i>--}}
+                {{--                                <p>General Elements</p>--}}
+                {{--                            </a>--}}
+                {{--                        </li>--}}
+                {{--                        <li class="nav-item">--}}
+                {{--                            <a href="pages/forms/advanced.html" class="nav-link">--}}
+                {{--                                <i class="far fa-circle nav-icon"></i>--}}
+                {{--                                <p>Advanced Elements</p>--}}
+                {{--                            </a>--}}
+                {{--                        </li>--}}
+                {{--                        <li class="nav-item">--}}
+                {{--                            <a href="pages/forms/editors.html" class="nav-link">--}}
+                {{--                                <i class="far fa-circle nav-icon"></i>--}}
+                {{--                                <p>Editors</p>--}}
+                {{--                            </a>--}}
+                {{--                        </li>--}}
+                {{--                        <li class="nav-item">--}}
+                {{--                            <a href="pages/forms/validation.html" class="nav-link">--}}
+                {{--                                <i class="far fa-circle nav-icon"></i>--}}
+                {{--                                <p>Validation</p>--}}
+                {{--                            </a>--}}
+                {{--                        </li>--}}
+                {{--                    </ul>--}}
+                {{--                </li>--}}
+                {{--                <li class="nav-item">--}}
+                {{--                    <a href="#" class="nav-link">--}}
+                {{--                        <i class="nav-icon fas fa-table"></i>--}}
+                {{--                        <p>--}}
+                {{--                            Tables--}}
+                {{--                            <i class="fas fa-angle-left right"></i>--}}
+                {{--                        </p>--}}
+                {{--                    </a>--}}
+                {{--                    <ul class="nav nav-treeview">--}}
+                {{--                        <li class="nav-item">--}}
+                {{--                            <a href="pages/tables/simple.html" class="nav-link">--}}
+                {{--                                <i class="far fa-circle nav-icon"></i>--}}
+                {{--                                <p>Simple Tables</p>--}}
+                {{--                            </a>--}}
+                {{--                        </li>--}}
+                {{--                        <li class="nav-item">--}}
+                {{--                            <a href="pages/tables/data.html" class="nav-link">--}}
+                {{--                                <i class="far fa-circle nav-icon"></i>--}}
+                {{--                                <p>DataTables</p>--}}
+                {{--                            </a>--}}
+                {{--                        </li>--}}
+                {{--                        <li class="nav-item">--}}
+                {{--                            <a href="pages/tables/jsgrid.html" class="nav-link">--}}
+                {{--                                <i class="far fa-circle nav-icon"></i>--}}
+                {{--                                <p>jsGrid</p>--}}
+                {{--                            </a>--}}
+                {{--                        </li>--}}
+                {{--                    </ul>--}}
+                {{--                </li>--}}
 
 
             </ul>

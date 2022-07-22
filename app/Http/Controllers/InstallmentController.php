@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreInstallmentRequest;
 use App\Http\Requests\UpdateInstallmentRequest;
+use App\Models\BranchOutstanding;
 use App\Models\Customer;
 use App\Models\Installment;
 use Illuminate\Support\Facades\DB;
@@ -48,6 +49,24 @@ class InstallmentController extends Controller
             $installment = Installment::create($request->all());
             $customer->principle_amount = $customer->principle_amount - $installment->principal_amount;
             $customer->save();
+
+            $installment_object = Installment::find($installment->id);
+            $installment_object->principal_outstanding = $customer->principle_amount;
+            $installment_object->save();
+
+//            $branch_outstanding_balance = Customer::where('branch_id', $customer->branch_id)->sum('principle_amount');
+//            //disbursement_date
+//
+////            dd($branch_outstanding_balance);
+//
+//            BranchOutstanding::create([
+//                'date' => $request->date,
+//                'branch_id' => $customer->branch->id,
+//                'customer_id' => $request->customer_id,
+//                'user_id' => $request->user_id,
+//                'principal_outstanding_customer' => $customer->principle_amount,
+//                'branch_outstanding_balance' => $branch_outstanding_balance,
+//            ]);
             DB::commit();
             // all good
         } catch (\Exception $e) {

@@ -19,6 +19,7 @@ class Installment extends Model
         'mark_up_amount',
         'penalty_charges',
         'total_principal_markup_penalty',
+        'principal_outstanding',
         'category_of_default',
     ];
 }

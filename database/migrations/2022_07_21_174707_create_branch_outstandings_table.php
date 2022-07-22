@@ -13,24 +13,17 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('installments', function (Blueprint $table) {
+        Schema::create('branch_outstandings', function (Blueprint $table) {
             $table->id();
-
+            $table->date('date')->nullable();
+            $table->unsignedBigInteger('branch_id')->nullable();
+            $table->foreign('branch_id')->references('id')->on('branches');
             $table->unsignedBigInteger('customer_id');
             $table->foreign('customer_id')->references('id')->on('customers');
-
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
-
-            $table->date('date')->nullable();
-            $table->decimal('no_of_installment',14,2)->nullable();
-            $table->decimal('days_passed_overdue',14,2)->nullable();
-            $table->decimal('principal_amount',14,2)->nullable();
-            $table->decimal('mark_up_amount',14,2)->nullable();
-            $table->decimal('penalty_charges',14,2)->nullable();
-            $table->decimal('total_principal_markup_penalty',14,2)->nullable();
-            $table->decimal('principal_outstanding',14,2)->nullable();
-            $table->string('category_of_default')->nullable();
+            $table->decimal('principal_outstanding_customer',14,2)->nullable();
+            $table->decimal('branch_outstanding_balance',14,2)->nullable();
 
             $table->timestamps();
         });
@@ -43,6 +36,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('installments');
+        Schema::dropIfExists('branch_outstandings');
     }
 };

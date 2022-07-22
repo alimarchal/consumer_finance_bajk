@@ -88,7 +88,7 @@ class PermissionsDemoSeeder extends Seeder
 
         $user = \App\Models\User::factory()->create([
             'name' => 'South Regional MIS Officer',
-            'email' => 'northregionalmisofficer@gmail.com',
+            'email' => 'southregionalmisofficer@gmail.com',
             'designation' => 'South Regional MIS Officer',
             'password' => Hash::make('123456789'),
         ]);
@@ -97,7 +97,7 @@ class PermissionsDemoSeeder extends Seeder
 
         $user = \App\Models\User::factory()->create([
             'name' => 'North Regional MIS Officer',
-            'email' => 'regionalmisofficer@gmail.com',
+            'email' => 'northregionalmisofficer@gmail.com',
             'designation' => 'North Regional MIS Officer',
             'password' => Hash::make('123456789'),
         ]);
@@ -112,17 +112,6 @@ class PermissionsDemoSeeder extends Seeder
             'password' => Hash::make('123456789'),
         ]);
         $user->assignRole($role4);
-//
-//        $user = \App\Models\User::factory()->create([
-//            'name' => 'Example Admin User',
-//            'email' => 'admin@example.com',
-//        ]);
-//        $user->assignRole($role2);
-//
-//        $user = \App\Models\User::factory()->create([
-//            'name' => 'Example Super-Admin User',
-//            'email' => 'superadmin@example.com',
-//        ]);
-//        $user->assignRole($role3);
+
     }
 }

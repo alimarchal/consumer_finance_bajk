@@ -18,9 +18,12 @@ Route::get('/', function () {
 });
 
 Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified'])->group(function () {
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
+    Route::get('/dashboard', [\App\Http\Controllers\CustomerController::class,'dashboard'])->name('dashboard');
+
+
+//    Route::get('/dashboard', function () {
+//        return view('dashboard');
+//    })->name('dashboard');
 });
 
 
@@ -81,7 +84,6 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
         Route::post('/markUpDetails/{customer}', 'store')->name('markUpDetails.store');
     });
 
-
     Route::controller(\App\Http\Controllers\UserController::class)->group(function () {
         Route::get('/users', 'index')->name('users.index');
         Route::get('/users/create', 'create')->name('users.create');
@@ -89,6 +91,14 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
         Route::get('/users/{user}/edit', 'edit')->name('users.edit');
         Route::put('/users/{user}', 'update')->name('users.update');
     });
+
+
+
+    Route::controller(\App\Http\Controllers\ReportController::class)->group(function () {
+        Route::get('/report/branch-wise-position', 'branchWisePosition')->name('report.branch-wise-position');
+    });
+
+
 
 
 });

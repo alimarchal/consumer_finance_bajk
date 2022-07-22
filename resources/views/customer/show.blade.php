@@ -17,6 +17,13 @@
         </div>
     @endif
 
+
+    @if(session()->has('error'))
+        <div class="alert alert-danger">
+            {{ session()->get('error') }}
+        </div>
+    @endif
+
     @include('theme.customer')
 
     <form method="post" action="{{route('customer.update', $customer->id)}}">
@@ -30,9 +37,26 @@
                 <label for="branch"><strong>Please select branch</strong></label>
                 <select class="form-control select2bs4" id="branch_id" style="width: 100%;" name="branch_id" required>
                     <option value="">None</option>
-                    @foreach(\App\Models\Branch::all() as $branch)
-                        <option value="{{$branch->id}}" @if($branch->id == $customer->branch_id) selected @endif >{{$branch->code}} - {{$branch->region}} - {{$branch->zone}} - {{$branch->district}} - {{$branch->name}}</option>
-                    @endforeach
+
+                    @if (Auth::user()->hasRole(['Credit Officer', 'Branch Manager']))
+                        @foreach(\App\Models\Branch::where('id',auth()->user()->branch_id)->get() as $branch)
+                            <option  @if($branch->id == $customer->branch_id) selected @endif  value="{{$branch->id}}">{{$branch->code}} - {{$branch->region}} - {{$branch->zone}} - {{$branch->district}} - {{$branch->name}}</option>
+                        @endforeach
+                    @elseif (Auth::user()->hasRole('South Regional MIS Officer'))
+                        @foreach(\App\Models\Branch::where('region','South Region')->get() as $branch)
+                            <option  @if($branch->id == $customer->branch_id) selected @endif  value="{{$branch->id}}">{{$branch->code}} - {{$branch->region}} - {{$branch->zone}} - {{$branch->district}} - {{$branch->name}}</option>
+                        @endforeach
+                    @elseif (Auth::user()->hasRole('North Regional MIS Officer'))
+                        @foreach(\App\Models\Branch::where('region','North Region')->get() as $branch)
+                            <option  @if($branch->id == $customer->branch_id) selected @endif  value="{{$branch->id}}">{{$branch->code}} - {{$branch->region}} - {{$branch->zone}} - {{$branch->district}} - {{$branch->name}}</option>
+                        @endforeach
+                    @elseif (Auth::user()->hasRole(['Head Office', 'Super-Admin']))
+                        @foreach(\App\Models\Branch::all() as $branch)
+                            <option  @if($branch->id == $customer->branch_id) selected @endif  value="{{$branch->id}}">{{$branch->code}} - {{$branch->region}} - {{$branch->zone}} - {{$branch->district}} - {{$branch->name}}</option>
+                        @endforeach
+                    @endif
+
+
 
                 </select>
             </div>
@@ -112,8 +136,14 @@
             <div class="col-md-3 mb-2">
                 <label for="account_cd_saving"><strong>Ac Number/CD/Saving</strong></label>
                 <input type="text" class="form-control" id="account_cd_saving" value="{{$customer->account_cd_saving}}" required name="account_cd_saving">
-
             </div>
+
+            <div class="form-group col-md-3">
+                <label for="manual_account">Manual Account No</label>
+                <input type="text" class="form-control" id="manual_account" name="manual_account" value="{{$customer->manual_account}}" >
+            </div>
+
+
         </div>
 
 
@@ -733,7 +763,9 @@
         </div>
         -->
 
-        <button class="btn btn-primary float-right" type="submit">Update & Next</button>
+        @can('Edit')
+            <button class="btn btn-primary float-right" type="submit">Update</button>
+        @endcan
     </form>
 @endsection
 

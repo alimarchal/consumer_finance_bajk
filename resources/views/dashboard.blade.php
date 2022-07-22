@@ -19,7 +19,6 @@
     <script src="{{ mix('js/app.js') }}" defer></script>
 
 
-
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <!-- Font Awesome -->
@@ -88,7 +87,7 @@
             <li class="nav-item dropdown">
                 <a class="nav-link" data-toggle="dropdown" href="#">
                     <i class="far fa-user"></i>
-{{--                    <span class="badge badge-warning navbar-badge">15</span>--}}
+                    {{--                    <span class="badge badge-warning navbar-badge">15</span>--}}
                 </a>
                 <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
                     <span class="dropdown-item dropdown-header">Account</span>
@@ -112,9 +111,9 @@
                 </a>
             </li>
             <li class="nav-item">
-{{--                <a class="nav-link" data-widget="control-sidebar" data-controlsidebar-slide="true" href="#" role="button">--}}
-{{--                    <i class="fas fa-th-large"></i>--}}
-{{--                </a>--}}
+                {{--                <a class="nav-link" data-widget="control-sidebar" data-controlsidebar-slide="true" href="#" role="button">--}}
+                {{--                    <i class="fas fa-th-large"></i>--}}
+                {{--                </a>--}}
             </li>
         </ul>
     </nav>
@@ -124,7 +123,7 @@
     <aside class="main-sidebar sidebar-dark-primary elevation-4">
         <!-- Brand Logo -->
         <a href="{{route('dashboard')}}" class="brand-link">
-{{--            img-circle elevation-3--}}
+            {{--            img-circle elevation-3--}}
             <img src="{{Storage::url('favicon.png')}}" alt="AdminLTE Logo" class="brand-image " style="opacity: .8">
             <span class="brand-text font-weight-light">CFMIS</span>
         </a>
@@ -134,7 +133,7 @@
             <!-- Sidebar user panel (optional) -->
 
             <!-- Sidebar Menu -->
-                @include('navigation')
+            @include('navigation')
             <!-- /.sidebar-menu -->
         </div>
         <!-- /.sidebar -->
@@ -169,13 +168,38 @@
                         <!-- small box -->
                         <div class="small-box bg-info">
                             <div class="inner">
-                                <h3>{{\App\Models\Customer::count()}}</h3>
+                                <h3>
+                                    <a href="{{route('customer.index')}}" style="color: white;">{{$total_borrower}}</a>
+                                </h3>
                                 <p>Total Borrower</p>
                             </div>
                             <div class="icon">
-                                <i class="ion ion-person-add"></i>
+                                <i class="fas fa-users"></i>
                             </div>
-                            <a href="{{route('customer.index')}}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                            @can('Full Access')
+                                <a href="{{route('customer.index')}}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                            @endcan
+                            {{--                            <a href="{{route('customer.index')}}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>--}}
+                        </div>
+                    </div>
+
+                    <!-- ./col -->
+                    <div class="col-lg-3 col-6">
+                        <!-- small box -->
+                        <div class="small-box bg-warning">
+                            <div class="inner">
+                                <h3>{{$total_active_user}}</h3>
+
+                                <p>Total Branch Active User</p>
+                            </div>
+
+                            <div class="icon">
+                                <i class="fas fa-user-friends"></i>
+                            </div>
+                            @can('Full Access')
+                                <a href="{{route('users.index')}}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                            @endcan
+
                         </div>
                     </div>
                     <!-- ./col -->
@@ -184,63 +208,31 @@
                         <div class="small-box bg-success">
                             <div class="inner">
                                 <h3>
-                                    {{\App\Models\User::count()}}
+                                    {{number_format(($total_amount_outstanding)/1000000,3)}}M
                                 </h3>
 
                                 <p>Total Amount Outstanding</p>
                             </div>
                             <div class="icon">
-                                <i class="ion ion-stats-bars"></i>
+                                <i class="fas fa-coins"></i>
                             </div>
-                            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                            {{--                            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>--}}
                         </div>
                     </div>
-                    <!-- ./col -->
-                    <div class="col-lg-3 col-6">
-                        <!-- small box -->
-                        <div class="small-box bg-warning">
-                            <div class="inner">
-                                <h3>44</h3>
-
-                                <p>Total Active User</p>
-                            </div>
-                            <div class="icon">
-                                <i class="ion ion-person-add"></i>
-                            </div>
-                            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-                        </div>
-                    </div>
-                    <!-- ./col -->
-{{--                    <div class="col-lg-3 col-6">--}}
-{{--                        <!-- small box -->--}}
-{{--                        <div class="small-box bg-danger">--}}
-{{--                            <div class="inner">--}}
-{{--                                <h3>65</h3>--}}
-
-{{--                                <p>Unique Visitors</p>--}}
-{{--                            </div>--}}
-{{--                            <div class="icon">--}}
-{{--                                <i class="ion ion-pie-graph"></i>--}}
-{{--                            </div>--}}
-{{--                            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>--}}
-{{--                        </div>--}}
-{{--                    </div>--}}
-                    <!-- ./col -->
                 </div>
 
-<h2 class="text-center">Credit Portfolio (Outstanding Amount)</h2>
+                <h5 class="text-center">Credit Portfolio (Outstanding Amount)</h5>
                 <div class="row">
                     <div class="col-lg-3 col-6">
                         <!-- small box -->
                         <div class="small-box bg-info">
                             <div class="inner">
-                                <h3>{{\App\Models\Customer::count()}}</h3>
-                                <p>Consumer Financing</p>
+                                <h3>{{number_format($consumer_financing_outstanding/1000000,3)}}M</h3>
+                                <p>Consumer Financing<br>No of Accounts: {{$consumer_financing_outstanding_noa}}</p>
                             </div>
                             <div class="icon">
-                                <i class="ion ion-person-add"></i>
+                                <i class="fas fa-coins"></i>
                             </div>
-                            <a href="{{route('customer.index')}}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                         </div>
                     </div>
                     <!-- ./col -->
@@ -249,15 +241,14 @@
                         <div class="small-box bg-success">
                             <div class="inner">
                                 <h3>
-                                    {{\App\Models\User::count()}}
+                                    {{number_format($commercial_sme_financing/1000000,3)}}M
                                 </h3>
 
-                                <p>Commercial / SME Financing</p>
+                                <p>Commercial / SME Financing<br>No of Accounts: {{$commercial_sme_financing_noa}}</p>
                             </div>
                             <div class="icon">
-                                <i class="ion ion-stats-bars"></i>
+                                <i class="fas fa-coins"></i>
                             </div>
-                            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                         </div>
                     </div>
                     <!-- ./col -->
@@ -265,16 +256,15 @@
                         <!-- small box -->
                         <div class="small-box bg-warning">
                             <div class="inner">
-                                <h3>44</h3>
+                                <h3>{{number_format($micro_financing/1000000,3)}}M</h3>
 
                                 <p>
-                                    Micro Financing
+                                    Micro Financing<br>No of Accounts: {{$micro_financing_noa}}</p>
                                 </p>
                             </div>
                             <div class="icon">
-                                <i class="ion ion-person-add"></i>
+                                <i class="fas fa-coins"></i>
                             </div>
-                            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                         </div>
                     </div>
                     <!-- ./col -->
@@ -282,85 +272,19 @@
                         <!-- small box -->
                         <div class="small-box bg-danger">
                             <div class="inner">
-                                <h3>65</h3>
+                                <h3>{{number_format($agriculture_financing/1000000,3)}}M</h3>
 
-                                <p>Agriculture Financing</p>
+                                <p>Agriculture Financing<br>No of Accounts: {{$agriculture_financing_noa}}</p>
                             </div>
                             <div class="icon">
-                                <i class="ion ion-pie-graph"></i>
+                                <i class="fas fa-coins"></i>
                             </div>
-                            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                         </div>
                     </div>
                     <!-- ./col -->
                 </div>
                 <!-- /.row -->
-                <h2 class="text-center">Credit Portfolio (No of Accounts)</h2>
-                <div class="row">
-                    <div class="col-lg-3 col-6">
-                        <!-- small box -->
-                        <div class="small-box bg-info">
-                            <div class="inner">
-                                <h3>{{\App\Models\Customer::count()}}</h3>
-                                <p>Consumer Financing</p>
-                            </div>
-                            <div class="icon">
-                                <i class="ion ion-person-add"></i>
-                            </div>
-                            <a href="{{route('customer.index')}}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-                        </div>
-                    </div>
-                    <!-- ./col -->
-                    <div class="col-lg-3 col-6">
-                        <!-- small box -->
-                        <div class="small-box bg-success">
-                            <div class="inner">
-                                <h3>
-                                    {{\App\Models\User::count()}}
-                                </h3>
 
-                                <p>Commercial / SME Financing</p>
-                            </div>
-                            <div class="icon">
-                                <i class="ion ion-stats-bars"></i>
-                            </div>
-                            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-                        </div>
-                    </div>
-                    <!-- ./col -->
-                    <div class="col-lg-3 col-6">
-                        <!-- small box -->
-                        <div class="small-box bg-warning">
-                            <div class="inner">
-                                <h3>44</h3>
-
-                                <p>
-                                    Micro Financing
-                                </p>
-                            </div>
-                            <div class="icon">
-                                <i class="ion ion-person-add"></i>
-                            </div>
-                            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-                        </div>
-                    </div>
-                    <!-- ./col -->
-                    <div class="col-lg-3 col-6">
-                        <!-- small box -->
-                        <div class="small-box bg-danger">
-                            <div class="inner">
-                                <h3>65</h3>
-
-                                <p>Agriculture Financing</p>
-                            </div>
-                            <div class="icon">
-                                <i class="ion ion-pie-graph"></i>
-                            </div>
-                            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-                        </div>
-                    </div>
-                    <!-- ./col -->
-                </div>
 
             </div><!-- /.container-fluid -->
         </section>
@@ -382,7 +306,6 @@
     <!-- /.control-sidebar -->
 </div>
 <!-- ./wrapper -->
-
 
 
 @stack('modals')

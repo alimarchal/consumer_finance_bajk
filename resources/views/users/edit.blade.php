@@ -75,7 +75,7 @@
                     <option value="South Regional MIS Officer">South Regional MIS Officer</option>
                     <option value="North Regional MIS Officer">North Regional MIS Officer</option>
                     <option value="Head Office">Head Office</option>
-                    <option value="Administrator">Administrator</option>
+                    <option value="Super-Admin">Super-Admin</option>
                 </select>
             </div>
         </div>

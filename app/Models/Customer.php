@@ -78,6 +78,7 @@ class Customer extends Model
         'valuation_evaluator_company',
         'valuation_date_of_valuation',
         'secure_unsecure_loan',
+        'manual_account',
     ];
 
 

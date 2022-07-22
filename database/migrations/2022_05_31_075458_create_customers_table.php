@@ -38,6 +38,7 @@ return new class extends Migration
             $table->string('customer_contact_number', 20)->nullable();
             // this must include branch code....
             $table->string('account_cd_saving', 20)->nullable();
+            $table->string('manual_account', 20)->nullable();
             // Facility detail
             $table->string('type_of_facility_approved')->nullable();
             $table->string('nature_of_facility_availed')->nullable();
@@ -56,6 +57,7 @@ return new class extends Migration
             $table->decimal('amount_disbursed',14,2)->default(0.00);
 
             $table->date('expiry_date_as_per_dac')->nullable();
+            $table->boolean('kibor_or_fixed')->default(0);
             $table->decimal('kibor_rate',10,2)->default(0.00);
             $table->decimal('bank_spread_rate',10,2)->default(0.00);
             $table->decimal('mark_up_rate',10,2)->default(0.00);

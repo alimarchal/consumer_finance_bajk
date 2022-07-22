@@ -19,6 +19,16 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    public function __construct()
+    {
+        $this->middleware('permission:Full Access')->only('create');
+        $this->middleware('permission:Full Access')->only('index');
+        $this->middleware('permission:Full Access')->only('store');
+        $this->middleware('permission:Full Access')->only('edit');
+        $this->middleware('permission:Full Access')->only('update');
+    }
+
     public function index()
     {
         $users = QueryBuilder::for(User::with('branch','roles'))

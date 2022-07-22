@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Models\Insurance;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -15,7 +16,17 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')->hourly();
+//         $schedule->command('hello:world')->everyFiveMinutes();
+        $schedule->call(function () {
+            Insurance::create([
+                'customer_id' => 3,
+                'insurance_company' => 'ABC',
+                'date_of_insurance' => '2022-07-22',
+                'insurance_amount' => 100,
+                'date_of_expiry_of_insurance' => 3,
+            ]);
+            info('Hello EveryFiveMinutes');
+        })->everyMinute();
     }
 
     /**

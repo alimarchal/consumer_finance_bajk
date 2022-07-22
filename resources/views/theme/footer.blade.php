@@ -1,3 +1,6 @@
+
+
+
 @stack('modals')
 
 @livewireScripts
@@ -68,6 +71,11 @@
 <!-- AdminLTE for demo purposes -->
 <script src="{{url('AdminLTE/dist/js/demo.js')}}"></script>
 
+{{--<!-- jQuery -->--}}
+{{--<script src="{{url('AdminLTE/plugins/jquery/jquery.min.js')}}"></script>--}}
+<!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+<!-- Bootstrap 4 -->
+<script src="{{url('AdminLTE/plugins/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
 
 
 @yield('customFooterScripts')
