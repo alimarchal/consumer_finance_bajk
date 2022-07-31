@@ -6,8 +6,12 @@ use App\Http\Requests\StoreCustomerRequest;
 use App\Http\Requests\UpdateCustomerRequest;
 use App\Models\Branch;
 use App\Models\BranchOutstanding;
+use App\Models\BranchOutstandingDaily;
 use App\Models\Customer;
+use App\Models\ProductWiseDaily;
+use App\Models\ProductWiseMonthly;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Spatie\QueryBuilder\AllowedFilter;
@@ -18,6 +22,7 @@ class CustomerController extends Controller
 
     public function dashboard()
     {
+
         $total_borrower = 0;
         $total_amount_outstanding = 0;
         $total_active_user = 0;
@@ -36,15 +41,15 @@ class CustomerController extends Controller
             $total_amount_outstanding = Customer::where('branch_id', \auth()->user()->branch_id)->sum('principle_amount');
             $total_active_user = User::where('branch_id', \auth()->user()->branch_id)->where('status', 'Active')->count();
 
-            $consumer_financing_outstanding = Customer::where('branch_id', \auth()->user()->branch_id)->where('type_of_facility_approved', 'Consumer Finance')->sum('principle_amount');
-            $commercial_sme_financing = Customer::where('branch_id', \auth()->user()->branch_id)->where('type_of_facility_approved', 'Commercial / SME Finance')->sum('principle_amount');
-            $micro_financing = Customer::where('branch_id', \auth()->user()->branch_id)->where('type_of_facility_approved', 'Micro Finance')->sum('principle_amount');
-            $agriculture_financing = Customer::where('branch_id', \auth()->user()->branch_id)->where('type_of_facility_approved', 'Agriculture Finance')->sum('principle_amount');
+            $consumer_financing_outstanding = Customer::where('branch_id', \auth()->user()->branch_id)->where('product_id', '1')->sum('principle_amount');
+            $commercial_sme_financing = Customer::where('branch_id', \auth()->user()->branch_id)->where('product_id', '2')->sum('principle_amount');
+            $micro_financing = Customer::where('branch_id', \auth()->user()->branch_id)->where('product_id', '3')->sum('principle_amount');
+            $agriculture_financing = Customer::where('branch_id', \auth()->user()->branch_id)->where('product_id', '4')->sum('principle_amount');
 
-            $consumer_financing_outstanding_noa = Customer::where('branch_id', \auth()->user()->branch_id)->where('type_of_facility_approved', 'Consumer Finance')->count();
-            $commercial_sme_financing_noa = Customer::where('branch_id', \auth()->user()->branch_id)->where('type_of_facility_approved', 'Commercial / SME Finance')->count();
-            $micro_financing_noa = Customer::where('branch_id', \auth()->user()->branch_id)->where('type_of_facility_approved', 'Micro Finance')->count();
-            $agriculture_financing_noa = Customer::where('branch_id', \auth()->user()->branch_id)->where('type_of_facility_approved', 'Agriculture Finance')->count();
+            $consumer_financing_outstanding_noa = Customer::where('branch_id', \auth()->user()->branch_id)->where('product_id', '1')->count();
+            $commercial_sme_financing_noa = Customer::where('branch_id', \auth()->user()->branch_id)->where('product_id', '2')->count();
+            $micro_financing_noa = Customer::where('branch_id', \auth()->user()->branch_id)->where('product_id', '3')->count();
+            $agriculture_financing_noa = Customer::where('branch_id', \auth()->user()->branch_id)->where('product_id', '4')->count();
 
         } elseif (Auth::user()->hasRole('South Regional MIS Officer')) {
             $south_branches = Branch::where('region', 'South Region')->get('id');
@@ -58,15 +63,15 @@ class CustomerController extends Controller
             $total_amount_outstanding = Customer::whereIn('branch_id', $branches)->sum('principle_amount');
             $total_active_user = User::whereIn('branch_id', $branches)->where('status', 'Active')->count();
             // Financing Cards
-            $consumer_financing_outstanding = Customer::whereIn('branch_id', $branches)->where('type_of_facility_approved', 'Consumer Finance')->sum('principle_amount');
-            $commercial_sme_financing = Customer::whereIn('branch_id', $branches)->where('type_of_facility_approved', 'Commercial / SME Finance')->sum('principle_amount');
-            $micro_financing = Customer::whereIn('branch_id', $branches)->where('type_of_facility_approved', 'Micro Finance')->sum('principle_amount');
-            $agriculture_financing = Customer::whereIn('branch_id', $branches)->where('type_of_facility_approved', 'Agriculture Finance')->sum('principle_amount');
+            $consumer_financing_outstanding = Customer::whereIn('branch_id', $branches)->where('product_id', '1')->sum('principle_amount');
+            $commercial_sme_financing = Customer::whereIn('branch_id', $branches)->where('product_id', '2')->sum('principle_amount');
+            $micro_financing = Customer::whereIn('branch_id', $branches)->where('product_id', '3')->sum('principle_amount');
+            $agriculture_financing = Customer::whereIn('branch_id', $branches)->where('product_id', '4')->sum('principle_amount');
 
-            $consumer_financing_outstanding_noa = Customer::whereIn('branch_id', $branches)->where('type_of_facility_approved', 'Consumer Finance')->count();
-            $commercial_sme_financing_noa = Customer::whereIn('branch_id', $branches)->where('type_of_facility_approved', 'Commercial / SME Finance')->count();
-            $micro_financing_noa = Customer::whereIn('branch_id', $branches)->where('type_of_facility_approved', 'Micro Finance')->count();
-            $agriculture_financing_noa = Customer::whereIn('branch_id', $branches)->where('type_of_facility_approved', 'Agriculture Finance')->count();
+            $consumer_financing_outstanding_noa = Customer::whereIn('branch_id', $branches)->where('product_id', '1')->count();
+            $commercial_sme_financing_noa = Customer::whereIn('branch_id', $branches)->where('product_id', '2')->count();
+            $micro_financing_noa = Customer::whereIn('branch_id', $branches)->where('product_id', '3')->count();
+            $agriculture_financing_noa = Customer::whereIn('branch_id', $branches)->where('product_id', '4')->count();
 
         } elseif (Auth::user()->hasRole('North Regional MIS Officer')) {
 
@@ -80,31 +85,31 @@ class CustomerController extends Controller
             $total_amount_outstanding = Customer::whereIn('branch_id', $branches)->sum('principle_amount');
             $total_active_user = User::whereIn('branch_id', $branches)->where('status', 'Active')->count();
             // Financing Cards
-            $consumer_financing_outstanding = Customer::whereIn('branch_id', $branches)->where('type_of_facility_approved', 'Consumer Finance')->sum('principle_amount');
-            $commercial_sme_financing = Customer::whereIn('branch_id', $branches)->where('type_of_facility_approved', 'Commercial / SME Finance')->sum('principle_amount');
-            $micro_financing = Customer::whereIn('branch_id', $branches)->where('type_of_facility_approved', 'Micro Finance')->sum('principle_amount');
-            $agriculture_financing = Customer::whereIn('branch_id', $branches)->where('type_of_facility_approved', 'Agriculture Finance')->sum('principle_amount');
+            $consumer_financing_outstanding = Customer::whereIn('branch_id', $branches)->where('product_id', '1')->sum('principle_amount');
+            $commercial_sme_financing = Customer::whereIn('branch_id', $branches)->where('product_id', '2')->sum('principle_amount');
+            $micro_financing = Customer::whereIn('branch_id', $branches)->where('product_id', '3')->sum('principle_amount');
+            $agriculture_financing = Customer::whereIn('branch_id', $branches)->where('product_id', '4')->sum('principle_amount');
 
-            $consumer_financing_outstanding_noa = Customer::whereIn('branch_id', $branches)->where('type_of_facility_approved', 'Consumer Finance')->count();
-            $commercial_sme_financing_noa = Customer::whereIn('branch_id', $branches)->where('type_of_facility_approved', 'Commercial / SME Finance')->count();
-            $micro_financing_noa = Customer::whereIn('branch_id', $branches)->where('type_of_facility_approved', 'Micro Finance')->count();
-            $agriculture_financing_noa = Customer::whereIn('branch_id', $branches)->where('type_of_facility_approved', 'Agriculture Finance')->count();
+            $consumer_financing_outstanding_noa = Customer::whereIn('branch_id', $branches)->where('product_id', '1')->count();
+            $commercial_sme_financing_noa = Customer::whereIn('branch_id', $branches)->where('product_id', '2')->count();
+            $micro_financing_noa = Customer::whereIn('branch_id', $branches)->where('product_id', '3')->count();
+            $agriculture_financing_noa = Customer::whereIn('branch_id', $branches)->where('product_id', '4')->count();
 
         } elseif (Auth::user()->hasRole(['Head Office', 'Super-Admin'])) {
             $total_borrower = Customer::count();
             $total_amount_outstanding = Customer::sum('principle_amount');
             $total_active_user = User::where('status', 'Active')->count();
             // Financing Cards
-            $consumer_financing_outstanding = Customer::where('type_of_facility_approved', 'Consumer Finance')->sum('principle_amount');
-            $commercial_sme_financing = Customer::where('type_of_facility_approved', 'Commercial / SME Finance')->sum('principle_amount');
-            $micro_financing = Customer::where('type_of_facility_approved', 'Micro Finance')->sum('principle_amount');
-            $agriculture_financing = Customer::where('type_of_facility_approved', 'Agriculture Finance')->sum('principle_amount');
+            $consumer_financing_outstanding = Customer::where('product_id', '1')->sum('principle_amount');
+            $commercial_sme_financing = Customer::where('product_id', '2')->sum('principle_amount');
+            $micro_financing = Customer::where('product_id', '3')->sum('principle_amount');
+            $agriculture_financing = Customer::where('product_id', '4')->sum('principle_amount');
 
 
-            $consumer_financing_outstanding_noa = Customer::where('type_of_facility_approved', 'Consumer Finance')->count();
-            $commercial_sme_financing_noa = Customer::where('type_of_facility_approved', 'Commercial / SME Finance')->count();
-            $micro_financing_noa = Customer::where('type_of_facility_approved', 'Micro Finance')->count();
-            $agriculture_financing_noa = Customer::where('type_of_facility_approved', 'Agriculture Finance')->count();
+            $consumer_financing_outstanding_noa = Customer::where('product_id', '1')->count();
+            $commercial_sme_financing_noa = Customer::where('product_id', '2')->count();
+            $micro_financing_noa = Customer::where('product_id', '3')->count();
+            $agriculture_financing_noa = Customer::where('product_id', '4')->count();
         }
 
 
@@ -125,9 +130,8 @@ class CustomerController extends Controller
     {
         $customers = null;
         if (Auth::user()->hasRole(['Credit Officer', 'Branch Manager'])) {
-
 //            dd(auth()->user()->getRoleNames());
-            $customers = QueryBuilder::for(Customer::with('branch')->where('branch_id', \auth()->user()->branch_id))
+            $customers = QueryBuilder::for(Customer::with('branch', 'product', 'product_type')->where('branch_id', \auth()->user()->branch_id))
                 ->allowedFilters([
                     AllowedFilter::scope('search_string'),
                     AllowedFilter::exact('customer_cnic'),
@@ -142,7 +146,7 @@ class CustomerController extends Controller
                 $branches[] = $item->id;
             }
 
-            $customers = QueryBuilder::for(Customer::with('branch')->whereIn('branch_id', $branches))
+            $customers = QueryBuilder::for(Customer::with('branch', 'product', 'product_type')->whereIn('branch_id', $branches))
                 ->allowedFilters([
                     AllowedFilter::scope('search_string'),
                     AllowedFilter::exact('customer_cnic'),
@@ -158,7 +162,7 @@ class CustomerController extends Controller
                 $branches[] = $item->id;
             }
 
-            $customers = QueryBuilder::for(Customer::with('branch')->whereIn('branch_id', $branches))
+            $customers = QueryBuilder::for(Customer::with('branch', 'product', 'product_type')->whereIn('branch_id', $branches))
                 ->allowedFilters([
                     AllowedFilter::scope('search_string'),
                     AllowedFilter::exact('customer_cnic'),
@@ -167,7 +171,7 @@ class CustomerController extends Controller
                     'gender'
                 ])->paginate(10)->withQueryString();
         } elseif (Auth::user()->hasRole(['Head Office', 'Super-Admin'])) {
-            $customers = QueryBuilder::for(Customer::with('branch'))
+            $customers = QueryBuilder::for(Customer::with('branch', 'product', 'product_type'))
                 ->allowedFilters([
                     AllowedFilter::scope('search_string'),
                     AllowedFilter::exact('customer_cnic'),
@@ -200,6 +204,7 @@ class CustomerController extends Controller
     public function store(StoreCustomerRequest $request)
     {
 
+//        dd($request->all());
         $flag = true;
         DB::beginTransaction();
         try {

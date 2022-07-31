@@ -96,6 +96,9 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
 
     Route::controller(\App\Http\Controllers\ReportController::class)->group(function () {
         Route::get('/report/branch-wise-position', 'branchWisePosition')->name('report.branch-wise-position');
+        Route::get('/report/overall-bank-position', 'overallBankPosition')->name('report.overall-bank-position');
+        Route::get('/report/credit-growth', 'creditGrowth')->name('report.creditGrowth');
+        Route::get('/report/credit-growth-percentage-share', 'creditGrowthPercentageShare')->name('report.creditGrowthPercentageShare');
     });
 
 

@@ -48,7 +48,7 @@
         </section>
     </div>
     <!-- /.content-wrapper -->
-    <footer class="main-footer">
+    <footer class="main-footer d-print-none">
         <strong>Copyright &copy; {{date('Y')}} <a href="#">{{ config('app.name', 'Laravel') }}</a>.</strong>
         All rights reserved.
         <div class="float-right d-none d-sm-inline-block">

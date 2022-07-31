@@ -145,7 +145,7 @@
 
             <div class="form-group col-md-3">
                 <label for="manual_account">Manual Account No</label>
-                <input type="text" class="form-control" id="manual_account" name="filter[manual_account]" value="">
+                <input type="text" class="form-control" id="manual_account" name="manual_account" value="">
             </div>
         </div>
 

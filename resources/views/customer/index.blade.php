@@ -130,7 +130,7 @@
                 </td>
                 <td>{{$customer->customer_cnic}}</td>
                 <td>{{$customer->branch->code}}-{{$customer->account_cd_saving}}</td>
-                <td>{{$customer->type_of_facility_approved}}</td>
+                <td>{{$customer->product->product_name}}</td>
                 <td>{{$customer->secure_unsecure_loan}}</td>
                 <td>{{$customer->branch->name}}</td>
                 <td class="text-center">

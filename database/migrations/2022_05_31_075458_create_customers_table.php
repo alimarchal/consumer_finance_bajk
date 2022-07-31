@@ -40,8 +40,13 @@ return new class extends Migration
             $table->string('account_cd_saving', 20)->nullable();
             $table->string('manual_account', 20)->nullable();
             // Facility detail
-            $table->string('type_of_facility_approved')->nullable();
-            $table->string('nature_of_facility_availed')->nullable();
+//            $table->string('type_of_facility_approved')->nullable();
+//            $table->string('nature_of_facility_availed')->nullable();
+            $table->unsignedBigInteger('product_id')->nullable();;
+            $table->foreign('product_id')->references('id')->on('products');
+            $table->unsignedBigInteger('product_type_id')->nullable();;
+            $table->foreign('product_type_id')->references('id')->on('product_types');
+
             $table->string('renewal_enhancement_fresh_sanction')->nullable();
             $table->string('amount_sanctioned',14,2)->default(0.00);
 
@@ -65,9 +70,6 @@ return new class extends Migration
             $table->string('branch_manager_name_while_sanctioning')->default(0.00);
             // installment
             $table->decimal('principle_amount',14,2)->default(0.00);
-            $table->decimal('markup_amount', 14,2)->default(0.00);
-            $table->decimal('installment_insurance', 14,2)->default(0.00);
-            $table->decimal('total_installment', 14,2)->default(0.00);
 
             $table->string('status')->nullable();
 

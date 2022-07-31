@@ -150,8 +150,8 @@
                 @endcan
 
 
-                <li class="nav-item @if(request()->routeIs(['report.branch-wise-position'])) menu-open @endif">
-                    <a href="#" class="nav-link @if(request()->routeIs(['report.branch-wise-position'])) active @endif">
+                <li class="nav-item @if(request()->routeIs(['report.branch-wise-position','report.overall-bank-position','report.creditGrowth','report.creditGrowthPercentageShare'])) menu-open @endif">
+                    <a href="#" class="nav-link @if(request()->routeIs(['report.branch-wise-position','report.overall-bank-position','report.creditGrowth','report.creditGrowthPercentageShare'])) active @endif">
                         <i class="nav-icon fas fa-user"></i>
                         <p>
                             Reports
@@ -168,18 +168,26 @@
 
 
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="{{route('report.overall-bank-position')}}" class="nav-link @if(request()->routeIs('report.overall-bank-position')) active @endif">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Overall Bank Position</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="{{route('report.creditGrowth')}}" class="nav-link @if(request()->routeIs('report.creditGrowth')) active @endif">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Credit Growth</p>
                             </a>
                         </li>
 
+                        <li class="nav-item">
+                            <a href="{{route('report.creditGrowthPercentageShare')}}" class="nav-link @if(request()->routeIs('report.creditGrowthPercentageShare')) active @endif">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>
+                                    Product Wise Credit Growth Percentage
+                                </p>
+                            </a>
+                        </li>
 
                     </ul>
                 </li>

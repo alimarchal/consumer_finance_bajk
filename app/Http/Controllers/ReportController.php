@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Branch;
+use App\Models\BranchOutstanding;
 use App\Models\BranchOutstandingDaily;
 use App\Models\Customer;
+use App\Models\Product;
+use App\Models\Valuation;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -18,7 +21,7 @@ class ReportController extends Controller
      */
     public function branchWisePosition(Request $request)
     {
-
+        // Get all branches id
         $month_date = null;
         $zone_data = null;
 
@@ -31,23 +34,34 @@ class ReportController extends Controller
         if ($request->input('month')) {
             $month_date = Carbon::parse($request->month);
         } else {
-            $month_date = Carbon::parse($request->month);
+            $month_date = Carbon::now();
         }
 
-        $month = Carbon::parse($request->month);
-        $previous_month = Carbon::parse($request->month)->subMonth();
-        $last_year = Carbon::parse($request->month)->startOfYear()->subMonth();
 
+        $month = Carbon::parse($month_date);
+        $previous_month = Carbon::parse($month_date)->subMonth();
+        $last_year = Carbon::parse($month_date)->startOfYear()->subMonth();
 
         $branches = Branch::where('zone', $zone_data)->get();
-//        dd($zone_data);
+
         $branches_array = Branch::where('zone', $zone_data)->pluck('id')->toArray();
 
-        $branch_wise_principal_outstanding = DB::table('customers')
-            ->select('branch_id', 'principle_amount', DB::raw("SUM(principle_amount) as principle_amount"))
-            ->whereIn('branch_id', $branches_array)
-            ->groupBy('branch_id')
-            ->get();
+        if ($month_date->format('Y-m') == Carbon::now()->format('Y-m')) {
+            $branch_wise_principal_outstanding = DB::table('customers')
+                ->select('branch_id', 'principle_amount', DB::raw("SUM(principle_amount) as principle_amount"))
+                ->whereIn('branch_id', $branches_array)
+                ->groupBy('branch_id')
+                ->get();
+        } else {
+            $branch_wise_principal_outstanding = DB::table('branch_outstandings')
+                ->select('branch_id', 'principle_outstanding', DB::raw("SUM(principle_outstanding) as branch_outstanding_balance"))
+                ->whereIn('branch_id', $branches_array)
+                ->whereBetween('created_at', [$month->startOfMonth()->format('Y-m-d') . ' 00:00:00.000000', $month->endOfMonth()->format('Y-m-d') . ' 23:59:59.000000'])
+                ->groupBy('branch_id')
+                ->get();
+
+//            dd($branch_wise_principal_outstanding);
+        }
 
         $principal_outstanding_previous_month = DB::table('branch_outstandings')
             ->select('branch_id', 'principle_outstanding', DB::raw("SUM(principle_outstanding) as branch_outstanding_balance"))
@@ -56,7 +70,6 @@ class ReportController extends Controller
             ->groupBy('branch_id')
             ->get();
 
-        DB::enableQueryLog();
         $principal_outstanding_last_year = DB::table('branch_outstandings')
             ->select('branch_id', 'principle_outstanding', DB::raw("SUM(principle_outstanding) as branch_outstanding_balance"))
             ->whereIn('branch_id', $branches_array)
@@ -64,38 +77,287 @@ class ReportController extends Controller
             ->groupBy('branch_id')
             ->get();
 
-//        dd(DB::getQueryLog($principal_outstanding_last_year));
-
         $data = [];
         $data_last_year = [];
+        $data_total = [$month->format('F') => 0.00, $previous_month->format('F') => 0.00, $last_year->format('F') => 0.00];
+
         foreach ($branches as $branch) {
-            $data[$branch->id] = [$month->format('F') => 0.00, $last_year->format('F') => 0.00, $previous_month->format('F') => 0.00,];
+            $data[$branch->id] = [$month->format('F') => 0.00, $previous_month->format('F') => 0.00, $last_year->format('F') => 0.00];
         }
-        foreach ($branch_wise_principal_outstanding as $bo) {
-            $data[$bo->branch_id][$month->format('F')] = $bo->principle_amount;
+
+        if ($month_date->format('Y-m') == Carbon::now()->format('Y-m')) {
+            foreach ($branch_wise_principal_outstanding as $bo) {
+                $data[$bo->branch_id][$month->format('F')] = $bo->principle_amount;
+                $data_total[$month->format('F')] = $data_total[$month->format('F')] + $bo->principle_amount;
+            }
+        } else {
+            foreach ($branch_wise_principal_outstanding as $bo) {
+                $data[$bo->branch_id][$month->format('F')] = $bo->branch_outstanding_balance;
+                $data_total[$month->format('F')] = $data_total[$month->format('F')] + $bo->branch_outstanding_balance;
+            }
+        }
+
+        foreach ($principal_outstanding_previous_month as $bo) {
+            $data[$bo->branch_id][$previous_month->format('F')] = $bo->branch_outstanding_balance;
+            $data_total[$previous_month->format('F')] = $data_total[$previous_month->format('F')] + $bo->branch_outstanding_balance;
         }
 
         foreach ($principal_outstanding_last_year as $bo) {
             $data[$bo->branch_id][$last_year->format('F')] = $bo->branch_outstanding_balance;
-        }
-        foreach ($principal_outstanding_previous_month as $bo) {
-            $data[$bo->branch_id][$previous_month->format('F')] = $bo->branch_outstanding_balance;
+            $data_total[$last_year->format('F')] = $data_total[$last_year->format('F')] + $bo->principle_amount;
         }
 
-//        dd($last_year);
 
-
-        return view('reports.index', compact('data', 'last_year', 'previous_month', 'month'));
+        return view('reports.index', compact('data', 'data_total', 'last_year', 'previous_month', 'month', 'zone_data'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+
+    public function overallBankPosition(Request $request)
     {
-        //
+        $month_date = null;
+        $zone_data = null;
+
+        if ($request->input('zone')) {
+            $zone_data = $request->zone;
+        } else {
+            $zone_data = 'Muzaffarabad';
+        }
+
+        if ($request->input('month')) {
+            $month_date = Carbon::parse($request->month);
+        } else {
+            $month_date = Carbon::now();
+        }
+
+
+        $month = Carbon::parse($month_date);
+        $previous_month = Carbon::parse($month_date)->subMonth();
+        $last_year = Carbon::parse($month_date)->startOfYear()->subMonth();
+
+        $branches = Branch::all();
+
+        $branches_array = Branch::where('zone', $zone_data)->pluck('id')->toArray();
+
+
+        if ($month_date->format('Y-m') == Carbon::now()->format('Y-m')) {
+            $branch_wise_principal_outstanding = DB::table('customers')
+                ->select('customers.branch_id', 'branches.id', 'branches.region', 'branches.zone', DB::raw("SUM(customers.principle_amount) as principle_outstanding"))
+                ->join('branches', 'customers.branch_id', '=', 'branches.id')
+                ->groupBy('branches.zone')
+                ->get();
+
+        } else {
+            $branch_wise_principal_outstanding = DB::table('branch_outstandings')
+                ->select('branch_outstandings.branch_id', 'branch_outstandings.id', 'branches.region', 'branches.zone', DB::raw("SUM(branch_outstandings.principle_outstanding) as branch_outstanding_balance"))
+                ->join('branches', 'branch_outstandings.branch_id', '=', 'branches.id')
+                ->whereBetween('branch_outstandings.created_at', [$month->startOfMonth()->format('Y-m-d') . ' 00:00:00.000000', $month->endOfMonth()->format('Y-m-d') . ' 23:59:59.000000'])
+                ->groupBy('branches.zone')
+                ->get();
+        }
+
+
+        $principal_outstanding_previous_month = DB::table('branch_outstandings')
+            ->select('branch_outstandings.branch_id', 'branch_outstandings.id', 'branches.region', 'branches.zone', DB::raw("SUM(branch_outstandings.principle_outstanding) as branch_outstanding_balance"))
+            ->join('branches', 'branch_outstandings.branch_id', '=', 'branches.id')
+            ->whereBetween('branch_outstandings.created_at', [$previous_month->startOfMonth()->format('Y-m-d') . ' 00:00:00.000000', $previous_month->endOfMonth()->format('Y-m-d') . ' 23:59:59.000000'])
+            ->groupBy('branches.zone')
+            ->get();
+
+
+        $principal_outstanding_last_year = DB::table('branch_outstandings')
+            ->select('branch_outstandings.branch_id', 'branch_outstandings.id', 'branches.region', 'branches.zone', DB::raw("SUM(branch_outstandings.principle_outstanding) as branch_outstanding_balance"))
+            ->join('branches', 'branch_outstandings.branch_id', '=', 'branches.id')
+            ->whereBetween('branch_outstandings.created_at', [$last_year->startOfMonth()->format('Y-m-d') . ' 00:00:00.000000', $last_year->endOfMonth()->format('Y-m-d') . ' 23:59:59.000000'])
+            ->groupBy('branches.zone')
+            ->get();
+
+
+        $data = [];
+        $data_last_year = [];
+        $data_total = [$month->format('F') => 0.00, $previous_month->format('F') => 0.00, $last_year->format('F') => 0.00];
+
+        foreach ($branches as $branch) {
+            $data[$branch->zone] = [$month->format('F') => 0.00, $previous_month->format('F') => 0.00, $last_year->format('F') => 0.00];
+        }
+
+
+        if ($month_date->format('Y-m') == Carbon::now()->format('Y-m')) {
+            foreach ($branch_wise_principal_outstanding as $bo) {
+                $data[$bo->zone][$month->format('F')] = $bo->principle_outstanding;
+                $data_total[$month->format('F')] = $data_total[$month->format('F')] + $bo->principle_outstanding;
+            }
+
+        } else {
+            foreach ($branch_wise_principal_outstanding as $bo) {
+                $data[$bo->zone][$month->format('F')] = $bo->branch_outstanding_balance;
+                $data_total[$month->format('F')] = $data_total[$month->format('F')] + $bo->branch_outstanding_balance;
+            }
+        }
+
+
+        foreach ($principal_outstanding_previous_month as $bo) {
+            $data[$bo->zone][$previous_month->format('F')] = $bo->branch_outstanding_balance;
+            $data_total[$previous_month->format('F')] = $data_total[$previous_month->format('F')] + $bo->branch_outstanding_balance;
+        }
+
+
+        foreach ($principal_outstanding_last_year as $bo) {
+            $data[$bo->zone][$last_year->format('F')] = $bo->branch_outstanding_balance;
+            $data_total[$last_year->format('F')] = $data_total[$last_year->format('F')] + $bo->branch_outstanding_balance;
+        }
+
+//        dd($data_total);
+        return view('reports.overallBankPosition', compact('data', 'data_total', 'last_year', 'previous_month', 'month', 'zone_data'));
+    }
+
+
+    public function creditGrowth(Request $request)
+    {
+        $month_date = null;
+
+        if ($request->input('month')) {
+            $month_date = Carbon::parse($request->month);
+        } else {
+            $month_date = Carbon::now();
+        }
+
+
+        $month = Carbon::parse($month_date);
+        $last_year = Carbon::parse($month_date)->startOfYear()->subMonth();
+
+
+        $products = Product::all();
+
+        if ($month_date->format('Y-m') == Carbon::now()->format('Y-m')) {
+            $product_wise_principal_outstanding = DB::table('customers')
+                ->select('customers.branch_id', 'products.product_name', 'product_types.product_type',
+                    DB::raw("count(product_types.product_type) as no_of_accounts"),
+                    DB::raw("SUM(customers.principle_amount) as principle_amount"))
+                ->join('products', 'products.id', '=', 'customers.product_id')
+                ->join('product_types', 'product_types.id', '=', 'customers.product_type_id')
+                ->groupBy('customers.branch_id', 'products.product_name', 'product_types.product_type')
+                ->orderBy('customers.branch_id', 'asc')
+                ->get();
+        } else {
+
+            $product_wise_principal_outstanding = DB::table('product_wise_monthlies')
+                ->select('products.product_name', 'product_types.product_type', 'product_wise_monthlies.no_of_accounts', 'product_wise_monthlies.principle_outstanding')
+                ->join('products', 'products.id', '=', 'product_wise_monthlies.product_id')
+                ->join('product_types', 'product_types.id', '=', 'product_wise_monthlies.product_type_id')
+                ->whereBetween('product_wise_monthlies.created_at', [$month->startOfMonth()->format('Y-m-d') . ' 00:00:00.000000', $month->endOfMonth()->format('Y-m-d') . ' 23:59:59.000000'])
+                ->get();
+
+
+        }
+
+        $principal_outstanding_last_year = DB::table('product_wise_monthlies')
+            ->select('products.product_name', 'product_types.product_type', 'product_wise_monthlies.no_of_accounts', 'product_wise_monthlies.principle_outstanding')
+            ->join('products', 'products.id', '=', 'product_wise_monthlies.product_id')
+            ->join('product_types', 'product_types.id', '=', 'product_wise_monthlies.product_type_id')
+            ->whereBetween('product_wise_monthlies.created_at', [$last_year->startOfMonth()->format('Y-m-d') . ' 00:00:00.000000', $last_year->endOfMonth()->format('Y-m-d') . ' 23:59:59.000000'])
+            ->get();
+
+
+        $data = [];
+        $data_last_year = [];
+        $data_total = [$month->format('F') => 0.00, $last_year->format('F') => 0.00];
+
+        foreach ($products as $product) {
+            $data[$product->product_name] = [];
+            foreach ($product->product_type as $pt) {
+                $data[$product->product_name][$pt->product_type] = [$month->format('F') => ['no_of_accounts' => 0, 'amount' => 0.00], $last_year->format('F') => ['no_of_accounts' => 0, 'amount' => 0.00]];
+            }
+        }
+
+
+        if ($month_date->format('Y-m') == Carbon::now()->format('Y-m')) {
+
+            foreach ($product_wise_principal_outstanding as $bo) {
+                $data[$bo->product_name][$bo->product_type][$month->format('F')]['amount'] = $bo->principle_amount;
+                $data[$bo->product_name][$bo->product_type][$month->format('F')]['no_of_accounts'] = $bo->no_of_accounts;
+//                $data_total[$month->format('F')] = $data_total[$month->format('F')] + $bo->principle_outstanding;
+            }
+        } else {
+            foreach ($product_wise_principal_outstanding as $bo) {
+                $data[$bo->product_name][$bo->product_type][$month->format('F')]['amount'] = $bo->principle_outstanding;
+                $data[$bo->product_name][$bo->product_type][$month->format('F')]['no_of_accounts'] = $bo->no_of_accounts;
+//                $data_total[$month->format('F')] = $data_total[$month->format('F')] + $bo->branch_outstanding_balance;
+            }
+        }
+
+
+        foreach ($principal_outstanding_last_year as $bo) {
+            $data[$bo->product_name][$bo->product_type][$last_year->format('F')]['amount'] = $bo->principle_outstanding;
+            $data[$bo->product_name][$bo->product_type][$last_year->format('F')]['no_of_accounts'] = $bo->no_of_accounts;
+
+//            $data[$bo->product_name][$bo->product_type][$last_year->format('F')] = $bo->principle_outstanding;
+//            $data_total[$last_year->format('F')] = $data_total[$last_year->format('F')] + $bo->branch_outstanding_balance;
+        }
+
+        return view('reports.creditGrowth', compact('data', 'data_total', 'last_year', 'month'));
+    }
+
+
+    public function creditGrowthPercentageShare(Request $request)
+    {
+
+        $month_date = null;
+        $total_share = 0.00;
+
+        if ($request->input('month')) {
+            $month_date = Carbon::parse($request->month);
+        } else {
+            $month_date = Carbon::now();
+        }
+
+
+        $month = Carbon::parse($month_date);
+        $last_year = Carbon::parse($month_date)->startOfYear()->subMonth();
+        $products = Product::all();
+
+
+        $data = [];
+        $data_last_year = [];
+        $data_total = [$month->format('F') => 0.00, $last_year->format('F') => 0.00];
+
+        foreach ($products as $product) {
+            foreach ($product->product_type as $pt) {
+                $data[$pt->product_type] = ['amount' => 0.00];
+            }
+        }
+
+        if ($month_date->format('Y-m') == Carbon::now()->format('Y-m')) {
+            $product_wise_principal_outstanding = DB::table('customers')
+                ->select('product_types.product_type', DB::raw("SUM(principle_amount) as principle_amount"))
+                ->join('product_types', 'customers.product_type_id', '=', 'product_types.id')
+                ->groupBy('customers.product_type_id')
+                ->get();
+
+            $total_share = $product_wise_principal_outstanding->sum('principle_amount');
+
+        } else {
+            $product_wise_principal_outstanding = DB::table('product_wise_monthlies')
+                ->select('product_types.product_type', DB::raw("SUM(product_wise_monthlies.principle_outstanding) as principle_amount"))
+                ->join('product_types', 'product_wise_monthlies.product_type_id', '=', 'product_types.id')
+                ->groupBy('product_wise_monthlies.product_type_id')
+                ->whereBetween('product_wise_monthlies.created_at', [$month->startOfMonth()->format('Y-m-d') . ' 00:00:00.000000', $month->endOfMonth()->format('Y-m-d') . ' 23:59:59.000000'])
+                ->orderBy('product_wise_monthlies.product_type_id', 'asc')
+                ->get();
+            $total_share = $product_wise_principal_outstanding->sum('principle_amount');
+
+        }
+
+        if ($month_date->format('Y-m') == Carbon::now()->format('Y-m')) {
+            foreach ($product_wise_principal_outstanding as $bo) {
+                $data[$bo->product_type]['amount'] = $bo->principle_amount;
+            }
+        } else {
+            foreach ($product_wise_principal_outstanding as $bo) {
+                $data[$bo->product_type]['amount'] = $bo->principle_amount;
+            }
+        }
+
+        return view('reports.creditGrowthPercentage', compact('data', 'month','total_share'));
     }
 
     /**

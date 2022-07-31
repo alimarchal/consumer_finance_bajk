@@ -159,9 +159,9 @@
 
         <tr>
             <td  class="font-weight-bold">Nature of facility Availed</td>
-            <td  colspan="3">{{$customer->type_of_facility_approved}}</td>
+            <td  colspan="3">{{$customer->product->product_name}}</td>
             <td class="font-weight-bold">Type of facility approved</td>
-            <td colspan="3">{{$customer->nature_of_facility_availed}}</td>
+            <td colspan="3">{{$customer->product_type->product_type}}</td>
         </tr>
 
         <tr>

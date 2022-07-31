@@ -26,8 +26,6 @@ class Customer extends Model
         orWhere('customer_cnic', 'LIKE', '%' . $search . '%')->
         orWhere('customer_contact_number', 'LIKE', '%' . $search . '%')->
         orWhere('account_cd_saving', 'LIKE', '%' . $search . '%')->
-        orWhere('type_of_facility_approved', 'LIKE', '%' . $search . '%')->
-        orWhere('nature_of_facility_availed', 'LIKE', '%' . $search . '%')->
         orWhere('renewal_enhancement_fresh_sanction', 'LIKE', '%' . $search . '%')->
         orWhere('sanction_date', 'LIKE', '%' . $search . '%')->
         orWhere('tenure_of_loan_in_months', 'LIKE', '%' . $search . '%')->
@@ -53,8 +51,8 @@ class Customer extends Model
         'customer_cnic',
         'customer_contact_number',
         'account_cd_saving',
-        'type_of_facility_approved',
-        'nature_of_facility_availed',
+        'product_id',
+        'product_type_id',
         'renewal_enhancement_fresh_sanction',
         'amount_sanctioned',
         'amount_enhanced',
@@ -127,7 +125,17 @@ class Customer extends Model
 
     public function branch(): \Illuminate\Database\Eloquent\Relations\HasOne
     {
-        return $this->hasOne(Branch::class,'id');
+        return $this->hasOne(Branch::class, 'id');
+    }
+
+    public function product()
+    {
+        return $this->belongsTo(Product::class);
+    }
+
+    public function product_type()
+    {
+        return $this->belongsTo(ProductType::class);
     }
 
 }

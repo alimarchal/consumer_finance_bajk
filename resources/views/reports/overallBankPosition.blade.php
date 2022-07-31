@@ -58,7 +58,7 @@
     @endif
 
 
-    <form method="get" action="{{route('report.branch-wise-position')}}">
+    <form method="get" action="{{route('report.overall-bank-position')}}">
         <div class="filters" style="display:none;">
             <div class="form-row">
                 <div class="form-group col-md-3">
@@ -96,9 +96,8 @@
             </div>
         </div>
     </form>
-
-
     {{--sss | {{ request()->input('filter[search_string]', old('filter[search_string]')) }}--}}
+
     <img class="w-48 h-auto" src="{{Storage::url('logo.png')}}" alt="Bank AJK Logo">
     <div class="col-md-12 d-print-none">
         <button onclick="window.print()" class="btn btn-success d-print-none float-right">
@@ -106,17 +105,15 @@
         </button>
     </div>
     <h5 class="text-center font-weight-bold">The Bank of Azad Jammu & Kashmir
-        <br> Branch Wise Position - Advances ({{$month->format('F - Y')}})
+        <br> Overall Bank Position - Advances ({{$month->format('F - Y')}})
     </h5>
-
-
     <br>
 
     <table class="table table-bordered  ">
         <thead>
         <tr>
-            <th scope="col" class="align-middle text-center" rowspan="3" width="5%">S.No</th>
-            <th scope="col" class="align-middle text-center" rowspan="3" width="25%">Branch Name</th>
+            <th scope="col" class="align-middle text-center" rowspan="3" width="5%">No of Branches</th>
+            <th scope="col" class="align-middle text-center" rowspan="3" width="25%">Region / Zone</th>
             <th scope="col" class="align-middle text-center" colspan="3">Advances</th>
         </tr>
         <tr>
@@ -132,28 +129,119 @@
         </tr>
         </thead>
         <tbody>
-        @php $i = 1; @endphp
         @foreach($data as $key => $value)
-            <tr>
-                <td class="text-center"><strong>{{$i}}</strong></td>
-                <td>{{\App\Models\Branch::find($key)->name}}</td>
-                <td class="text-right">{{number_format($value[$last_year->format('F')],2)}}</td>
-                <td class="text-right">{{number_format($value[$previous_month->format('F')],2)}}</td>
-                <td class="text-right">{{number_format($value[$month->format('F')],2)}}</td>
-            </tr>
-            @php $i++; @endphp
+            @if($key == "Muzaffarabad" || $key == "Rawalakot")
+                <tr>
+                    <td class="text-center"><strong>{{\App\Models\Branch::where('zone',$key)->count()}}</strong></td>
+                    <td>{{$key}}</td>
+                    <td class="text-right">{{number_format($value[$last_year->format('F')],2)}}</td>
+                    <td class="text-right">{{number_format($value[$previous_month->format('F')],2)}}</td>
+                    <td class="text-right">{{number_format($value[$month->format('F')],2)}}</td>
+                </tr>
+            @endif
         @endforeach
         <tr>
-            <td class="align-middle text-center" colspan="2"><strong>{{$zone_data}} - Total (Amount In Million)</strong></td>
-            <td class="align-middle text-center"><strong>{{number_format(($data_total[$last_year->format('F')]/1000000),3)}}</strong></td>
-            <td class="align-middle text-center"><strong>{{number_format(($data_total[$previous_month->format('F')]/1000000),3)}}</strong></td>
-            <td class="align-middle text-center"><strong>{{number_format(($data_total[$month->format('F')]/1000000),3)}}</strong></td>
+            <td class="align-middle text-center" colspan="2"><strong>North Region Total</strong></td>
+            <td class="align-middle text-right">
+                <strong>
+                    {{number_format($data['Muzaffarabad'][$last_year->format('F')] + $data['Rawalakot'][$last_year->format('F')],2)}}
+                </strong>
+            </td>
+            <td class="align-middle text-right">
+                <strong>
+                    {{number_format($data['Muzaffarabad'][$previous_month->format('F')] + $data['Rawalakot'][$previous_month->format('F')],2)}}
+                </strong>
+            </td>
+            <td class="align-middle text-right">
+                <strong>
+                    {{number_format($data['Muzaffarabad'][$month->format('F')] + $data['Rawalakot'][$month->format('F')],2)}}
+                </strong>
+            </td>
         </tr>
+
+
+
 
         </tbody>
 
-
     </table>
+
+
+
+    <br>
+
+
+    <table class="table table-bordered  ">
+        <thead>
+        <tr>
+            <th scope="col" class="align-middle text-center" rowspan="3" width="5%">No of Branches</th>
+            <th scope="col" class="align-middle text-center" rowspan="3" width="25%">Region / Zone</th>
+            <th scope="col" class="align-middle text-center" colspan="3">Advances</th>
+        </tr>
+        <tr>
+            <th scope="col" class="align-middle text-center" width="15%">Base:<br> {{$last_year->format('F Y')}}</th>
+            <th scope="col" class="align-middle text-center" width="15%">{{$previous_month->format('F Y')}}</th>
+            <th scope="col" class="align-middle text-center" width="15%">{{$month->format('F Y')}}</th>
+        </tr>
+
+        <tr>
+            <th scope="col" class="align-middle text-center">Amount</th>
+            <th scope="col" class="align-middle text-center">Amount</th>
+            <th scope="col" class="align-middle text-center">Amount</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach($data as $key => $value)
+            @if($key == "Mirpur" || $key == "Kotli")
+                <tr>
+                    <td class="text-center"><strong>{{\App\Models\Branch::where('zone',$key)->count()}}</strong></td>
+                    <td>{{$key}}</td>
+                    <td class="text-right">{{number_format($value[$last_year->format('F')],2)}}</td>
+                    <td class="text-right">{{number_format($value[$previous_month->format('F')],2)}}</td>
+                    <td class="text-right">{{number_format($value[$month->format('F')],2)}}</td>
+                </tr>
+            @endif
+        @endforeach
+        <tr>
+            <td class="align-middle text-center" colspan="2"><strong>South Region Total</strong></td>
+            <td class="align-middle text-right">
+                <strong>
+                    {{number_format($data['Mirpur'][$last_year->format('F')] + $data['Kotli'][$last_year->format('F')],2)}}
+                </strong>
+            </td>
+            <td class="align-middle text-right">
+                <strong>
+                    {{number_format($data['Mirpur'][$previous_month->format('F')] + $data['Kotli'][$previous_month->format('F')],2)}}
+                </strong>
+            </td>
+            <td class="align-middle text-right">
+                <strong>
+                    {{number_format($data['Mirpur'][$month->format('F')] + $data['Kotli'][$month->format('F')],2)}}
+                </strong>
+            </td>
+        </tr>
+
+        <tr>
+            <td class="align-middle text-center" colspan="2"><strong>Bank Performance</strong></td>
+            <td class="align-middle text-right">
+                <strong>
+                    {{number_format($data_total[$last_year->format('F')],2)}}
+                </strong>
+            </td>
+            <td class="align-middle text-right">
+                <strong>
+                    {{number_format($data_total[$previous_month->format('F')],2)}}
+                </strong>
+            </td>
+            <td class="align-middle text-right">
+                <strong>
+                    {{number_format($data_total[$month->format('F')],2)}}
+                </strong>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
 @endsection
 
 

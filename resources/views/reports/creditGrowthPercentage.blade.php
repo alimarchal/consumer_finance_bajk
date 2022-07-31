@@ -7,10 +7,6 @@
 @endsection
 
 @section('customHeaderScripts')
-    {{--    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css"  rel="stylesheet"/>--}}
-    {{--    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js" defer></script>--}}
-    {{--<link rel="stylesheet" href="{{url('AdminLTE/plugins/select2/css/select2.min.css')}}">--}}
-    {{--<link rel="stylesheet" href="{{url('AdminLTE/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css')}}">--}}
     <style>
 
         @media print {
@@ -58,7 +54,7 @@
     @endif
 
 
-    <form method="get" action="{{route('report.branch-wise-position')}}">
+    <form method="get" action="{{route('report.creditGrowthPercentageShare')}}">
         <div class="filters" style="display:none;">
             <div class="form-row">
                 <div class="form-group col-md-3">
@@ -66,17 +62,6 @@
                     <input type="date" class="form-control" id="month" name="month" value="{{ empty(request()->date) ? '' : request()->date }}">
                 </div>
 
-
-                <div class="col-md-3">
-                    <label for="zone"><strong>Zone</strong></label>
-                    <select class="form-control select2bs4" id="zone" style="width: 100%;" name="zone">
-                        <option value="">None</option>
-                        @foreach(\App\Models\Branch::groupBy('zone')->get() as $branch)
-                            <option value="{{$branch->zone}}">{{$branch->zone}}</option>
-                        @endforeach
-
-                    </select>
-                </div>
             </div>
 
 
@@ -96,9 +81,8 @@
             </div>
         </div>
     </form>
-
-
     {{--sss | {{ request()->input('filter[search_string]', old('filter[search_string]')) }}--}}
+
     <img class="w-48 h-auto" src="{{Storage::url('logo.png')}}" alt="Bank AJK Logo">
     <div class="col-md-12 d-print-none">
         <button onclick="window.print()" class="btn btn-success d-print-none float-right">
@@ -106,54 +90,53 @@
         </button>
     </div>
     <h5 class="text-center font-weight-bold">The Bank of Azad Jammu & Kashmir
-        <br> Branch Wise Position - Advances ({{$month->format('F - Y')}})
+        <br> Percentage Share in Total Portfolio ({{$month->format('F - Y')}})
     </h5>
-
-
     <br>
 
     <table class="table table-bordered  ">
         <thead>
         <tr>
-            <th scope="col" class="align-middle text-center" rowspan="3" width="5%">S.No</th>
-            <th scope="col" class="align-middle text-center" rowspan="3" width="25%">Branch Name</th>
-            <th scope="col" class="align-middle text-center" colspan="3">Advances</th>
-        </tr>
-        <tr>
-            <th scope="col" class="align-middle text-center" width="15%">Base:<br> {{$last_year->format('F Y')}}</th>
-            <th scope="col" class="align-middle text-center" width="15%">{{$previous_month->format('F Y')}}</th>
-            <th scope="col" class="align-middle text-center" width="15%">{{$month->format('F Y')}}</th>
-        </tr>
-
-        <tr>
-            <th scope="col" class="align-middle text-center">Amount</th>
-            <th scope="col" class="align-middle text-center">Amount</th>
-            <th scope="col" class="align-middle text-center">Amount</th>
+            <th scope="col" class="align-middle text-center" width="0.1%">S.No</th>
+            <th scope="col" class="align-middle text-center" >Product</th>
+            <th scope="col" class="align-middle text-center" >Amount</th>
+            <th scope="col" class="align-middle text-center"  > % Share</th>
         </tr>
         </thead>
         <tbody>
-        @php $i = 1; @endphp
+        @php $i = 1; $percentage_total = 0;@endphp
         @foreach($data as $key => $value)
             <tr>
-                <td class="text-center"><strong>{{$i}}</strong></td>
-                <td>{{\App\Models\Branch::find($key)->name}}</td>
-                <td class="text-right">{{number_format($value[$last_year->format('F')],2)}}</td>
-                <td class="text-right">{{number_format($value[$previous_month->format('F')],2)}}</td>
-                <td class="text-right">{{number_format($value[$month->format('F')],2)}}</td>
+                <td class="text-center">{{$i}}</td>
+                <td class="text-left">{{$key}}</td>
+                <td class="text-right">{{number_format($value['amount'],2)}}</td>
+                <td class="text-right">
+                    @if($total_share <= 0)
+                        0.00%
+                    @else
+                        {{round(($value['amount']/$total_share) * 100,2)}}%
+                        @php $percentage_total = $percentage_total + (($value['amount']/$total_share) * 100); @endphp
+                    @endif
+
+                </td>
             </tr>
-            @php $i++; @endphp
+        @php $i++; @endphp
         @endforeach
-        <tr>
-            <td class="align-middle text-center" colspan="2"><strong>{{$zone_data}} - Total (Amount In Million)</strong></td>
-            <td class="align-middle text-center"><strong>{{number_format(($data_total[$last_year->format('F')]/1000000),3)}}</strong></td>
-            <td class="align-middle text-center"><strong>{{number_format(($data_total[$previous_month->format('F')]/1000000),3)}}</strong></td>
-            <td class="align-middle text-center"><strong>{{number_format(($data_total[$month->format('F')]/1000000),3)}}</strong></td>
+
+        <tr class="font-weight-bold">
+            <td class="text-center" colspan="2">Total</td>
+            <td class="text-right">{{number_format($total_share,2)}}</td>
+            <td class="text-right">{{number_format(round($percentage_total,2),2)}}%</td>
         </tr>
 
         </tbody>
 
-
     </table>
+
+
+
+    <br>
+
 @endsection
 
 

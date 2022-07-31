@@ -2,17 +2,13 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\Product;
 use Livewire\Component;
 
 class Facility extends Component
 {
 
-    public $nature_of_facility = [
-        'Consumer Finance',
-        'Commercial / SME Finance',
-        'Micro Finance',
-        'Agriculture Finance',
-    ];
+    public $nature_of_facility = null;
 
     public $customer = null;
 
@@ -24,49 +20,26 @@ class Facility extends Component
 
     public function render()
     {
+        $this->nature_of_facility = Product::all();
         return view('livewire.facility');
     }
 
     public function nature_of_facility($event)
     {
+//        dd($event);
         $this->check_flag = true;
         if ($event != null) {
-            if ($event == 'Consumer Finance') {
-                $this->type_of_facility = [
-                    'Advance Salary',
-                    'Car Finance',
-                    'Motorcycle Loan',
-                    'Personal Loan',
-                    'Gold Loan',
-                    'Nasheman Housing',
-                    'Home Appliances Finance',
-                ];
+            if ($event == '1') {
+                $this->type_of_facility = Product::find($event)->product_type;
                 $this->type_of_facility_flag = true;
-            } elseif ($event == 'Commercial / SME Finance') {
-                $this->type_of_facility = [
-                    'AKSIC',
-                    'AKSIC-Custm. Lending',
-                    'RF/DF',
-                    'House/Construction',
-                    'Auto',
-                    'Tourism Promotion',
-                    'Healthcare Services',
-                ];
+            } elseif ($event == '2') {
+                $this->type_of_facility = Product::find($event)->product_type;
                 $this->type_of_facility_flag = true;
-            } elseif ($event == 'Micro Finance') {
-                $this->type_of_facility = [
-                    'Micro Enterprise',
-                    'Desi Murghbani',
-                    'Women Devlopment',
-                ];
+            } elseif ($event == '3') {
+                $this->type_of_facility = Product::find($event)->product_type;
                 $this->type_of_facility_flag = true;
-            } elseif ($event == 'Agriculture Finance') {
-                $this->type_of_facility = [
-                    'Agri. Promotion',
-                    'Agri. Development',
-                    'Poultry',
-                    'Dairy',
-                ];
+            } elseif ($event == '4') {
+                $this->type_of_facility = Product::find($event)->product_type;
                 $this->type_of_facility_flag = true;
             }
 

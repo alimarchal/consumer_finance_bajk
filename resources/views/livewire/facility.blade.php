@@ -2,30 +2,30 @@
     {{-- The whole world belongs to you. --}}
 
     <div class="col-md-3 mb-2">
-        <label for="type_of_facility_approved"><strong>Nature of facility availed</strong></label>
-        <select class="custom-select" required id="type_of_facility_approved"
-                name="type_of_facility_approved" wire:change="nature_of_facility($event.target.value)">
+        <label for="product_id"><strong>Nature of facility availed</strong></label>
+        <select class="custom-select" required id="product_id"
+                name="product_id" wire:change="nature_of_facility($event.target.value)">
             <option value="">None</option>
             @foreach($nature_of_facility as $nf)
-                <option value="{{$nf}}"  @if(!empty($customer) && $customer->type_of_facility_approved == $nf) selected @endif >
-                    {{$nf}}
+                <option value="{{$nf->id}}"  @if(!empty($customer) && $customer->product_id == $nf->id) selected @endif >
+                    {{$nf->product_name}}
                 </option>
             @endforeach
         </select>
     </div>
 
     <div class="col-md-3 mb-2">
-        <label for="nature_of_facility_availed"><strong>Type of facility approved</strong></label>
-        <select class="custom-select" required id="nature_of_facility_availed" name="nature_of_facility_availed">
+        <label for="product_type_id"><strong>Type of facility approved</strong></label>
+        <select class="custom-select" required id="product_type_id" name="product_type_id">
             <option value="" selected>None</option>
             @if(!empty($customer) && $check_flag == false)
-                <option value="{{$customer->nature_of_facility_availed}}" selected>{{$customer->nature_of_facility_availed}}</option>
+                <option value="{{$customer->product_type_id}}" selected>{{\App\Models\ProductType::find($customer->product_type_id)->product_type}}</option>
             @endif
 
             @if($type_of_facility_flag)
                 @foreach($type_of_facility as $tf)
-                    <option value="{{$tf}}" @if(!empty($customer) && $customer->nature_of_facility_availed == $tf) selected @endif  >
-                        {{$tf}}
+                    <option value="{{$tf->id}}" @if(!empty($customer) && $customer->product_type_id == $tf->id) selected @endif  >
+                        {{$tf->product_type}}
                     </option>
                 @endforeach
             @endif
