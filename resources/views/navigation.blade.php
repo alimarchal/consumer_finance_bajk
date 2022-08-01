@@ -150,8 +150,8 @@
                 @endcan
 
 
-                <li class="nav-item @if(request()->routeIs(['report.branch-wise-position','report.overall-bank-position','report.creditGrowth','report.creditGrowthPercentageShare'])) menu-open @endif">
-                    <a href="#" class="nav-link @if(request()->routeIs(['report.branch-wise-position','report.overall-bank-position','report.creditGrowth','report.creditGrowthPercentageShare'])) active @endif">
+                <li class="nav-item @if(request()->routeIs(['report.branch-wise-position','report.overall-bank-position','report.creditGrowth','report.creditGrowthPercentageShare','report.bankPosition','report.branchWisePositionLoans'])) menu-open @endif">
+                    <a href="#" class="nav-link @if(request()->routeIs(['report.branch-wise-position','report.overall-bank-position','report.creditGrowth','report.creditGrowthPercentageShare','report.bankPosition','report.branchWisePositionLoans'])) active @endif">
                         <i class="nav-icon fas fa-user"></i>
                         <p>
                             Reports
@@ -159,20 +159,35 @@
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="{{route('report.branch-wise-position')}}" class="nav-link @if(request()->routeIs('report.branch-wise-position')) active @endif">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Branch Wise Position</p>
-                            </a>
-                        </li>
-
 
                         <li class="nav-item">
                             <a href="{{route('report.overall-bank-position')}}" class="nav-link @if(request()->routeIs('report.overall-bank-position')) active @endif">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>Overall Bank Position</p>
+                                <p>Overall Bank Position Advances</p>
                             </a>
                         </li>
+
+                        <li class="nav-item">
+                            <a href="{{route('report.branch-wise-position')}}" class="nav-link @if(request()->routeIs('report.branch-wise-position')) active @endif">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Branch Wise Position - Advances</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="{{route('report.bankPosition')}}" class="nav-link @if(request()->routeIs('report.bankPosition')) active @endif">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Bank Position</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="{{route('report.branchWisePositionLoans')}}" class="nav-link @if(request()->routeIs('report.branchWisePositionLoans')) active @endif">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Branch Wise Position - Loans</p>
+                            </a>
+                        </li>
+
                         <li class="nav-item">
                             <a href="{{route('report.creditGrowth')}}" class="nav-link @if(request()->routeIs('report.creditGrowth')) active @endif">
                                 <i class="far fa-circle nav-icon"></i>
