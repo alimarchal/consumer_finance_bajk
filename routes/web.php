@@ -92,19 +92,15 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
         Route::put('/users/{user}', 'update')->name('users.update');
     });
 
-
-
     Route::controller(\App\Http\Controllers\ReportController::class)->group(function () {
         Route::get('/report/overall-bank-position', 'overallBankPosition')->name('report.overall-bank-position');
         Route::get('/report/branch-wise-position', 'branchWisePosition')->name('report.branch-wise-position');
         Route::get('/report/bank-position', 'bankPosition')->name('report.bankPosition');
         Route::get('/report/branch-wise-position-loans', 'branchWisePositionLoans')->name('report.branchWisePositionLoans');
         Route::get('/report/credit-growth', 'creditGrowth')->name('report.creditGrowth');
+        Route::get('/report/outstanding-advances-product-wise', 'outstandingAdvancesProductWise')->name('report.outstandingAdvancesProductWise');
         Route::get('/report/credit-growth-percentage-share', 'creditGrowthPercentageShare')->name('report.creditGrowthPercentageShare');
     });
-
-
-
 
 });
 

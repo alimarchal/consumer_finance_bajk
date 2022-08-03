@@ -65,18 +65,6 @@
                     <label for="month">Month</label>
                     <input type="date" class="form-control" id="month" name="month" value="{{ empty(request()->date) ? '' : request()->date }}">
                 </div>
-
-
-                <div class="col-md-3">
-                    <label for="zone"><strong>Zone</strong></label>
-                    <select class="form-control select2bs4" id="zone" style="width: 100%;" name="zone">
-                        <option value="">None</option>
-                        @foreach(\App\Models\Branch::groupBy('zone')->get() as $branch)
-                            <option value="{{$branch->zone}}">{{$branch->zone}}</option>
-                        @endforeach
-
-                    </select>
-                </div>
             </div>
 
 
