@@ -397,10 +397,10 @@ class ReportController extends Controller
 
         foreach ($products as $product) {
 
-            $data_total[$product->product_name][$last_year->format('F')]['amount'] = $principal_outstanding_last_year->where('product_name',$product->product_name)->sum('principle_outstanding');
-            $data_total[$product->product_name][$last_year->format('F')]['no_of_accounts'] = $principal_outstanding_last_year->where('product_name',$product->product_name)->sum('no_of_accounts');
-            $data_total[$product->product_name][$month->format('F')]['amount'] = $product_wise_principal_outstanding->where('product_name',$product->product_name)->sum('principle_amount');
-            $data_total[$product->product_name][$month->format('F')]['no_of_accounts'] = $product_wise_principal_outstanding->where('product_name',$product->product_name)->sum('no_of_accounts');
+            $data_total[$product->product_name][$last_year->format('F')]['amount'] = $principal_outstanding_last_year->where('product_name', $product->product_name)->sum('principle_outstanding');
+            $data_total[$product->product_name][$last_year->format('F')]['no_of_accounts'] = $principal_outstanding_last_year->where('product_name', $product->product_name)->sum('no_of_accounts');
+            $data_total[$product->product_name][$month->format('F')]['amount'] = $product_wise_principal_outstanding->where('product_name', $product->product_name)->sum('principle_amount');
+            $data_total[$product->product_name][$month->format('F')]['no_of_accounts'] = $product_wise_principal_outstanding->where('product_name', $product->product_name)->sum('no_of_accounts');
 
         }
 
@@ -429,34 +429,32 @@ class ReportController extends Controller
 
 
         $products = Product::all();
+        $branches = Branch::all();
 
         if ($month_date->format('Y-m') == Carbon::now()->format('Y-m')) {
             $product_wise_principal_outstanding = DB::table('customers')
-                ->select('customers.branch_id', 'products.product_name', 'product_types.product_type',
+                ->select('customers.branch_id', 'branches.region', 'branches.zone', 'products.product_name', 'product_types.product_type',
                     DB::raw("count(product_types.product_type) as no_of_accounts"),
                     DB::raw("SUM(customers.principle_amount) as principle_amount"))
+                ->join('branches', 'customers.branch_id', '=', 'branches.id')
                 ->join('products', 'products.id', '=', 'customers.product_id')
                 ->join('product_types', 'product_types.id', '=', 'customers.product_type_id')
                 ->groupBy('customers.branch_id', 'products.product_name', 'product_types.product_type')
                 ->orderBy('customers.branch_id', 'asc')
                 ->get();
+
         } else {
 
             $product_wise_principal_outstanding = DB::table('product_wise_monthlies')
-                ->select('products.product_name', 'product_types.product_type', 'product_wise_monthlies.no_of_accounts', 'product_wise_monthlies.principle_outstanding')
+                ->select('product_wise_monthlies.branch_id',  'branches.region', 'branches.zone', 'products.product_name', 'product_types.product_type', 'product_wise_monthlies.no_of_accounts', 'product_wise_monthlies.principle_outstanding')
                 ->join('products', 'products.id', '=', 'product_wise_monthlies.product_id')
                 ->join('product_types', 'product_types.id', '=', 'product_wise_monthlies.product_type_id')
+                ->join('branches', 'branches.id', '=', 'product_wise_monthlies.branch_id')
                 ->whereBetween('product_wise_monthlies.created_at', [$month->startOfMonth()->format('Y-m-d') . ' 00:00:00.000000', $month->endOfMonth()->format('Y-m-d') . ' 23:59:59.000000'])
                 ->get();
 
         }
 
-        $principal_outstanding_last_year = DB::table('product_wise_monthlies')
-            ->select('products.product_name', 'product_types.product_type', 'product_wise_monthlies.no_of_accounts', 'product_wise_monthlies.principle_outstanding')
-            ->join('products', 'products.id', '=', 'product_wise_monthlies.product_id')
-            ->join('product_types', 'product_types.id', '=', 'product_wise_monthlies.product_type_id')
-            ->whereBetween('product_wise_monthlies.created_at', [$last_year->startOfMonth()->format('Y-m-d') . ' 00:00:00.000000', $last_year->endOfMonth()->format('Y-m-d') . ' 23:59:59.000000'])
-            ->get();
 
 
         $data = [];
@@ -467,47 +465,43 @@ class ReportController extends Controller
             $data[$product->product_name] = [];
             $data_total[$product->product_name] = [];
             foreach ($product->product_type as $pt) {
-                $data[$product->product_name][$pt->product_type] = [$month->format('F') => ['no_of_accounts' => 0, 'amount' => 0.00], $last_year->format('F') => ['no_of_accounts' => 0, 'amount' => 0.00]];
-                $data_total[$product->product_name] = [$month->format('F') => ['no_of_accounts' => 0, 'amount' => 0.00], $last_year->format('F') => ['no_of_accounts' => 0, 'amount' => 0.00]];
+                foreach ($branches as $branch) {
+                    $data[$product->product_name][$pt->product_type][$branch->region][$branch->zone] = ['no_of_accounts' => 0, 'amount' => 0.00];
+                    $data_total[$product->product_name][$pt->product_type][$branch->region][$branch->zone] = ['no_of_accounts' => 0, 'amount' => 0.00];
+                }
+
             }
         }
+
+
+
 
         if ($month_date->format('Y-m') == Carbon::now()->format('Y-m')) {
             foreach ($product_wise_principal_outstanding as $bo) {
-                $data[$bo->product_name][$bo->product_type][$month->format('F')]['amount'] = $bo->principle_amount;
-                $data[$bo->product_name][$bo->product_type][$month->format('F')]['no_of_accounts'] = $bo->no_of_accounts;
+                $data[$bo->product_name][$bo->product_type][$bo->region][$bo->zone]['amount'] = $bo->principle_amount;
+                $data[$bo->product_name][$bo->product_type][$bo->region][$bo->zone]['no_of_accounts'] = $bo->no_of_accounts;
             }
         } else {
             foreach ($product_wise_principal_outstanding as $bo) {
-                $data[$bo->product_name][$bo->product_type][$month->format('F')]['amount'] = $bo->principle_outstanding;
-                $data[$bo->product_name][$bo->product_type][$month->format('F')]['no_of_accounts'] = $bo->no_of_accounts;
+                $data[$bo->product_name][$bo->product_type][$bo->region][$bo->zone]['amount'] = $bo->principle_outstanding;
+                $data[$bo->product_name][$bo->product_type][$bo->region][$bo->zone]['no_of_accounts'] = $bo->no_of_accounts;
             }
         }
 
-        foreach ($principal_outstanding_last_year as $bo) {
-            $data[$bo->product_name][$bo->product_type][$last_year->format('F')]['amount'] = $bo->principle_outstanding;
-            $data[$bo->product_name][$bo->product_type][$last_year->format('F')]['no_of_accounts'] = $bo->no_of_accounts;
 
-
-        }
-
-
-        foreach ($products as $product) {
-
-            $data_total[$product->product_name][$last_year->format('F')]['amount'] = $principal_outstanding_last_year->where('product_name',$product->product_name)->sum('principle_outstanding');
-            $data_total[$product->product_name][$last_year->format('F')]['no_of_accounts'] = $principal_outstanding_last_year->where('product_name',$product->product_name)->sum('no_of_accounts');
-            $data_total[$product->product_name][$month->format('F')]['amount'] = $product_wise_principal_outstanding->where('product_name',$product->product_name)->sum('principle_amount');
-            $data_total[$product->product_name][$month->format('F')]['no_of_accounts'] = $product_wise_principal_outstanding->where('product_name',$product->product_name)->sum('no_of_accounts');
-
-        }
-
+//        foreach ($products as $product) {
+//
+//            $data_total[$product->product_name][$month->format('F')]['amount'] = $product_wise_principal_outstanding->where('product_name', $product->product_name)->sum('principle_amount');
+//            $data_total[$product->product_name][$month->format('F')]['no_of_accounts'] = $product_wise_principal_outstanding->where('product_name', $product->product_name)->sum('no_of_accounts');
+//
+//        }
 
 //        $data_total[$product->product_name][$month->format('F')]['amount'] = $product_wise_principal_outstanding->where('product_name',$product->product_name)->sum('amount');
 //        $data_total[$product->product_name][$month->format('F')]['no_of_accounts'] = $product_wise_principal_outstanding->where('product_name',$product->product_name)->sum('no_of_accounts');
 
 //        dd($principal_outstanding_last_year);
-//dd($data_total);
-        return view('reports.creditGrowth', compact('data', 'data_total', 'last_year', 'month'));
+//dd($data);
+        return view('reports.outstandingAdvancesProduceWise', compact('data', 'data_total', 'last_year', 'month'));
     }
 
     public function branchWisePositionLoans(Request $request)

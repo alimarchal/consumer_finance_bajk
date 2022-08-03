@@ -94,28 +94,43 @@
         </button>
     </div>
     <h5 class="text-center font-weight-bold">The Bank of Azad Jammu & Kashmir
-        <br> Credit Growth - Product Wise ({{$month->format('F - Y')}})
+        <br> Summary of Outstanding Advances - Product Wise ({{$month->format('F - Y')}})
     </h5>
     <br>
 
     <table class="table table-bordered  ">
         <thead>
         <tr>
-            <th scope="col" class="align-middle text-center" rowspan="2" width="0.1%">S.No</th>
-            <th scope="col" class="align-middle text-center" rowspan="2" width="10%">Product</th>
-            <th scope="col" class="align-middle text-center" colspan="2" width="1%">{{$last_year->format('F-Y')}}</th>
-            <th scope="col" class="align-middle text-center" colspan="2" width="15%">{{$month->format('F-Y')}}</th>
-            <th scope="col" class="align-middle text-center" colspan="3" width="15%">{{$last_year->format('F Y')}} vs {{$month->format('F Y')}}</th>
+            <th scope="col" class="align-middle text-center" rowspan="3" width="0.1%">S.No</th>
+            <th scope="col" class="align-middle text-center" rowspan="3" width="20%">Advances Category</th>
+            <th scope="col" class="align-middle text-center" colspan="6">North Region</th>
+            <th scope="col" class="align-middle text-center" colspan="6" >South Region</th>
+            <th scope="col" class="align-middle text-center" colspan="2" rowspan="2">Total</th>
         </tr>
 
         <tr>
-            <th scope="col" class="align-middle text-center"  width="5%">No</th>
-            <th scope="col" class="align-middle text-center"  width="5%">Amount</th>
-            <th scope="col" class="align-middle text-center" width="5%">No</th>
-            <th scope="col" class="align-middle text-center" width="5%">Amount</th>
-            <th scope="col" class="align-middle text-center" width="5%">No</th>
-            <th scope="col" class="align-middle text-center" width="5%">Amount</th>
-            <th scope="col" class="align-middle text-center" width="5%">Variance</th>
+            <th scope="col" class="align-middle text-center" colspan="2">Muzaffarabad Zone</th>
+            <th scope="col" class="align-middle text-center" colspan="2">RawalaKot Zone</th>
+            <th scope="col" class="align-middle text-center" colspan="2">Sub - Total</th>
+            <th scope="col" class="align-middle text-center" colspan="2">Mirpur Zone</th>
+            <th scope="col" class="align-middle text-center" colspan="2">Kotli Zone</th>
+            <th scope="col" class="align-middle text-center" colspan="2">Sub - Total</th>
+        </tr>
+        <tr>
+            <th scope="col" class="align-middle text-center" >A/C</th>
+            <th scope="col" class="align-middle text-center" >Amount</th>
+            <th scope="col" class="align-middle text-center">A/C</th>
+            <th scope="col" class="align-middle text-center" >Amount</th>
+            <th scope="col" class="align-middle text-center" >A/C</th>
+            <th scope="col" class="align-middle text-center" >Amount</th>
+            <th scope="col" class="align-middle text-center">A/C</th>
+            <th scope="col" class="align-middle text-center" >Amount</th>
+            <th scope="col" class="align-middle text-center" >A/C</th>
+            <th scope="col" class="align-middle text-center" >Amount</th>
+            <th scope="col" class="align-middle text-center">A/C</th>
+            <th scope="col" class="align-middle text-center" >Amount</th>
+            <th scope="col" class="align-middle text-center">A/C</th>
+            <th scope="col" class="align-middle text-center" >Amount</th>
         </tr>
         </thead>
         <tbody>
@@ -131,32 +146,20 @@
                     <tr>
                         <td class="text-center">{{$i}}</td>
                         <td class="text-left">{{$k}}</td>
-                        <td class="text-right">{{number_format($v[$last_year->format('F')]['no_of_accounts'],0)}}</td>
-                        <td class="text-right">{{number_format($v[$last_year->format('F')]['amount'],2)}}</td>
-                        <td class="text-right">{{$v[$month->format('F')]['no_of_accounts']}}</td>
-                        <td class="text-right">{{number_format($v[$month->format('F')]['amount'],2)}}</td>
-                        <td class="text-right">
-                            @if(($v[$month->format('F')]['no_of_accounts'] - $v[$last_year->format('F')]['no_of_accounts']) >= 0)
-                                {{number_format($v[$month->format('F')]['no_of_accounts'] - $v[$last_year->format('F')]['no_of_accounts'],2)}}
-                            @else
-                                ({{number_format(abs($v[$month->format('F')]['no_of_accounts'] - $v[$last_year->format('F')]['no_of_accounts']),2)}})
-                            @endif
-                        </td>
-                        <td class="text-right">
-                            @if(($v[$month->format('F')]['amount'] - $v[$last_year->format('F')]['amount']) >= 0)
-                                {{number_format($v[$month->format('F')]['amount'] - $v[$last_year->format('F')]['amount'],2)}}
-                            @else
-                                ({{number_format(abs($v[$month->format('F')]['amount'] - $v[$last_year->format('F')]['amount']),2)}})
-                            @endif
-                        </td>
-
-                        <td class="text-right">
-                            @if($v[$last_year->format('F')]['amount'] != 0)
-                                {{ number_format(((($v[$month->format('F')]['amount'] / $v[$last_year->format('F')]['amount']) * 100) - 100) ,2 )}}%
-                            @else
-                                0.00%
-                            @endif
-                        </td>
+                        <td class="text-right">0</td>
+                        <td class="text-right">0</td>
+                        <td class="text-right">0</td>
+                        <td class="text-right">0</td>
+                        <td class="text-right">0</td>
+                        <td class="text-right">0</td>
+                        <td class="text-right">0</td>
+                        <td class="text-right">0</td>
+                        <td class="text-right">0</td>
+                        <td class="text-right">0</td>
+                        <td class="text-right">0</td>
+                        <td class="text-right">0</td>
+                        <td class="text-right">0</td>
+                        <td class="text-right">0</td>
                     </tr>
                     @php $i++; @endphp
                 @endforeach
@@ -164,65 +167,21 @@
                 @if($total_count < $i)
                     <tr class="font-weight-bold text-right">
                         <td colspan="2" class="text-left">Sub Total</td>
-                        <td>{{number_format($data_total[$key][$last_year->format('F')]['no_of_accounts'],2)}}</td>
-                        <td>{{number_format($data_total[$key][$last_year->format('F')]['amount'],2)}}</td>
-                        <td>{{number_format($data_total[$key][$month->format('F')]['no_of_accounts'],2)}}</td>
-                        <td>{{number_format($data_total[$key][$month->format('F')]['amount'],2)}}</td>
+{{--                        <td>{{number_format($data_total[$key][$last_year->format('F')]['no_of_accounts'],2)}}</td>--}}
+{{--                        <td>{{number_format($data_total[$key][$last_year->format('F')]['amount'],2)}}</td>--}}
+{{--                        <td>{{number_format($data_total[$key][$month->format('F')]['no_of_accounts'],2)}}</td>--}}
+{{--                        <td>{{number_format($data_total[$key][$month->format('F')]['amount'],2)}}</td>--}}
                         <td>0</td>
                         <td>0</td>
                         <td>0</td>
-                    </tr>
-                @endif
-            @endif
-
-
-            @if($key == "Commercial / SME Finance")
-                <tr>
-                    <td colspan="9"><strong>{{$key}}</strong></td>
-                </tr>
-
-                @php $i = 1; $total_count = count($data['Commercial / SME Finance']); @endphp
-                @foreach($value as $k => $v)
-                    <tr>
-                        <td class="text-center">{{$i}}</td>
-                        <td class="text-left">{{$k}}</td>
-                        <td class="text-right">{{number_format($v[$last_year->format('F')]['no_of_accounts'],0)}}</td>
-                        <td class="text-right">{{number_format($v[$last_year->format('F')]['amount'],2)}}</td>
-                        <td class="text-right">{{$v[$month->format('F')]['no_of_accounts']}}</td>
-                        <td class="text-right">{{number_format($v[$month->format('F')]['amount'],2)}}</td>
-                        <td class="text-right">
-                            @if(($v[$month->format('F')]['no_of_accounts'] - $v[$last_year->format('F')]['no_of_accounts']) >= 0)
-                                {{number_format($v[$month->format('F')]['no_of_accounts'] - $v[$last_year->format('F')]['no_of_accounts'],2)}}
-                            @else
-                                ({{number_format(abs($v[$month->format('F')]['no_of_accounts'] - $v[$last_year->format('F')]['no_of_accounts']),2)}})
-                            @endif
-                        </td>
-                        <td class="text-right">
-                            @if(($v[$month->format('F')]['amount'] - $v[$last_year->format('F')]['amount']) >= 0)
-                                {{number_format($v[$month->format('F')]['amount'] - $v[$last_year->format('F')]['amount'],2)}}
-                            @else
-                                ({{number_format(abs($v[$month->format('F')]['amount'] - $v[$last_year->format('F')]['amount']),2)}})
-                            @endif
-                        </td>
-
-                        <td class="text-right">
-                            @if($v[$last_year->format('F')]['amount'] != 0)
-                                {{ number_format(((($v[$month->format('F')]['amount'] / $v[$last_year->format('F')]['amount']) * 100) - 100) ,2 )}}%
-                            @else
-                                0.00%
-                            @endif
-                        </td>
-                    </tr>
-                    @php $i++; @endphp
-                @endforeach
-
-                @if($total_count < $i)
-                    <tr class="font-weight-bold text-right">
-                        <td colspan="2" class="text-left">Sub Total</td>
-                        <td>{{number_format($data_total[$key][$last_year->format('F')]['no_of_accounts'],2)}}</td>
-                        <td>{{number_format($data_total[$key][$last_year->format('F')]['amount'],2)}}</td>
-                        <td>{{number_format($data_total[$key][$month->format('F')]['no_of_accounts'],2)}}</td>
-                        <td>{{number_format($data_total[$key][$month->format('F')]['amount'],2)}}</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
                         <td>0</td>
                         <td>0</td>
                         <td>0</td>
@@ -230,116 +189,6 @@
                 @endif
             @endif
 
-
-            @if($key == "Micro Finance")
-                <tr>
-                    <td colspan="9"><strong>{{$key}}</strong></td>
-                </tr>
-
-                @php $i = 1; $total_count = count($data['Micro Finance']); @endphp
-                @foreach($value as $k => $v)
-                    <tr>
-                        <td class="text-center">{{$i}}</td>
-                        <td class="text-left">{{$k}}</td>
-                        <td class="text-right">{{number_format($v[$last_year->format('F')]['no_of_accounts'],0)}}</td>
-                        <td class="text-right">{{number_format($v[$last_year->format('F')]['amount'],2)}}</td>
-                        <td class="text-right">{{$v[$month->format('F')]['no_of_accounts']}}</td>
-                        <td class="text-right">{{number_format($v[$month->format('F')]['amount'],2)}}</td>
-                        <td class="text-right">
-                            @if(($v[$month->format('F')]['no_of_accounts'] - $v[$last_year->format('F')]['no_of_accounts']) >= 0)
-                                {{number_format($v[$month->format('F')]['no_of_accounts'] - $v[$last_year->format('F')]['no_of_accounts'],2)}}
-                            @else
-                                ({{number_format(abs($v[$month->format('F')]['no_of_accounts'] - $v[$last_year->format('F')]['no_of_accounts']),2)}})
-                            @endif
-                        </td>
-                        <td class="text-right">
-                            @if(($v[$month->format('F')]['amount'] - $v[$last_year->format('F')]['amount']) >= 0)
-                                {{number_format($v[$month->format('F')]['amount'] - $v[$last_year->format('F')]['amount'],2)}}
-                            @else
-                                ({{number_format(abs($v[$month->format('F')]['amount'] - $v[$last_year->format('F')]['amount']),2)}})
-                            @endif
-                        </td>
-
-                        <td class="text-right">
-                            @if($v[$last_year->format('F')]['amount'] != 0)
-                                {{ number_format(((($v[$month->format('F')]['amount'] / $v[$last_year->format('F')]['amount']) * 100) - 100) ,2 )}}%
-                            @else
-                                0.00%
-                            @endif
-                        </td>
-                    </tr>
-                    @php $i++; @endphp
-                @endforeach
-
-                @if($total_count < $i)
-                    <tr class="font-weight-bold text-right">
-                        <td colspan="2" class="text-left">Sub Total</td>
-                        <td>{{number_format($data_total[$key][$last_year->format('F')]['no_of_accounts'],2)}}</td>
-                        <td>{{number_format($data_total[$key][$last_year->format('F')]['amount'],2)}}</td>
-                        <td>{{number_format($data_total[$key][$month->format('F')]['no_of_accounts'],2)}}</td>
-                        <td>{{number_format($data_total[$key][$month->format('F')]['amount'],2)}}</td>
-                        <td>0</td>
-                        <td>0</td>
-                        <td>0</td>
-                    </tr>
-                @endif
-            @endif
-
-
-
-            @if($key == "Agriculture Finance")
-                <tr>
-                    <td colspan="9"><strong>{{$key}}</strong></td>
-                </tr>
-
-                @php $i = 1; $total_count = count($data['Agriculture Finance']); @endphp
-                @foreach($value as $k => $v)
-                    <tr>
-                        <td class="text-center">{{$i}}</td>
-                        <td class="text-left">{{$k}}</td>
-                        <td class="text-right">{{number_format($v[$last_year->format('F')]['no_of_accounts'],0)}}</td>
-                        <td class="text-right">{{number_format($v[$last_year->format('F')]['amount'],2)}}</td>
-                        <td class="text-right">{{$v[$month->format('F')]['no_of_accounts']}}</td>
-                        <td class="text-right">{{number_format($v[$month->format('F')]['amount'],2)}}</td>
-                        <td class="text-right">
-                            @if(($v[$month->format('F')]['no_of_accounts'] - $v[$last_year->format('F')]['no_of_accounts']) >= 0)
-                                {{number_format($v[$month->format('F')]['no_of_accounts'] - $v[$last_year->format('F')]['no_of_accounts'],2)}}
-                            @else
-                                ({{number_format(abs($v[$month->format('F')]['no_of_accounts'] - $v[$last_year->format('F')]['no_of_accounts']),2)}})
-                            @endif
-                        </td>
-                        <td class="text-right">
-                            @if(($v[$month->format('F')]['amount'] - $v[$last_year->format('F')]['amount']) >= 0)
-                                {{number_format($v[$month->format('F')]['amount'] - $v[$last_year->format('F')]['amount'],2)}}
-                            @else
-                                ({{number_format(abs($v[$month->format('F')]['amount'] - $v[$last_year->format('F')]['amount']),2)}})
-                            @endif
-                        </td>
-
-                        <td class="text-right">
-                            @if($v[$last_year->format('F')]['amount'] != 0)
-                                {{ number_format(((($v[$month->format('F')]['amount'] / $v[$last_year->format('F')]['amount']) * 100) - 100) ,2 )}}%
-                            @else
-                                0.00%
-                            @endif
-                        </td>
-                    </tr>
-                    @php $i++; @endphp
-                @endforeach
-
-                @if($total_count < $i)
-                    <tr class="font-weight-bold text-right">
-                        <td colspan="2" class="text-left">Sub Total</td>
-                        <td>{{number_format($data_total[$key][$last_year->format('F')]['no_of_accounts'],2)}}</td>
-                        <td>{{number_format($data_total[$key][$last_year->format('F')]['amount'],2)}}</td>
-                        <td>{{number_format($data_total[$key][$month->format('F')]['no_of_accounts'],2)}}</td>
-                        <td>{{number_format($data_total[$key][$month->format('F')]['amount'],2)}}</td>
-                        <td>0</td>
-                        <td>0</td>
-                        <td>0</td>
-                    </tr>
-                @endif
-            @endif
 
 
         @endforeach
