@@ -11,6 +11,16 @@ class Customer extends Model
 {
     use HasFactory;
 
+
+    /*
+        1 => Regular
+        2 => Irregular
+        3 => OAEM
+        4 => Substandard
+        5 => Doubtful
+        6 => Loss
+     */
+
     public function scopeSearchString(Builder $query, $search): Builder
     {
         return $query->where('name', 'LIKE', '%' . $search . '%')->
@@ -77,6 +87,10 @@ class Customer extends Model
         'valuation_date_of_valuation',
         'secure_unsecure_loan',
         'manual_account',
+        'customer_status',
+        'loan_due_date',
+        'last_installment_date',
+        'status',
     ];
 
 

@@ -100,6 +100,10 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
         Route::get('/report/credit-growth', 'creditGrowth')->name('report.creditGrowth');
         Route::get('/report/outstanding-advances-product-wise', 'outstandingAdvancesProductWise')->name('report.outstandingAdvancesProductWise');
         Route::get('/report/credit-growth-percentage-share', 'creditGrowthPercentageShare')->name('report.creditGrowthPercentageShare');
+
+
+        // Secondary - NPL
+        Route::get('/report/branch-wise-npl-position', 'branchWiseNplPosition')->name('report.branchWiseNplPosition');
     });
 
 });

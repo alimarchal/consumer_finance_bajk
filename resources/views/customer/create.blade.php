@@ -203,6 +203,13 @@
                     Please provide a Dac Issuance Date.
                 </div>
             </div>
+
+            <div class="col-md-3 mb-3">
+                <label for="loan_due_date"><strong>Loan Due Date</strong></label>
+                <input type="date" class="form-control" id="loan_due_date" required
+                       name="loan_due_date">
+            </div>
+
             <div class="col-md-3 mb-3">
                 <label for="disbursement_date"><strong>DAC Disbursement Date</strong></label>
                 <input type="date" class="form-control" id="disbursement_date" required

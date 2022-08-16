@@ -59,6 +59,7 @@ return new class extends Migration
             $table->string('no_of_installments')->nullable();
             $table->date('dac_issuance_date')->nullable();
             $table->date('disbursement_date')->nullable();
+            $table->date('loan_due_date')->nullable();
             $table->decimal('amount_disbursed',14,2)->default(0.00);
 
             $table->date('expiry_date_as_per_dac')->nullable();
@@ -71,7 +72,17 @@ return new class extends Migration
             // installment
             $table->decimal('principle_amount',14,2)->default(0.00);
 
-            $table->string('status')->nullable();
+            $table->date('last_installment_date')->nullable();
+            /*
+                1 => Regular
+                2 => Irregular
+                3 => OAEM
+                4 => Substandard
+                5 => Doubtful
+                6 => Loss
+             */
+            $table->enum('customer_status',[1,2,3,4,5,6])->default(1);
+            $table->boolean('status')->default(1);
 
             $table->timestamps();
         });

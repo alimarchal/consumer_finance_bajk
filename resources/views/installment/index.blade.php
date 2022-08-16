@@ -23,22 +23,15 @@
 
         <div class="form-row">
 
-            <div class="col-md-3 mb-2">
-                <label for="date"><strong>Date</strong></label>
-                <input type="date" class="form-control" id="date" name="date">
-            </div>
-
 
             <div class="col-md-3 mb-3">
                 <label for="no_of_installment"><strong>No of Installment</strong></label>
-                <select class="form-control select2bs4" required id="no_of_installment" style="width: 100%;" name="no_of_installment">
-                    <option value="">None</option>
-                    @for($i = 1; $i <= 240; $i++)
-                        <option value="{{$i}}">{{$i}}</option>
-                    @endfor
-                </select>
+                @if($customer->installments->isNotEmpty())
+                    <input type="no_of_installment" value="{{($customer->installments->count() + 1)}}" readonly required class="form-control" id="no_of_installment" name="no_of_installment">
+                @else
+                    <input type="no_of_installment" value="1" required class="form-control" id="no_of_installment" name="no_of_installment" readonly>
+                @endif
             </div>
-
 
 
             <div class="col-md-3 mb-3">
@@ -50,7 +43,6 @@
                     @endfor
                 </select>
             </div>
-
 
 
             <div class="col-md-3 mb-2">
@@ -75,17 +67,10 @@
             </div>
 
 
-
             <div class="col-md-3 mb-3">
                 <label for="category_of_default"><strong>Category</strong></label>
-                <select class="form-control select2bs4" required id="category_of_default" style="width: 100%;" name="category_of_default">
-                    <option value="">None</option>
-                    <option value="Regular" selected>Regular</option>
-                    <option value="Irregular">Irregular</option>
-                    <option value="Sub Standard">Sub Standard</option>
-                    <option value="Doubtful">Doubtful</option>
-                    <option value="Loss">Loss</option>
-                </select>
+                <input type="text" step="0.01" class="form-control" required readonly id="category_of_default" name="category_of_default">
+
             </div>
         </div>
         <button class="btn btn-primary float-right" type="submit">Save</button>
@@ -115,7 +100,7 @@
                 <tr>
                     <th scope="row">{{$loop->iteration}}</th>
                     <td>{{\Carbon\Carbon::parse($co->date)->format('d-m-Y')}}</td>
-                    <td>{{$co->no_of_installment}}</td>
+                    <td>{{number_format($co->no_of_installment,0)}}</td>
                     <td>{{$co->days_passed_overdue}}</td>
                     <td>{{$co->principal_amount}}</td>
                     <td>{{$co->mark_up_amount}}</td>
@@ -134,31 +119,18 @@
 @section('customFooterScripts')
     <script>
 
-        $(document).ready(function () {
 
+        $(document).ready(function () {
             $principal_amount = 0;
             $mark_up_amount = 0;
             $penalty_charges = 0;
             $total_principal_markup_penalty = 0;
 
-            $("#principal_amount").change(function() {
+            $("#principal_amount").change(function () {
 
-                $principal_amount = parseFloat($(this).val(),2);
-                $mark_up_amount = parseFloat($("#mark_up_amount").val(),2);
-                $penalty_charges = parseFloat($("#penalty_charges").val(),2);
-
-                $total_principal_markup_penalty = $principal_amount + $mark_up_amount + $penalty_charges;
-
-                $("#total_principal_markup_penalty").val(parseFloat($total_principal_markup_penalty));
-            });
-
-
-
-            $("#mark_up_amount").change(function() {
-
-                $principal_amount = parseFloat($("#principal_amount").val(),2);
-                $mark_up_amount = parseFloat($(this).val(),2);
-                $penalty_charges = parseFloat($("#penalty_charges").val(),2);
+                $principal_amount = parseFloat($(this).val(), 2);
+                $mark_up_amount = parseFloat($("#mark_up_amount").val(), 2);
+                $penalty_charges = parseFloat($("#penalty_charges").val(), 2);
 
                 $total_principal_markup_penalty = $principal_amount + $mark_up_amount + $penalty_charges;
 
@@ -166,16 +138,46 @@
             });
 
 
+            $("#mark_up_amount").change(function () {
 
-            $("#penalty_charges").change(function() {
-
-                $principal_amount = parseFloat($("#principal_amount").val(),2);
-                $mark_up_amount = parseFloat($("#mark_up_amount").val(),2);
-                $penalty_charges = parseFloat($(this).val(),2);
+                $principal_amount = parseFloat($("#principal_amount").val(), 2);
+                $mark_up_amount = parseFloat($(this).val(), 2);
+                $penalty_charges = parseFloat($("#penalty_charges").val(), 2);
 
                 $total_principal_markup_penalty = $principal_amount + $mark_up_amount + $penalty_charges;
 
                 $("#total_principal_markup_penalty").val(parseFloat($total_principal_markup_penalty));
+            });
+
+
+            $("#penalty_charges").change(function () {
+
+                $principal_amount = parseFloat($("#principal_amount").val(), 2);
+                $mark_up_amount = parseFloat($("#mark_up_amount").val(), 2);
+                $penalty_charges = parseFloat($(this).val(), 2);
+
+                $total_principal_markup_penalty = $principal_amount + $mark_up_amount + $penalty_charges;
+
+                $("#total_principal_markup_penalty").val(parseFloat($total_principal_markup_penalty));
+            });
+
+
+            $("#days_passed_overdue").change(function () {
+
+                $days_passed_overdue = parseFloat($(this).val(), 0);
+                if ($days_passed_overdue <= 30) {
+                    $("#category_of_default").val('Regular');
+                }
+                else if ($days_passed_overdue > 30 && $days_passed_overdue <= 90) {
+                    $("#category_of_default").val('Irregular');
+                }
+                else if ($days_passed_overdue >= 90 && $days_passed_overdue <= 180) {
+                    $("#category_of_default").val('Doubtful');
+                }
+                else if ($days_passed_overdue > 180) {
+                    $("#category_of_default").val('Loss');
+                }
+
             });
 
 

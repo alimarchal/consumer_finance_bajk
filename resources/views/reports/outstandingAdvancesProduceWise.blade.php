@@ -98,39 +98,39 @@
     </h5>
     <br>
 
-    <table class="table table-bordered  ">
+    <table class="table table-bordered">
         <thead>
         <tr>
             <th scope="col" class="align-middle text-center" rowspan="3" width="0.1%">S.No</th>
             <th scope="col" class="align-middle text-center" rowspan="3" width="20%">Advances Category</th>
             <th scope="col" class="align-middle text-center" colspan="6">North Region</th>
-            <th scope="col" class="align-middle text-center" colspan="6" >South Region</th>
+            <th scope="col" class="align-middle text-center" colspan="6">South Region</th>
             <th scope="col" class="align-middle text-center" colspan="2" rowspan="2">Total</th>
         </tr>
 
         <tr>
             <th scope="col" class="align-middle text-center" colspan="2">Muzaffarabad Zone</th>
-            <th scope="col" class="align-middle text-center" colspan="2">RawalaKot Zone</th>
+            <th scope="col" class="align-middle text-center" colspan="2">Rawalakot Zone</th>
             <th scope="col" class="align-middle text-center" colspan="2">Sub - Total</th>
             <th scope="col" class="align-middle text-center" colspan="2">Mirpur Zone</th>
             <th scope="col" class="align-middle text-center" colspan="2">Kotli Zone</th>
             <th scope="col" class="align-middle text-center" colspan="2">Sub - Total</th>
         </tr>
         <tr>
-            <th scope="col" class="align-middle text-center" >A/C</th>
-            <th scope="col" class="align-middle text-center" >Amount</th>
             <th scope="col" class="align-middle text-center">A/C</th>
-            <th scope="col" class="align-middle text-center" >Amount</th>
-            <th scope="col" class="align-middle text-center" >A/C</th>
-            <th scope="col" class="align-middle text-center" >Amount</th>
+            <th scope="col" class="align-middle text-center">Amount</th>
             <th scope="col" class="align-middle text-center">A/C</th>
-            <th scope="col" class="align-middle text-center" >Amount</th>
-            <th scope="col" class="align-middle text-center" >A/C</th>
-            <th scope="col" class="align-middle text-center" >Amount</th>
+            <th scope="col" class="align-middle text-center">Amount</th>
             <th scope="col" class="align-middle text-center">A/C</th>
-            <th scope="col" class="align-middle text-center" >Amount</th>
+            <th scope="col" class="align-middle text-center">Amount</th>
             <th scope="col" class="align-middle text-center">A/C</th>
-            <th scope="col" class="align-middle text-center" >Amount</th>
+            <th scope="col" class="align-middle text-center">Amount</th>
+            <th scope="col" class="align-middle text-center">A/C</th>
+            <th scope="col" class="align-middle text-center">Amount</th>
+            <th scope="col" class="align-middle text-center">A/C</th>
+            <th scope="col" class="align-middle text-center">Amount</th>
+            <th scope="col" class="align-middle text-center">A/C</th>
+            <th scope="col" class="align-middle text-center">Amount</th>
         </tr>
         </thead>
         <tbody>
@@ -138,7 +138,7 @@
 
             @if($key == "Consumer Finance")
                 <tr>
-                    <td colspan="9"><strong>{{$key}}</strong></td>
+                    <td colspan="16"><strong>{{$key}}</strong></td>
                 </tr>
 
                 @php $i = 1; $total_count = count($data['Consumer Finance']); @endphp
@@ -146,20 +146,51 @@
                     <tr>
                         <td class="text-center">{{$i}}</td>
                         <td class="text-left">{{$k}}</td>
-                        <td class="text-right">0</td>
-                        <td class="text-right">0</td>
-                        <td class="text-right">0</td>
-                        <td class="text-right">0</td>
-                        <td class="text-right">0</td>
-                        <td class="text-right">0</td>
-                        <td class="text-right">0</td>
-                        <td class="text-right">0</td>
-                        <td class="text-right">0</td>
-                        <td class="text-right">0</td>
-                        <td class="text-right">0</td>
-                        <td class="text-right">0</td>
-                        <td class="text-right">0</td>
-                        <td class="text-right">0</td>
+                        <td class="text-right">
+                            {{$v['North Region']['Muzaffarabad']['no_of_accounts']}}
+                        </td>
+                        <td class="text-right">
+                            {{$v['North Region']['Muzaffarabad']['amount']}}
+                        </td>
+                        <td class="text-right">
+                            {{$v['North Region']['Rawalakot']['no_of_accounts']}}
+                        </td>
+                        <td class="text-right">
+                            {{$v['North Region']['Rawalakot']['amount']}}
+                        </td>
+                        <td class="text-right">
+                            {{$v['North Region']['Muzaffarabad']['no_of_accounts'] + $v['North Region']['Rawalakot']['no_of_accounts']}}
+                        </td>
+                        <td class="text-right">
+                            {{$v['North Region']['Muzaffarabad']['amount'] + $v['North Region']['Rawalakot']['amount']}}
+                        </td>
+
+
+                        <td class="text-right">
+                            {{$v['South Region']['Mirpur']['no_of_accounts']}}
+                        </td>
+                        <td class="text-right">
+                            {{$v['South Region']['Mirpur']['amount']}}
+                        </td>
+                        <td class="text-right">
+                            {{$v['South Region']['Kotli']['no_of_accounts']}}
+                        </td>
+                        <td class="text-right">
+                            {{$v['South Region']['Kotli']['amount']}}
+                        </td>
+                        <td class="text-right">
+                            {{$v['South Region']['Mirpur']['no_of_accounts'] + $v['South Region']['Kotli']['no_of_accounts']}}
+                        </td>
+                        <td class="text-right">
+                            {{$v['South Region']['Mirpur']['amount'] + $v['South Region']['Kotli']['amount']}}
+                        </td>
+                        <td class="text-right">
+                            {{$v['North Region']['Muzaffarabad']['no_of_accounts'] + $v['North Region']['Rawalakot']['no_of_accounts'] + $v['South Region']['Mirpur']['no_of_accounts'] + $v['South Region']['Kotli']['no_of_accounts']}}
+                        </td>
+                        <td class="text-right">
+                            {{$v['North Region']['Muzaffarabad']['amount'] + $v['North Region']['Rawalakot']['amount'] + $v['South Region']['Mirpur']['amount'] + $v['South Region']['Kotli']['amount']}}
+                        </td>
+
                     </tr>
                     @php $i++; @endphp
                 @endforeach
@@ -167,29 +198,378 @@
                 @if($total_count < $i)
                     <tr class="font-weight-bold text-right">
                         <td colspan="2" class="text-left">Sub Total</td>
-{{--                        <td>{{number_format($data_total[$key][$last_year->format('F')]['no_of_accounts'],2)}}</td>--}}
-{{--                        <td>{{number_format($data_total[$key][$last_year->format('F')]['amount'],2)}}</td>--}}
-{{--                        <td>{{number_format($data_total[$key][$month->format('F')]['no_of_accounts'],2)}}</td>--}}
-{{--                        <td>{{number_format($data_total[$key][$month->format('F')]['amount'],2)}}</td>--}}
-                        <td>0</td>
-                        <td>0</td>
-                        <td>0</td>
-                        <td>0</td>
-                        <td>0</td>
-                        <td>0</td>
-                        <td>0</td>
-                        <td>0</td>
-                        <td>0</td>
-                        <td>0</td>
-                        <td>0</td>
-                        <td>0</td>
-                        <td>0</td>
-                        <td>0</td>
+                        <td>
+                            {{$data_total['Consumer Finance']['Muzaffarabad']['no_of_accounts']}}
+                        </td>
+                        <td>
+                            {{$data_total['Consumer Finance']['Muzaffarabad']['amount']}}
+                        </td>
+                        <td>
+                            {{$data_total['Consumer Finance']['Rawalakot']['no_of_accounts']}}
+                        </td>
+                        <td>
+                            {{$data_total['Consumer Finance']['Rawalakot']['amount']}}
+                        </td>
+                        <td>
+                            {{$data_total['Consumer Finance']['Muzaffarabad']['no_of_accounts'] + $data_total['Consumer Finance']['Rawalakot']['no_of_accounts']}}
+                        </td>
+                        <td>
+                            {{$data_total['Consumer Finance']['Muzaffarabad']['amount'] + $data_total['Consumer Finance']['Rawalakot']['amount']}}
+                        </td>
+                        <td>
+                            {{$data_total['Consumer Finance']['Mirpur']['no_of_accounts']}}
+                        </td>
+                        <td>
+                            {{$data_total['Consumer Finance']['Mirpur']['amount']}}
+                        </td>
+                        <td>
+                            {{$data_total['Consumer Finance']['Kotli']['no_of_accounts']}}
+                        </td>
+                        <td>
+                            {{$data_total['Consumer Finance']['Kotli']['amount']}}
+                        </td>
+                        <td>
+                            {{$data_total['Consumer Finance']['Mirpur']['no_of_accounts']+$data_total['Consumer Finance']['Kotli']['no_of_accounts']}}
+                        </td>
+                        <td>
+                            {{$data_total['Consumer Finance']['Mirpur']['amount']+$data_total['Consumer Finance']['Kotli']['amount']}}
+                        </td>
+                        <td>
+                            {{$data_total['Consumer Finance']['Mirpur']['no_of_accounts']+$data_total['Consumer Finance']['Kotli']['no_of_accounts'] + $data_total['Consumer Finance']['Muzaffarabad']['no_of_accounts'] + $data_total['Consumer Finance']['Rawalakot']['no_of_accounts']}}
+                        </td>
+                        <td>
+                            {{$data_total['Consumer Finance']['Mirpur']['amount']+$data_total['Consumer Finance']['Kotli']['amount'] + $data_total['Consumer Finance']['Muzaffarabad']['amount'] + $data_total['Consumer Finance']['Rawalakot']['amount']}}
+                        </td>
                     </tr>
                 @endif
             @endif
 
 
+            @if($key == "Commercial / SME Finance")
+                <tr>
+                    <td colspan="16"><strong>{{$key}}</strong></td>
+                </tr>
+
+                @php $i = 1; $total_count = count($data['Commercial / SME Finance']); @endphp
+                @foreach($value as $k => $v)
+                    <tr>
+                        <td class="text-center">{{$i}}</td>
+                        <td class="text-left">{{$k}}</td>
+                        <td class="text-right">
+                            {{$v['North Region']['Muzaffarabad']['no_of_accounts']}}
+                        </td>
+                        <td class="text-right">
+                            {{$v['North Region']['Muzaffarabad']['amount']}}
+                        </td>
+                        <td class="text-right">
+                            {{$v['North Region']['Rawalakot']['no_of_accounts']}}
+                        </td>
+                        <td class="text-right">
+                            {{$v['North Region']['Rawalakot']['amount']}}
+                        </td>
+                        <td class="text-right">
+                            {{$v['North Region']['Muzaffarabad']['no_of_accounts'] + $v['North Region']['Rawalakot']['no_of_accounts']}}
+                        </td>
+                        <td class="text-right">
+                            {{$v['North Region']['Muzaffarabad']['amount'] + $v['North Region']['Rawalakot']['amount']}}
+                        </td>
+
+
+                        <td class="text-right">
+                            {{$v['South Region']['Mirpur']['no_of_accounts']}}
+                        </td>
+                        <td class="text-right">
+                            {{$v['South Region']['Mirpur']['amount']}}
+                        </td>
+                        <td class="text-right">
+                            {{$v['South Region']['Kotli']['no_of_accounts']}}
+                        </td>
+                        <td class="text-right">
+                            {{$v['South Region']['Kotli']['amount']}}
+                        </td>
+                        <td class="text-right">
+                            {{$v['South Region']['Mirpur']['no_of_accounts'] + $v['South Region']['Kotli']['no_of_accounts']}}
+                        </td>
+                        <td class="text-right">
+                            {{$v['South Region']['Mirpur']['amount'] + $v['South Region']['Kotli']['amount']}}
+                        </td>
+                        <td class="text-right">
+                            {{$v['North Region']['Muzaffarabad']['no_of_accounts'] + $v['North Region']['Rawalakot']['no_of_accounts'] + $v['South Region']['Mirpur']['no_of_accounts'] + $v['South Region']['Kotli']['no_of_accounts']}}
+                        </td>
+                        <td class="text-right">
+                            {{$v['North Region']['Muzaffarabad']['amount'] + $v['North Region']['Rawalakot']['amount'] + $v['South Region']['Mirpur']['amount'] + $v['South Region']['Kotli']['amount']}}
+                        </td>
+
+                    </tr>
+                    @php $i++; @endphp
+                @endforeach
+
+                @if($total_count < $i)
+                    <tr class="font-weight-bold text-right">
+                        <td colspan="2" class="text-left">Sub Total</td>
+                        <td>
+                            {{$data_total['Commercial / SME Finance']['Muzaffarabad']['no_of_accounts']}}
+                        </td>
+                        <td>
+                            {{$data_total['Commercial / SME Finance']['Muzaffarabad']['amount']}}
+                        </td>
+                        <td>
+                            {{$data_total['Commercial / SME Finance']['Rawalakot']['no_of_accounts']}}
+                        </td>
+                        <td>
+                            {{$data_total['Commercial / SME Finance']['Rawalakot']['amount']}}
+                        </td>
+                        <td>
+                            {{$data_total['Commercial / SME Finance']['Muzaffarabad']['no_of_accounts'] + $data_total['Commercial / SME Finance']['Rawalakot']['no_of_accounts']}}
+                        </td>
+                        <td>
+                            {{$data_total['Commercial / SME Finance']['Muzaffarabad']['amount'] + $data_total['Commercial / SME Finance']['Rawalakot']['amount']}}
+                        </td>
+                        <td>
+                            {{$data_total['Commercial / SME Finance']['Mirpur']['no_of_accounts']}}
+                        </td>
+                        <td>
+                            {{$data_total['Commercial / SME Finance']['Mirpur']['amount']}}
+                        </td>
+                        <td>
+                            {{$data_total['Commercial / SME Finance']['Kotli']['no_of_accounts']}}
+                        </td>
+                        <td>
+                            {{$data_total['Commercial / SME Finance']['Kotli']['amount']}}
+                        </td>
+                        <td>
+                            {{$data_total['Commercial / SME Finance']['Mirpur']['no_of_accounts']+$data_total['Commercial / SME Finance']['Kotli']['no_of_accounts']}}
+                        </td>
+                        <td>
+                            {{$data_total['Commercial / SME Finance']['Mirpur']['amount']+$data_total['Commercial / SME Finance']['Kotli']['amount']}}
+                        </td>
+                        <td>
+                            {{$data_total['Commercial / SME Finance']['Mirpur']['no_of_accounts']+$data_total['Commercial / SME Finance']['Kotli']['no_of_accounts'] + $data_total['Commercial / SME Finance']['Muzaffarabad']['no_of_accounts'] + $data_total['Commercial / SME Finance']['Rawalakot']['no_of_accounts']}}
+                        </td>
+                        <td>
+                            {{$data_total['Commercial / SME Finance']['Mirpur']['amount']+$data_total['Commercial / SME Finance']['Kotli']['amount'] + $data_total['Commercial / SME Finance']['Muzaffarabad']['amount'] + $data_total['Commercial / SME Finance']['Rawalakot']['amount']}}
+                        </td>
+                    </tr>
+                @endif
+            @endif
+
+
+            @if($key == "Micro Finance")
+                <tr>
+                    <td colspan="16"><strong>{{$key}}</strong></td>
+                </tr>
+
+                @php $i = 1; $total_count = count($data['Micro Finance']); @endphp
+                @foreach($value as $k => $v)
+                    <tr>
+                        <td class="text-center">{{$i}}</td>
+                        <td class="text-left">{{$k}}</td>
+                        <td class="text-right">
+                            {{$v['North Region']['Muzaffarabad']['no_of_accounts']}}
+                        </td>
+                        <td class="text-right">
+                            {{$v['North Region']['Muzaffarabad']['amount']}}
+                        </td>
+                        <td class="text-right">
+                            {{$v['North Region']['Rawalakot']['no_of_accounts']}}
+                        </td>
+                        <td class="text-right">
+                            {{$v['North Region']['Rawalakot']['amount']}}
+                        </td>
+                        <td class="text-right">
+                            {{$v['North Region']['Muzaffarabad']['no_of_accounts'] + $v['North Region']['Rawalakot']['no_of_accounts']}}
+                        </td>
+                        <td class="text-right">
+                            {{$v['North Region']['Muzaffarabad']['amount'] + $v['North Region']['Rawalakot']['amount']}}
+                        </td>
+
+
+                        <td class="text-right">
+                            {{$v['South Region']['Mirpur']['no_of_accounts']}}
+                        </td>
+                        <td class="text-right">
+                            {{$v['South Region']['Mirpur']['amount']}}
+                        </td>
+                        <td class="text-right">
+                            {{$v['South Region']['Kotli']['no_of_accounts']}}
+                        </td>
+                        <td class="text-right">
+                            {{$v['South Region']['Kotli']['amount']}}
+                        </td>
+                        <td class="text-right">
+                            {{$v['South Region']['Mirpur']['no_of_accounts'] + $v['South Region']['Kotli']['no_of_accounts']}}
+                        </td>
+                        <td class="text-right">
+                            {{$v['South Region']['Mirpur']['amount'] + $v['South Region']['Kotli']['amount']}}
+                        </td>
+                        <td class="text-right">
+                            {{$v['North Region']['Muzaffarabad']['no_of_accounts'] + $v['North Region']['Rawalakot']['no_of_accounts'] + $v['South Region']['Mirpur']['no_of_accounts'] + $v['South Region']['Kotli']['no_of_accounts']}}
+                        </td>
+                        <td class="text-right">
+                            {{$v['North Region']['Muzaffarabad']['amount'] + $v['North Region']['Rawalakot']['amount'] + $v['South Region']['Mirpur']['amount'] + $v['South Region']['Kotli']['amount']}}
+                        </td>
+
+                    </tr>
+                    @php $i++; @endphp
+                @endforeach
+
+                @if($total_count < $i)
+                    <tr class="font-weight-bold text-right">
+                        <td colspan="2" class="text-left">Sub Total</td>
+                        <td>
+                            {{$data_total['Micro Finance']['Muzaffarabad']['no_of_accounts']}}
+                        </td>
+                        <td>
+                            {{$data_total['Micro Finance']['Muzaffarabad']['amount']}}
+                        </td>
+                        <td>
+                            {{$data_total['Micro Finance']['Rawalakot']['no_of_accounts']}}
+                        </td>
+                        <td>
+                            {{$data_total['Micro Finance']['Rawalakot']['amount']}}
+                        </td>
+                        <td>
+                            {{$data_total['Micro Finance']['Muzaffarabad']['no_of_accounts'] + $data_total['Micro Finance']['Rawalakot']['no_of_accounts']}}
+                        </td>
+                        <td>
+                            {{$data_total['Micro Finance']['Muzaffarabad']['amount'] + $data_total['Micro Finance']['Rawalakot']['amount']}}
+                        </td>
+                        <td>
+                            {{$data_total['Micro Finance']['Mirpur']['no_of_accounts']}}
+                        </td>
+                        <td>
+                            {{$data_total['Micro Finance']['Mirpur']['amount']}}
+                        </td>
+                        <td>
+                            {{$data_total['Micro Finance']['Kotli']['no_of_accounts']}}
+                        </td>
+                        <td>
+                            {{$data_total['Micro Finance']['Kotli']['amount']}}
+                        </td>
+                        <td>
+                            {{$data_total['Micro Finance']['Mirpur']['no_of_accounts']+$data_total['Micro Finance']['Kotli']['no_of_accounts']}}
+                        </td>
+                        <td>
+                            {{$data_total['Micro Finance']['Mirpur']['amount']+$data_total['Micro Finance']['Kotli']['amount']}}
+                        </td>
+                        <td>
+                            {{$data_total['Micro Finance']['Mirpur']['no_of_accounts']+$data_total['Micro Finance']['Kotli']['no_of_accounts'] + $data_total['Micro Finance']['Muzaffarabad']['no_of_accounts'] + $data_total['Micro Finance']['Rawalakot']['no_of_accounts']}}
+                        </td>
+                        <td>
+                            {{$data_total['Micro Finance']['Mirpur']['amount']+$data_total['Micro Finance']['Kotli']['amount'] + $data_total['Micro Finance']['Muzaffarabad']['amount'] + $data_total['Micro Finance']['Rawalakot']['amount']}}
+                        </td>
+                    </tr>
+                @endif
+            @endif
+
+
+            @if($key == "Agriculture Finance")
+                <tr>
+                    <td colspan="16"><strong>{{$key}}</strong></td>
+                </tr>
+
+                @php $i = 1; $total_count = count($data['Agriculture Finance']); @endphp
+                @foreach($value as $k => $v)
+                    <tr>
+                        <td class="text-center">{{$i}}</td>
+                        <td class="text-left">{{$k}}</td>
+                        <td class="text-right">
+                            {{$v['North Region']['Muzaffarabad']['no_of_accounts']}}
+                        </td>
+                        <td class="text-right">
+                            {{$v['North Region']['Muzaffarabad']['amount']}}
+                        </td>
+                        <td class="text-right">
+                            {{$v['North Region']['Rawalakot']['no_of_accounts']}}
+                        </td>
+                        <td class="text-right">
+                            {{$v['North Region']['Rawalakot']['amount']}}
+                        </td>
+                        <td class="text-right">
+                            {{$v['North Region']['Muzaffarabad']['no_of_accounts'] + $v['North Region']['Rawalakot']['no_of_accounts']}}
+                        </td>
+                        <td class="text-right">
+                            {{$v['North Region']['Muzaffarabad']['amount'] + $v['North Region']['Rawalakot']['amount']}}
+                        </td>
+
+
+                        <td class="text-right">
+                            {{$v['South Region']['Mirpur']['no_of_accounts']}}
+                        </td>
+                        <td class="text-right">
+                            {{$v['South Region']['Mirpur']['amount']}}
+                        </td>
+                        <td class="text-right">
+                            {{$v['South Region']['Kotli']['no_of_accounts']}}
+                        </td>
+                        <td class="text-right">
+                            {{$v['South Region']['Kotli']['amount']}}
+                        </td>
+                        <td class="text-right">
+                            {{$v['South Region']['Mirpur']['no_of_accounts'] + $v['South Region']['Kotli']['no_of_accounts']}}
+                        </td>
+                        <td class="text-right">
+                            {{$v['South Region']['Mirpur']['amount'] + $v['South Region']['Kotli']['amount']}}
+                        </td>
+                        <td class="text-right">
+                            {{$v['North Region']['Muzaffarabad']['no_of_accounts'] + $v['North Region']['Rawalakot']['no_of_accounts'] + $v['South Region']['Mirpur']['no_of_accounts'] + $v['South Region']['Kotli']['no_of_accounts']}}
+                        </td>
+                        <td class="text-right">
+                            {{$v['North Region']['Muzaffarabad']['amount'] + $v['North Region']['Rawalakot']['amount'] + $v['South Region']['Mirpur']['amount'] + $v['South Region']['Kotli']['amount']}}
+                        </td>
+
+                    </tr>
+                    @php $i++; @endphp
+                @endforeach
+
+                @if($total_count < $i)
+                    <tr class="font-weight-bold text-right">
+                        <td colspan="2" class="text-left">Sub Total</td>
+                        <td>
+                            {{$data_total['Agriculture Finance']['Muzaffarabad']['no_of_accounts']}}
+                        </td>
+                        <td>
+                            {{$data_total['Agriculture Finance']['Muzaffarabad']['amount']}}
+                        </td>
+                        <td>
+                            {{$data_total['Agriculture Finance']['Rawalakot']['no_of_accounts']}}
+                        </td>
+                        <td>
+                            {{$data_total['Agriculture Finance']['Rawalakot']['amount']}}
+                        </td>
+                        <td>
+                            {{$data_total['Agriculture Finance']['Muzaffarabad']['no_of_accounts'] + $data_total['Agriculture Finance']['Rawalakot']['no_of_accounts']}}
+                        </td>
+                        <td>
+                            {{$data_total['Agriculture Finance']['Muzaffarabad']['amount'] + $data_total['Agriculture Finance']['Rawalakot']['amount']}}
+                        </td>
+                        <td>
+                            {{$data_total['Agriculture Finance']['Mirpur']['no_of_accounts']}}
+                        </td>
+                        <td>
+                            {{$data_total['Agriculture Finance']['Mirpur']['amount']}}
+                        </td>
+                        <td>
+                            {{$data_total['Agriculture Finance']['Kotli']['no_of_accounts']}}
+                        </td>
+                        <td>
+                            {{$data_total['Agriculture Finance']['Kotli']['amount']}}
+                        </td>
+                        <td>
+                            {{$data_total['Agriculture Finance']['Mirpur']['no_of_accounts']+$data_total['Agriculture Finance']['Kotli']['no_of_accounts']}}
+                        </td>
+                        <td>
+                            {{$data_total['Agriculture Finance']['Mirpur']['amount']+$data_total['Agriculture Finance']['Kotli']['amount']}}
+                        </td>
+                        <td>
+                            {{$data_total['Agriculture Finance']['Mirpur']['no_of_accounts']+$data_total['Agriculture Finance']['Kotli']['no_of_accounts'] + $data_total['Agriculture Finance']['Muzaffarabad']['no_of_accounts'] + $data_total['Agriculture Finance']['Rawalakot']['no_of_accounts']}}
+                        </td>
+                        <td>
+                            {{$data_total['Agriculture Finance']['Mirpur']['amount']+$data_total['Agriculture Finance']['Kotli']['amount'] + $data_total['Agriculture Finance']['Muzaffarabad']['amount'] + $data_total['Agriculture Finance']['Rawalakot']['amount']}}
+                        </td>
+                    </tr>
+                @endif
+            @endif
 
         @endforeach
 

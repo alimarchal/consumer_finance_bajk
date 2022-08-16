@@ -7,6 +7,7 @@ use App\Http\Requests\UpdateInstallmentRequest;
 use App\Models\BranchOutstanding;
 use App\Models\Customer;
 use App\Models\Installment;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
 class InstallmentController extends Controller
@@ -18,7 +19,6 @@ class InstallmentController extends Controller
      */
     public function index(Customer $customer)
     {
-
         return view('installment.index', compact('customer'));
     }
 
@@ -46,27 +46,16 @@ class InstallmentController extends Controller
         try {
             $request->merge(['customer_id' => $customer->id]);
             $request->merge(['user_id' => auth()->user()->id]);
+            $request->merge(['date' => Carbon::now()->format('Y-m-d')]);
             $installment = Installment::create($request->all());
             $customer->principle_amount = $customer->principle_amount - $installment->principal_amount;
+            $customer->last_installment_date = $request->date;
             $customer->save();
 
             $installment_object = Installment::find($installment->id);
             $installment_object->principal_outstanding = $customer->principle_amount;
             $installment_object->save();
 
-//            $branch_outstanding_balance = Customer::where('branch_id', $customer->branch_id)->sum('principle_amount');
-//            //disbursement_date
-//
-////            dd($branch_outstanding_balance);
-//
-//            BranchOutstanding::create([
-//                'date' => $request->date,
-//                'branch_id' => $customer->branch->id,
-//                'customer_id' => $request->customer_id,
-//                'user_id' => $request->user_id,
-//                'principal_outstanding_customer' => $customer->principle_amount,
-//                'branch_outstanding_balance' => $branch_outstanding_balance,
-//            ]);
             DB::commit();
             // all good
         } catch (\Exception $e) {

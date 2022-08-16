@@ -157,7 +157,7 @@
         <div class="row">
             <div class="col-md-3 mb-3">
                 <label for="amount_enhanced"><strong>Amount Enhanced (if any) </strong></label>
-                <input type="number" step="0.01" min="0.00" value="0.00" class="form-control" id="amount_enhanced" required name="amount_enhanced">
+                <input type="number" step="0.01" min="0.00" value="0.00" class="form-control" id="amount_enhanced" readonly required name="amount_enhanced">
             </div>
             <div class="col-md-3 mb-3">
                 <label for="sanction_date"><strong>Sanctioned Date</strong></label>
@@ -194,13 +194,19 @@
                        name="dac_issuance_date" value="{{$customer->dac_issuance_date}}">
             </div>
             <div class="col-md-3 mb-3">
+                <label for="loan_due_date"><strong>Loan Due Date</strong></label>
+                <input type="date" class="form-control" id="loan_due_date" required
+                       name="loan_due_date" value="{{$customer->loan_due_date}}" >
+            </div>
+
+            <div class="col-md-3 mb-3">
                 <label for="disbursement_date"><strong>DAC Disbursement Date</strong></label>
                 <input type="date" class="form-control" id="disbursement_date" required
                        name="disbursement_date" value="{{$customer->disbursement_date}}">
             </div>
             <div class="col-md-3 mb-3">
                 <label for="amount_disbursed"><strong>Amount Disbursed</strong></label>
-                <input type="number" class="form-control" id="amount_disbursed" required
+                <input type="number" class="form-control" id="amount_disbursed" required readonly
                        name="amount_disbursed" value="{{$customer->amount_disbursed}}">
             </div>
             <div class="col-md-3 mb-3">
@@ -233,11 +239,11 @@
             </div>
 
             <div class="col-md-3 mb-2">
-                <label for="secure_unsecure_loan"><strong>Facility (Secure/Unsecure Principal)</strong></label>
-                <select class="form-control select2bs4" required id="secure_unsecure_loan" style="width: 100%;" name="secure_unsecure_loan">
+                <label for="secure_unsecure_loan"><strong>Facility</strong></label>
+                <select class="form-control " required id="secure_unsecure_loan" readonly style="width: 100%;" name="secure_unsecure_loan">
                     <option value="">None</option>
-                    <option value="Secure" @if($customer->secure_unsecure_loan == 'Secure') selected @endif >Secure Principal</option>
-                    <option value="Unsecure" @if($customer->secure_unsecure_loan == 'Unsecure') selected @endif>Unsecure Principal</option>
+                    <option value="Secure" @if($customer->secure_unsecure_loan == 'Secure') selected @endif >Secure</option>
+                    <option value="Unsecure" @if($customer->secure_unsecure_loan == 'Unsecure') selected @endif>Unsecure</option>
                 </select>
             </div>
 

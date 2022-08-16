@@ -47,6 +47,6 @@
     <div class="col-md-3 mb-3">
         <label for="amount_sanctioned"><strong>Amount Sanctioned</strong></label>
         <input type="number" class="form-control" id="amount_sanctioned" required
-               name="amount_sanctioned" step="0.01" min="0" @if(!empty($customer)) value="{{$customer->amount_sanctioned}}" @endif>
+               name="amount_sanctioned" @if(request()->routeIs('customer.show')) readonly @endif step="0.01" min="0" @if(!empty($customer)) value="{{$customer->amount_sanctioned}}" @endif>
     </div>
 </div>
