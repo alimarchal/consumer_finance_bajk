@@ -149,7 +149,7 @@
                     </li>
                 @endcan
 
-
+                @can('Full Access')
                 <li class="nav-item @if(request()->routeIs(['report.branch-wise-position','report.overall-bank-position','report.creditGrowth','report.creditGrowthPercentageShare','report.bankPosition','report.branchWisePositionLoans','report.outstandingAdvancesProductWise'])) menu-open @endif">
                     <a href="#" class="nav-link @if(request()->routeIs(['report.branch-wise-position','report.overall-bank-position','report.creditGrowth','report.creditGrowthPercentageShare','report.bankPosition','report.branchWisePositionLoans','report.outstandingAdvancesProductWise'])) active @endif">
                         <i class="nav-icon fas fa-book"></i>
@@ -227,6 +227,7 @@
 
                     </ul>
                 </li>
+                @endcan
                 {{--                <li class="nav-item">--}}
                 {{--                    <a href="#" class="nav-link">--}}
                 {{--                        <i class="nav-icon fas fa-tree"></i>--}}

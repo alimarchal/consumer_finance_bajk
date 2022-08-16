@@ -280,11 +280,31 @@
                                 <i class="fas fa-coins"></i>
                             </div>
                         </div>
+
                     </div>
                     <!-- ./col -->
                 </div>
                 <!-- /.row -->
 
+                <h5 class="text-center">NPL Accounts</h5>
+                <div class="row">
+                    <div class="col-lg-3 col-6">
+                        <!-- small box -->
+                        <div class="small-box bg-info">
+                            <div class="inner">
+                                <h3>{{number_format($npl_accounts_amount,2)}}</h3>
+                                <p>Total NPL No of Accounts: {{$npl_accounts}}</p>
+                            </div>
+                            <div class="icon">
+                                <i class="fas fa-coins"></i>
+                            </div>
+                            @can('Full Access')
+                                <a href="{{route('report.branchWiseNplPosition')}}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                            @endcan
+                        </div>
+                    </div>
+                    <!-- ./col -->
+                </div>
 
             </div><!-- /.container-fluid -->
         </section>

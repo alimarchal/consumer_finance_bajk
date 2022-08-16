@@ -51,6 +51,10 @@ class CustomerController extends Controller
             $micro_financing_noa = Customer::where('branch_id', \auth()->user()->branch_id)->where('product_id', '3')->count();
             $agriculture_financing_noa = Customer::where('branch_id', \auth()->user()->branch_id)->where('product_id', '4')->count();
 
+            $npl_accounts = Customer::where('branch_id', \auth()->user()->branch_id)->where('customers.status', '=', 1)->whereNotIn('customers.customer_status', ['Regular', 'Irregular'])->count();
+            $npl_accounts_amount = Customer::where('branch_id', \auth()->user()->branch_id)->where('customers.status', '=', 1)->whereNotIn('customers.customer_status', ['Regular', 'Irregular'])->sum('principle_amount');
+
+
         } elseif (Auth::user()->hasRole('South Regional MIS Officer')) {
             $south_branches = Branch::where('region', 'South Region')->get('id');
             $branches = [];
@@ -72,6 +76,10 @@ class CustomerController extends Controller
             $commercial_sme_financing_noa = Customer::whereIn('branch_id', $branches)->where('product_id', '2')->count();
             $micro_financing_noa = Customer::whereIn('branch_id', $branches)->where('product_id', '3')->count();
             $agriculture_financing_noa = Customer::whereIn('branch_id', $branches)->where('product_id', '4')->count();
+
+
+            $npl_accounts = Customer::whereIn('branch_id', $branches)->where('customers.status', '=', 1)->whereNotIn('customers.customer_status', ['Regular', 'Irregular'])->count();
+            $npl_accounts_amount = Customer::whereIn('branch_id', $branches)->where('customers.status', '=', 1)->whereNotIn('customers.customer_status', ['Regular', 'Irregular'])->sum('principle_amount');
 
         } elseif (Auth::user()->hasRole('North Regional MIS Officer')) {
 
@@ -95,6 +103,9 @@ class CustomerController extends Controller
             $micro_financing_noa = Customer::whereIn('branch_id', $branches)->where('product_id', '3')->count();
             $agriculture_financing_noa = Customer::whereIn('branch_id', $branches)->where('product_id', '4')->count();
 
+            $npl_accounts = Customer::whereIn('branch_id', $branches)->where('customers.status', '=', 1)->whereNotIn('customers.customer_status', ['Regular', 'Irregular'])->count();
+            $npl_accounts_amount = Customer::whereIn('branch_id', $branches)->where('customers.status', '=', 1)->whereNotIn('customers.customer_status', ['Regular', 'Irregular'])->sum('principle_amount');
+
         } elseif (Auth::user()->hasRole(['Head Office', 'Super-Admin'])) {
             $total_borrower = Customer::count();
             $total_amount_outstanding = Customer::sum('principle_amount');
@@ -105,11 +116,14 @@ class CustomerController extends Controller
             $micro_financing = Customer::where('product_id', '3')->sum('principle_amount');
             $agriculture_financing = Customer::where('product_id', '4')->sum('principle_amount');
 
-
             $consumer_financing_outstanding_noa = Customer::where('product_id', '1')->count();
             $commercial_sme_financing_noa = Customer::where('product_id', '2')->count();
             $micro_financing_noa = Customer::where('product_id', '3')->count();
             $agriculture_financing_noa = Customer::where('product_id', '4')->count();
+
+            $npl_accounts = Customer::where('customers.status', '=', 1)->whereNotIn('customers.customer_status', ['Regular', 'Irregular'])->count();
+            $npl_accounts_amount = Customer::where('customers.status', '=', 1)->whereNotIn('customers.customer_status', ['Regular', 'Irregular'])->sum('principle_amount');
+
         }
 
 
@@ -118,7 +132,7 @@ class CustomerController extends Controller
                 'consumer_financing_outstanding', 'commercial_sme_financing',
                 'micro_financing', 'agriculture_financing',
                 'consumer_financing_outstanding_noa', 'commercial_sme_financing_noa',
-                'micro_financing_noa', 'agriculture_financing_noa',));
+                'micro_financing_noa', 'agriculture_financing_noa','npl_accounts','npl_accounts_amount'));
     }
 
     /**

@@ -58,7 +58,7 @@
     @endif
 
 
-    <form method="get" action="{{route('report.branchWisePositionLoans')}}">
+    <form method="get" action="{{route('report.branchWiseNplPosition')}}">
         <div class="filters" style="display:none;">
             <div class="form-row">
                 <div class="form-group col-md-3">
@@ -66,20 +66,9 @@
                     <input type="date" class="form-control" id="month" name="month" value="{{ empty(request()->date) ? '' : request()->date }}">
                 </div>
 
-                <div class="col-md-3">
-                    <label for="product_type_id"><strong>Facility Type</strong></label>
-                    <select class="form-control select2bs4" id="product_type_id" style="width: 100%;" name="product_type_id">
-                        <option value="">None</option>
-                        @foreach(\App\Models\ProductType::all() as $pt)
-                            <option value="{{$pt->id}}">{{$pt->product_type}}</option>
-                        @endforeach
 
-                    </select>
-                </div>
 
             </div>
-
-
             <div class="form-row">
                 <div class="form-group col-md-3">
                     <button type="submit" class="btn btn-primary">Search</button>
@@ -160,6 +149,24 @@
                                 $i++;
                             @endphp
                         @endforeach
+
+                        <tr>
+                            <td class="text-center" colspan="2">{{$k}} Zone Total</td>
+                            <td class="text-right">
+                                {{$data_total[$key][$k][$last_year->format('F')]['no_of_accounts']}}
+                            </td>
+                            <td class="text-right">
+                                {{$data_total[$key][$k][$last_year->format('F')]['amount']}}
+                            </td>
+                            <td class="text-right">
+                                {{$data_total[$key][$k][$month->format('F')]['no_of_accounts']}}
+                            </td>
+                            <td class="text-right">
+                                {{$data_total[$key][$k][$month->format('F')]['amount']}}
+                            </td>
+                            <td class="text-right">**</td>
+                            <td class="text-right">**</td>
+                        </tr>
                     @endif
 
                     @if($k == "Rawalakot")
@@ -184,6 +191,45 @@
                                 $i++;
                             @endphp
                         @endforeach
+
+                        <tr>
+                            <td class="text-center" colspan="2">{{$k}} Zone Total</td>
+                            <td class="text-right">
+                                {{$data_total[$key][$k][$last_year->format('F')]['no_of_accounts']}}
+                            </td>
+                            <td class="text-right">
+                                {{$data_total[$key][$k][$last_year->format('F')]['amount']}}
+                            </td>
+                            <td class="text-right">
+                                {{$data_total[$key][$k][$month->format('F')]['no_of_accounts']}}
+                            </td>
+                            <td class="text-right">
+                                {{$data_total[$key][$k][$month->format('F')]['amount']}}
+                            </td>
+                            <td class="text-right">**</td>
+                            <td class="text-right">**</td>
+                        </tr>
+
+
+
+                        <tr>
+                            <td class="text-center" colspan="2">{{$key}} Total</td>
+                            <td class="text-right">
+                                {{$data_total[$key]['Rawalakot'][$last_year->format('F')]['no_of_accounts'] + $data_total[$key]['Muzaffarabad'][$last_year->format('F')]['no_of_accounts']}}
+                            </td>
+                            <td class="text-right">
+                                {{$data_total[$key]['Muzaffarabad'][$last_year->format('F')]['amount'] + $data_total[$key]['Rawalakot'][$last_year->format('F')]['amount']}}
+                            </td>
+                            <td class="text-right">
+                                {{$data_total[$key]['Rawalakot'][$month->format('F')]['no_of_accounts'] + $data_total[$key]['Muzaffarabad'][$month->format('F')]['no_of_accounts']}}
+                            </td>
+                            <td class="text-right">
+                                {{$data_total[$key]['Muzaffarabad'][$month->format('F')]['amount'] + $data_total[$key]['Rawalakot'][$month->format('F')]['amount']}}
+                            </td>
+                            <td class="text-right">**</td>
+                            <td class="text-right">**</td>
+                        </tr>
+
                     @endif
                 @endforeach
             @endif
@@ -219,6 +265,24 @@
                                 $i++;
                             @endphp
                         @endforeach
+
+                        <tr>
+                            <td class="text-center" colspan="2">{{$k}} Zone Total</td>
+                            <td class="text-right">
+                                {{$data_total[$key][$k][$last_year->format('F')]['no_of_accounts']}}
+                            </td>
+                            <td class="text-right">
+                                {{$data_total[$key][$k][$last_year->format('F')]['amount']}}
+                            </td>
+                            <td class="text-right">
+                                {{$data_total[$key][$k][$month->format('F')]['no_of_accounts']}}
+                            </td>
+                            <td class="text-right">
+                                {{$data_total[$key][$k][$month->format('F')]['amount']}}
+                            </td>
+                            <td class="text-right">**</td>
+                            <td class="text-right">**</td>
+                        </tr>
                     @endif
 
                     @if($k == "Kotli")
@@ -243,6 +307,65 @@
                                 $i++;
                             @endphp
                         @endforeach
+
+                        <tr>
+                            <td class="text-center" colspan="2">{{$k}} Zone Total</td>
+                            <td class="text-right">
+                                {{$data_total[$key][$k][$last_year->format('F')]['no_of_accounts']}}
+                            </td>
+                            <td class="text-right">
+                                {{$data_total[$key][$k][$last_year->format('F')]['amount']}}
+                            </td>
+                            <td class="text-right">
+                                {{$data_total[$key][$k][$month->format('F')]['no_of_accounts']}}
+                            </td>
+                            <td class="text-right">
+                                {{$data_total[$key][$k][$month->format('F')]['amount']}}
+                            </td>
+                            <td class="text-right">**</td>
+                            <td class="text-right">**</td>
+                        </tr>
+
+
+                        <tr>
+                            <td class="text-center" colspan="2">{{$key}} Total</td>
+                            <td class="text-right">
+                                {{$data_total[$key]['Mirpur'][$last_year->format('F')]['no_of_accounts'] + $data_total[$key]['Kotli'][$last_year->format('F')]['no_of_accounts']}}
+                            </td>
+                            <td class="text-right">
+                                {{$data_total[$key]['Mirpur'][$last_year->format('F')]['amount'] + $data_total[$key]['Kotli'][$last_year->format('F')]['amount']}}
+                            </td>
+                            <td class="text-right">
+                                {{$data_total[$key]['Mirpur'][$month->format('F')]['no_of_accounts'] + $data_total[$key]['Kotli'][$month->format('F')]['no_of_accounts']}}
+                            </td>
+                            <td class="text-right">
+                                {{$data_total[$key]['Mirpur'][$month->format('F')]['amount'] + $data_total[$key]['Kotli'][$month->format('F')]['amount']}}
+                            </td>
+                            <td class="text-right">**</td>
+                            <td class="text-right">**</td>
+                        </tr>
+
+
+
+                        <tr>
+                            <td class="text-center" colspan="2">Bank Position</td>
+                            <td class="text-right">
+                                {{$data_total[$key]['Mirpur'][$last_year->format('F')]['no_of_accounts'] + $data_total[$key]['Kotli'][$last_year->format('F')]['no_of_accounts'] + $data_total['North Region']['Rawalakot'][$last_year->format('F')]['no_of_accounts'] + $data_total['North Region']['Muzaffarabad'][$last_year->format('F')]['no_of_accounts']}}
+                            </td>
+                            <td class="text-right">
+                                {{$data_total[$key]['Mirpur'][$last_year->format('F')]['amount'] + $data_total[$key]['Kotli'][$last_year->format('F')]['amount'] + $data_total['North Region']['Muzaffarabad'][$last_year->format('F')]['amount'] + $data_total['North Region']['Rawalakot'][$last_year->format('F')]['amount']}}
+                            </td>
+                            <td class="text-right">
+                                {{$data_total[$key]['Mirpur'][$month->format('F')]['no_of_accounts'] + $data_total[$key]['Kotli'][$month->format('F')]['no_of_accounts'] +
+                            $data_total['North Region']['Rawalakot'][$month->format('F')]['no_of_accounts'] + $data_total['North Region']['Muzaffarabad'][$month->format('F')]['no_of_accounts']}}
+                            </td>
+                            <td class="text-right">
+                                {{$data_total[$key]['Mirpur'][$month->format('F')]['amount'] + $data_total[$key]['Kotli'][$month->format('F')]['amount'] +
+                            $data_total['North Region']['Muzaffarabad'][$month->format('F')]['amount'] + $data_total['North Region']['Rawalakot'][$month->format('F')]['amount']}}
+                            </td>
+                            <td class="text-right">**</td>
+                            <td class="text-right">**</td>
+                        </tr>
                     @endif
                 @endforeach
             @endif

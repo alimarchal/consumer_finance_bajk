@@ -703,6 +703,7 @@ class ReportController extends Controller
 
         foreach ($branches as $branch) {
             $data[$branch->region][$branch->zone][$branch->name] = [$month->format('F') => ['no_of_accounts' => 0, 'amount' => 0.00], $last_year->format('F') => ['no_of_accounts' => 0, 'amount' => 0.00]];
+            $data_total[$branch->region][$branch->zone] = [$month->format('F') => ['no_of_accounts' => 0, 'amount' => 0.00], $last_year->format('F') => ['no_of_accounts' => 0, 'amount' => 0.00]];
         }
 
 
@@ -740,25 +741,39 @@ class ReportController extends Controller
             ->get();
 
 
+//        dd($product_wise_principal_outstanding);
+
         if ($month_date->format('Y-m') == Carbon::now()->format('Y-m')) {
             foreach ($product_wise_principal_outstanding as $bo) {
                 $data[$bo->region][$bo->zone][$bo->name][$month->format('F')]['amount'] = $bo->principle_amount;
                 $data[$bo->region][$bo->zone][$bo->name][$month->format('F')]['no_of_accounts'] = $bo->no_of_accounts;
+
+                $data_total[$bo->region][$bo->zone][$month->format('F')]['amount'] = $product_wise_principal_outstanding->where('region',$bo->region)->where('zone', $bo->zone)->sum('principle_amount');
+                $data_total[$bo->region][$bo->zone][$month->format('F')]['no_of_accounts'] = $product_wise_principal_outstanding->where('region',$bo->region)->where('zone', $bo->zone)->sum('no_of_accounts');
+
             }
         } else {
             foreach ($product_wise_principal_outstanding as $bo) {
                 $data[$bo->region][$bo->zone][$bo->name][$month->format('F')]['amount'] = $bo->principle_amount;
                 $data[$bo->region][$bo->zone][$bo->name][$month->format('F')]['no_of_accounts'] = $bo->no_of_accounts;
+
+
+                $data_total[$bo->region][$bo->zone][$month->format('F')]['amount'] = $product_wise_principal_outstanding->where('region',$bo->region)->where('zone', $bo->zone)->sum('principle_amount');
+                $data_total[$bo->region][$bo->zone][$month->format('F')]['no_of_accounts'] = $product_wise_principal_outstanding->where('region',$bo->region)->where('zone', $bo->zone)->sum('no_of_accounts');
             }
         }
 
         foreach ($principal_outstanding_last_year as $bo) {
             $data[$bo->region][$bo->zone][$bo->name][$last_year->format('F')]['amount'] = $bo->principle_amount;
             $data[$bo->region][$bo->zone][$bo->name][$last_year->format('F')]['no_of_accounts'] = $bo->no_of_accounts;
+
+
+            $data_total[$bo->region][$bo->zone][$last_year->format('F')]['amount'] = $product_wise_principal_outstanding->where('region',$bo->region)->where('zone', $bo->zone)->sum('principle_amount');
+            $data_total[$bo->region][$bo->zone][$last_year->format('F')]['no_of_accounts'] = $product_wise_principal_outstanding->where('region',$bo->region)->where('zone', $bo->zone)->sum('no_of_accounts');
         }
 
-//        dd($data);
-        return view('reports.branchWiseNPLPosition',compact('data','month','last_year'));
+//        dd($data_total);
+        return view('reports.branchWiseNPLPosition', compact('data', 'month', 'last_year','data_total'));
 
     }
 
