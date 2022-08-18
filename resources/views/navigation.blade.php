@@ -208,8 +208,8 @@
                     </ul>
                 </li>
 
-                <li class="nav-item @if(request()->routeIs(['report.branchWiseNplPosition','report.branchWiseNplToAdvances'])) menu-open @endif">
-                    <a href="#" class="nav-link @if(request()->routeIs(['report.branchWiseNplPosition','report.branchWiseNplToAdvances'])) active @endif">
+                <li class="nav-item @if(request()->routeIs(['report.branchWiseNplPosition','report.branchWiseNplToAdvances','report.productWiseNplToAdvances'])) menu-open @endif">
+                    <a href="#" class="nav-link @if(request()->routeIs(['report.branchWiseNplPosition','report.branchWiseNplToAdvances','report.productWiseNplToAdvances'])) active @endif">
                         <i class="nav-icon fas fa-book"></i>
                         <p>
                             Secondary Reports
@@ -229,6 +229,12 @@
                         <li class="nav-item">
                             <a href="{{route('report.branchWiseNplToAdvances')}}" class="nav-link @if(request()->routeIs('report.branchWiseNplToAdvances')) active @endif">
                                 <p><span style="font-size: 14px;">Branch Wise NPL To Advance Ratio</span></p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="{{route('report.productWiseNplToAdvances')}}" class="nav-link @if(request()->routeIs('report.productWiseNplToAdvances')) active @endif">
+                                <p><span style="font-size: 14px;">Product Wise NPL To Advance </span></p>
                             </a>
                         </li>
 
