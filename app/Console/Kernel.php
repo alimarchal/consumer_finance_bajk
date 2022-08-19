@@ -7,6 +7,8 @@ use App\Models\BranchOutstandingDaily;
 use App\Models\Insurance;
 use App\Models\ProductWiseDaily;
 use App\Models\ProductWiseMonthly;
+use App\Models\ProductWiseNplAdvance;
+use App\Models\ProductWiseNplMonthly;
 use Carbon\Carbon;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
@@ -254,6 +256,178 @@ class Kernel extends ConsoleKernel
                 DB::rollback();
                 // something went wrong
             }
+
+
+            // Product Wise Monthly NPL
+            DB::beginTransaction();
+            try {
+
+                $branch_outstanding_today = ProductWiseNplMonthly::whereMonth('created_at', date('m'))->whereYear('created_at', date('Y'))->get();
+
+                if ($branch_outstanding_today->isNotEmpty()) {
+                    $collection = DB::table('customers')
+                        ->select('branches.region', 'branches.zone', 'branches.name', 'customers.branch_id', 'customers.product_id', 'customers.product_type_id',
+                            DB::raw("COUNT(customers.id) as no_of_accounts"),
+                            DB::raw("SUM(customers.principle_amount) as principle_amount"))
+                        ->join('branches', 'customers.branch_id', '=', 'branches.id')
+                        ->whereNotIn('customers.customer_status', ['Regular', 'Irregular'])
+                        ->where('customers.status', '=', 1)
+                        ->groupBy('customers.branch_id', 'customers.product_id', 'customers.product_type_id')
+                        ->get();
+
+
+                    $ids = $branch_outstanding_today->pluck('id')->toArray();
+                    $collection_ids = [];
+
+                    foreach ($collection as $item) {
+                        $data_from_table = $branch_outstanding_today->where('branch_id', $item->branch_id)->where('product_id', $item->product_id)->where('product_type_id', $item->product_type_id)->first();
+
+                        if (!empty($data_from_table)) {
+                            $collection_ids[] = $data_from_table->id;
+                        }
+
+                        if (!empty($data_from_table)) {
+                            $data_from_table->branch_id = $item->branch_id;
+                            $data_from_table->product_id = $item->product_id;
+                            $data_from_table->product_type_id = $item->product_type_id;
+                            $data_from_table->no_of_accounts = $item->no_of_accounts;
+                            $data_from_table->principle_outstanding = $item->principle_amount;
+                            $data_from_table->save();
+                        } else {
+                            ProductWiseNplMonthly::create([
+                                'branch_id' => $item->branch_id,
+                                'product_id' => $item->product_id,
+                                'product_type_id' => $item->product_type_id,
+                                'no_of_accounts' => $item->no_of_accounts,
+                                'principle_outstanding' => $item->principle_amount,
+                            ]);
+                        }
+
+
+                    }
+
+                    $different_id = array_diff($ids, $collection_ids);
+                    if (!empty($different_id)) {
+                        foreach ($different_id as $unique_id) {
+                            $item_npl = ProductWiseNplMonthly::find($unique_id)->delete();
+                        }
+                    }
+
+                } else {
+                    $collection = DB::table('customers')
+                        ->select('branches.region', 'branches.zone', 'branches.name', 'customers.branch_id', 'customers.product_id', 'customers.product_type_id',
+                            DB::raw("COUNT(customers.id) as no_of_accounts"),
+                            DB::raw("SUM(customers.principle_amount) as principle_amount"))
+                        ->join('branches', 'customers.branch_id', '=', 'branches.id')
+                        ->whereNotIn('customers.customer_status', ['Regular', 'Irregular'])
+                        ->where('customers.status', '=', 1)
+                        ->groupBy('customers.branch_id', 'customers.product_id', 'customers.product_type_id')
+                        ->get();
+
+                    foreach ($collection as $item) {
+                        ProductWiseNplMonthly::create([
+                            'branch_id' => $item->branch_id,
+                            'product_id' => $item->product_id,
+                            'product_type_id' => $item->product_type_id,
+                            'no_of_accounts' => $item->no_of_accounts,
+                            'principle_outstanding' => $item->principle_amount,
+                        ]);
+                    }
+                }
+                DB::commit();
+                // all good
+            } catch (\Exception $e) {
+                DB::rollback();
+                // something went wrong
+            }
+
+
+            // Product Wise NPL to Advances
+            DB::beginTransaction();
+            try {
+
+                $branch_outstanding_today = ProductWiseNplAdvance::whereMonth('created_at', date('m'))->whereYear('created_at', date('Y'))->get();
+
+
+                if ($branch_outstanding_today->isNotEmpty()) {
+                    $collection =  DB::table('customers')
+                        ->select('branches.region', 'branches.zone', 'branches.name', 'customers.branch_id', 'customers.product_id',
+                            'customers.product_type_id', DB::raw("SUM(IF(customers.customer_status != 'Regular', 1, 0)
+                         and IF(customers.customer_status != 'Irregular', 1, 0)) as no_of_accounts"),
+                            DB::raw("SUM(customers.principle_amount) as principle_amount"))
+                        ->join('branches', 'customers.branch_id', '=', 'branches.id')
+                        ->where('customers.status', '=', 1)
+                        ->groupBy('customers.branch_id','customers.product_id','customers.product_type_id')
+                        ->orderBy('customers.branch_id', 'asc')
+                        ->get();
+
+
+                    $ids = $branch_outstanding_today->pluck('id')->toArray();
+                    $collection_ids = [];
+
+                    foreach ($collection as $item) {
+                        $data_from_table = $branch_outstanding_today->where('branch_id', $item->branch_id)->where('product_id', $item->product_id)->where('product_type_id', $item->product_type_id)->first();
+
+                        if (!empty($data_from_table)) {
+                            $collection_ids[] = $data_from_table->id;
+                        }
+
+                        if (!empty($data_from_table)) {
+                            $data_from_table->branch_id = $item->branch_id;
+                            $data_from_table->product_id = $item->product_id;
+                            $data_from_table->product_type_id = $item->product_type_id;
+                            $data_from_table->no_of_accounts = $item->no_of_accounts;
+                            $data_from_table->principle_outstanding = $item->principle_amount;
+                            $data_from_table->save();
+                        } else {
+                            ProductWiseNplAdvance::create([
+                                'branch_id' => $item->branch_id,
+                                'product_id' => $item->product_id,
+                                'product_type_id' => $item->product_type_id,
+                                'no_of_accounts' => $item->no_of_accounts,
+                                'principle_outstanding' => $item->principle_amount,
+                            ]);
+                        }
+
+
+                    }
+
+                    $different_id = array_diff($ids, $collection_ids);
+                    if (!empty($different_id)) {
+                        foreach ($different_id as $unique_id) {
+                            $item_npl = ProductWiseNplAdvance::find($unique_id)->delete();
+                        }
+                    }
+
+                } else {
+                    $collection = DB::table('customers')
+                        ->select('branches.region', 'branches.zone', 'branches.name', 'customers.branch_id', 'customers.product_id',
+                            'customers.product_type_id', DB::raw("SUM(IF(customers.customer_status != 'Regular', 1, 0)
+                         and IF(customers.customer_status != 'Irregular', 1, 0)) as no_of_accounts"),
+                            DB::raw("SUM(customers.principle_amount) as principle_amount"))
+                        ->join('branches', 'customers.branch_id', '=', 'branches.id')
+                        ->where('customers.status', '=', 1)
+                        ->groupBy('customers.branch_id','customers.product_id','customers.product_type_id')
+                        ->orderBy('customers.branch_id', 'asc')
+                        ->get();
+
+                    foreach ($collection as $item) {
+                        ProductWiseNplAdvance::create([
+                            'branch_id' => $item->branch_id,
+                            'product_id' => $item->product_id,
+                            'product_type_id' => $item->product_type_id,
+                            'no_of_accounts' => $item->no_of_accounts,
+                            'principle_outstanding' => $item->principle_amount,
+                        ]);
+                    }
+                }
+                DB::commit();
+                // all good
+            } catch (\Exception $e) {
+                DB::rollback();
+                // something went wrong
+            }
+
 
         })->everyMinute();
     }

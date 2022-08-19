@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class ProductWiseNplAdvance extends Model
 {
     use HasFactory;
+
+    protected $fillable = ['branch_id', 'product_id', 'product_type_id', 'no_of_accounts', 'principle_outstanding'];
 }

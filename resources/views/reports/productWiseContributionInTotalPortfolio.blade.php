@@ -58,7 +58,7 @@
     @endif
 
 
-    <form method="get" action="{{route('report.productWiseNplToAdvances')}}">
+    <form method="get" action="{{route('report.productWiseContributionInTotalPortfolio')}}">
         <div class="filters" style="display:none;">
             <div class="form-row">
                 <div class="form-group col-md-3">
@@ -81,12 +81,9 @@
             <div class="col-md-12 p-3">
                 <a href="javascript:;" class="btn btn-primary showModule float-right" data-target="filters">
                     Show Filters</a>
-                {{--                <input type="submit" name="search" value="Export" class="btn btn-success float-right mr-2">--}}
             </div>
         </div>
     </form>
-    {{--sss | {{ request()->input('filter[search_string]', old('filter[search_string]')) }}--}}
-
     <img class="w-48 h-auto" src="{{Storage::url('logo.png')}}" alt="Bank AJK Logo">
     <div class="col-md-12 d-print-none">
         <button onclick="window.print()" class="btn btn-success d-print-none float-right">
@@ -94,7 +91,7 @@
         </button>
     </div>
     <h5 class="text-center font-weight-bold">The Bank of Azad Jammu & Kashmir
-        <br> Product Wise NPL to Advances Ratio ({{$month->format('F - Y')}})
+        <br> Product Wise Contribution In total Portfolio ({{$month->format('F - Y')}})
     </h5>
     <br>
 
@@ -109,7 +106,7 @@
         </tr>
 
         <tr>
-            <th scope="col" class="align-middle text-center" width="5%">No</th>
+            <th scope="col" class="align-middle text-center" width="5%">No of Accounts</th>
             <th scope="col" class="align-middle text-center" width="5%">Amount</th>
         </tr>
         </thead>

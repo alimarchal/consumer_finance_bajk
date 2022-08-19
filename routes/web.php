@@ -106,6 +106,7 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
         Route::get('/report/branch-wise-npl-position', 'branchWiseNplPosition')->name('report.branchWiseNplPosition');
         Route::get('/report/branch-wise-npl-to-advances', 'branchWiseNplToAdvances')->name('report.branchWiseNplToAdvances');
         Route::get('/report/product-wise-npl-to-advances', 'productWiseNplToAdvances')->name('report.productWiseNplToAdvances');
+        Route::get('/report/product-wise-contribution-in-total-portfolio', 'productWiseContributionInTotalPortfolio')->name('report.productWiseContributionInTotalPortfolio');
     });
 
 });
