@@ -113,19 +113,32 @@
         <thead>
         <tr>
             <th scope="col" class="align-middle text-center" rowspan="3" width="5%">No of Branches</th>
-            <th scope="col" class="align-middle text-center" rowspan="3" width="25%">Region / Zone</th>
+            <th scope="col" class="align-middle text-center" rowspan="3" width="20%">Region / Zone</th>
             <th scope="col" class="align-middle text-center" colspan="3">Advances</th>
+            <th scope="col" class="align-middle text-center" colspan="4">Variance Analysis</th>
         </tr>
         <tr>
             <th scope="col" class="align-middle text-center" width="15%">Base:<br> {{$last_year->format('F Y')}}</th>
             <th scope="col" class="align-middle text-center" width="15%">{{$previous_month->format('F Y')}}</th>
             <th scope="col" class="align-middle text-center" width="15%">Actual<br>{{$month->format('F Y')}}</th>
+
+            <th scope="col" class="align-middle text-center" colspan="2" width="15%">
+                {{$month->format('F Y')}} <br>vs<br> Base {{$last_year->format('F Y')}}
+            </th>
+
+            <th scope="col" class="align-middle text-center" colspan="2" width="15%">
+                {{$last_year->format('F Y')}}<br> vs <br> {{$previous_month->format('F Y')}}
+            </th>
         </tr>
 
         <tr>
             <th scope="col" class="align-middle text-center">Amount</th>
             <th scope="col" class="align-middle text-center">Amount</th>
             <th scope="col" class="align-middle text-center">Amount</th>
+            <th scope="col" class="align-middle text-center">Amount</th>
+            <th scope="col" class="align-middle text-center">%</th>
+            <th scope="col" class="align-middle text-center">Amount</th>
+            <th scope="col" class="align-middle text-center">%</th>
         </tr>
         </thead>
         <tbody>
@@ -137,6 +150,26 @@
                     <td class="text-right">{{number_format($value[$last_year->format('F')],2)}}</td>
                     <td class="text-right">{{number_format($value[$previous_month->format('F')],2)}}</td>
                     <td class="text-right">{{number_format($value[$month->format('F')],2)}}</td>
+
+                    <td class="text-right">{{number_format($value[$month->format('F')] - $value[$last_year->format('F')],2)}}</td>
+                    <td class="text-right">
+                    @if($value[$month->format('F')] > 0 && $value[$last_year->format('F')] > 0)
+                        {{ number_format($value[$month->format('F')] / $value[$last_year->format('F')] * 100, 2) }}
+                    @else
+                        0.00
+                    @endif
+                    </td>
+
+
+                    <td class="text-right">{{number_format($value[$last_year->format('F')] - $value[$previous_month->format('F')],2)}}</td>
+                    <td class="text-right">
+                        @if($value[$last_year->format('F')] > 0 && $value[$previous_month->format('F')] > 0)
+                            {{ number_format($value[$last_year->format('F')] / $value[$previous_month->format('F')] * 100, 2) }}
+                        @else
+                            0.00
+                        @endif
+                    </td>
+
                 </tr>
             @endif
         @endforeach
@@ -175,19 +208,33 @@
         <thead>
         <tr>
             <th scope="col" class="align-middle text-center" rowspan="3" width="5%">No of Branches</th>
-            <th scope="col" class="align-middle text-center" rowspan="3" width="25%">Region / Zone</th>
+            <th scope="col" class="align-middle text-center" rowspan="3" width="20%">Region / Zone</th>
             <th scope="col" class="align-middle text-center" colspan="3">Advances</th>
+            <th scope="col" class="align-middle text-center" colspan="4">Variance Analysis</th>
+
         </tr>
         <tr>
             <th scope="col" class="align-middle text-center" width="15%">Base:<br> {{$last_year->format('F Y')}}</th>
             <th scope="col" class="align-middle text-center" width="15%">{{$previous_month->format('F Y')}}</th>
             <th scope="col" class="align-middle text-center" width="15%">Actual<br>{{$month->format('F Y')}}</th>
+
+            <th scope="col" class="align-middle text-center" colspan="2" width="15%">
+                {{$month->format('F Y')}} <br>vs<br> Base {{$last_year->format('F Y')}}
+            </th>
+
+            <th scope="col" class="align-middle text-center" colspan="2" width="15%">
+                {{$last_year->format('F Y')}}<br> vs <br> {{$previous_month->format('F Y')}}
+            </th>
         </tr>
 
         <tr>
             <th scope="col" class="align-middle text-center">Amount</th>
             <th scope="col" class="align-middle text-center">Amount</th>
             <th scope="col" class="align-middle text-center">Amount</th>
+            <th scope="col" class="align-middle text-center">Amount</th>
+            <th scope="col" class="align-middle text-center">%</th>
+            <th scope="col" class="align-middle text-center">Amount</th>
+            <th scope="col" class="align-middle text-center">%</th>
         </tr>
         </thead>
         <tbody>
@@ -199,6 +246,26 @@
                     <td class="text-right">{{number_format($value[$last_year->format('F')],2)}}</td>
                     <td class="text-right">{{number_format($value[$previous_month->format('F')],2)}}</td>
                     <td class="text-right">{{number_format($value[$month->format('F')],2)}}</td>
+
+
+                    <td class="text-right">{{number_format($value[$month->format('F')] - $value[$last_year->format('F')],2)}}</td>
+                    <td class="text-right">
+                        @if($value[$month->format('F')] > 0 && $value[$last_year->format('F')] > 0)
+                            {{ number_format($value[$month->format('F')] / $value[$last_year->format('F')] * 100, 2) }}
+                        @else
+                            0.00
+                        @endif
+                    </td>
+
+
+                    <td class="text-right">{{number_format($value[$last_year->format('F')] - $value[$previous_month->format('F')],2)}}</td>
+                    <td class="text-right">
+                        @if($value[$last_year->format('F')] > 0 && $value[$previous_month->format('F')] > 0)
+                            {{ number_format($value[$last_year->format('F')] / $value[$previous_month->format('F')] * 100, 2) }}
+                        @else
+                            0.00
+                        @endif
+                    </td>
                 </tr>
             @endif
         @endforeach
