@@ -111,7 +111,18 @@
 
 
     <br>
+    @php
+        $first_amount = 0;
+        $first_percentage = 0;
 
+        $second_amount = 0;
+        $second_percentage = 0;
+
+        $third_amount = 0;
+        $third_percentage = 0;
+
+        $target = 0;
+    @endphp
     <table class="table table-bordered  ">
         <thead>
         <tr>
@@ -166,11 +177,19 @@
                 <td class="text-right">{{number_format($value[$last_year->format('F')],2)}}</td>
                 <td class="text-right">{{number_format($value[$previous_month->format('F')],2)}}</td>
                 <td class="text-right">{{number_format($value[$month->format('F')],2)}}</td>
-                <td class="text-right">{{number_format($value[$month->format('F') . ' - Target'],2)}}</td>
+                <td class="text-right">
+                    {{number_format($value[$month->format('F') . ' - Target'],2)}}
+                    @php
+                        $target = $target + $value[$month->format('F') . ' - Target'];
+                    @endphp
+                </td>
 
                 <td class="text-right">
                     @if($value[$month->format('F')] > 0 && $value[$last_year->format('F')] > 0)
                         {{ number_format($value[$month->format('F')] - $value[$last_year->format('F')], 2) }}
+                        @php
+                            $first_amount = $first_amount + $value[$month->format('F')] - $value[$last_year->format('F')];
+                        @endphp
                     @else
                         0.00
                     @endif
@@ -179,7 +198,9 @@
                 <td class="text-right">
                     @if($value[$month->format('F')] > 0 && $value[$last_year->format('F')] > 0)
                         {{ number_format(($value[$month->format('F')] / $value[$last_year->format('F')] * 100) - 100, 2) }}%
-
+                        @php
+                            $first_percentage = $first_percentage + ($value[$month->format('F')] / $value[$last_year->format('F')] * 100) - 100;
+                        @endphp
                     @else
 
                         0.00%
@@ -192,6 +213,9 @@
                 <td class="text-right">
                     @if($value[$month->format('F')] > 0 && $value[$previous_month->format('F')] > 0)
                         {{ number_format($value[$month->format('F')] - $value[$previous_month->format('F')], 2) }}
+                        @php
+                            $second_amount = $second_amount + $value[$month->format('F')] - $value[$previous_month->format('F')];
+                        @endphp
                     @else
                         0.00
                     @endif
@@ -200,6 +224,9 @@
                 <td class="text-right">
                     @if($value[$month->format('F')] > 0 && $value[$previous_month->format('F')] > 0)
                         {{ number_format(($value[$month->format('F')] / $value[$previous_month->format('F')] * 100) - 100, 2) }}%
+                        @php
+                            $second_percentage = $second_percentage + ($value[$month->format('F')] / $value[$previous_month->format('F')] * 100) - 100;
+                        @endphp
                     @else
                         0.00%
                     @endif
@@ -209,6 +236,9 @@
                 <td class="text-right">
                     @if($value[$month->format('F')] > 0 && $value[$month->format('F') . ' - Target'] > 0)
                         {{ number_format($value[$month->format('F')] - $value[$month->format('F') . ' - Target'], 2) }}
+                        @php
+                            $third_amount = $third_amount + $value[$month->format('F')] - $value[$month->format('F') . ' - Target'];
+                        @endphp
                     @else
                         0.00
                     @endif
@@ -217,6 +247,9 @@
                 <td class="text-right">
                     @if($value[$month->format('F')] > 0 && $value[$month->format('F') . ' - Target'] > 0)
                         {{ number_format(($value[$month->format('F')] / $value[$month->format('F') . ' - Target'] * 100) - 100, 2) }}%
+                        @php
+                            $third_percentage = $third_percentage + ($value[$month->format('F')] / $value[$month->format('F') . ' - Target'] * 100) - 100;
+                        @endphp
                     @else
                         0.00%
                     @endif
@@ -230,6 +263,14 @@
             <td class="align-middle text-center"><strong>{{number_format(($data_total[$last_year->format('F')]/1000000),3)}}</strong></td>
             <td class="align-middle text-center"><strong>{{number_format(($data_total[$previous_month->format('F')]/1000000),3)}}</strong></td>
             <td class="align-middle text-center"><strong>{{number_format(($data_total[$month->format('F')]/1000000),3)}}</strong></td>
+
+            <td class="align-middle text-center"><strong>{{number_format($target,2)}}</strong></td>
+            <td class="align-middle text-center"><strong>{{number_format($first_amount,2)}}</strong></td>
+            <td class="align-middle text-center"><strong>{{number_format($first_percentage,2)}}</strong></td>
+            <td class="align-middle text-center"><strong>{{number_format($second_amount,2)}}</strong></td>
+            <td class="align-middle text-center"><strong>{{number_format($second_percentage,2)}}</strong></td>
+            <td class="align-middle text-center"><strong>{{number_format($third_amount,2)}}</strong></td>
+            <td class="align-middle text-center"><strong>{{number_format($third_percentage,2)}}</strong></td>
 
         </tr>
 
