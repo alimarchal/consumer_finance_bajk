@@ -61,6 +61,8 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
 
     Route::controller(\App\Http\Controllers\InsuranceClaimController::class)->group(function () {
         Route::get('/customer/{customer}/insuranceClaim', 'index')->name('insuranceClaim.index');
+        Route::get('/customer/{customer}/insuranceClaim/{insuranceClaim}/edit', 'edit')->name('insuranceClaim.edit');
+        Route::put('/customer/{customer}/insuranceClaim/{insuranceClaim}', 'update')->name('insuranceClaim.update');
         Route::post('/insuranceClaim/{customer}', 'store')->name('insuranceClaim.store');
     });
 
@@ -82,6 +84,11 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
     Route::controller(\App\Http\Controllers\MarkUpDetailsController::class)->group(function () {
         Route::get('/customer/{customer}/markUpDetails', 'index')->name('markUpDetails.index');
         Route::post('/markUpDetails/{customer}', 'store')->name('markUpDetails.store');
+    });
+
+    Route::controller(\App\Http\Controllers\InterestController::class)->group(function () {
+        Route::get('/customer/{customer}/interest', 'index')->name('interest.index');
+        Route::post('/interest/{customer}', 'store')->name('interest.store');
     });
 
     Route::controller(\App\Http\Controllers\UserController::class)->group(function () {

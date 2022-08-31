@@ -99,7 +99,7 @@
                 </div>
             </div>
             <div class="col-md-3 mb-3">
-                <label for="pp_number"><strong>PP Number</strong></label>
+                <label for="pp_number"><strong>PP / Employee No</strong></label>
                 <input type="text" class="form-control" id="pp_number" name="pp_number" required>
                 <div class="invalid-feedback">
                     Please provide a Designation.
@@ -183,9 +183,16 @@
                     <option value="">None</option>
                     <option value="Monthly">Monthly</option>
                     <option value="Quarterly">Quarterly</option>
+                    <option value="Half Yearly">Half Yearly</option>
                     <option value="Lump sump">Lump sump</option>
                 </select>
             </div>
+
+            <div class="col-md-3 mb-3">
+                <label for="emi_amount"><strong>Installment Amount</strong></label>
+                <input type="number" class="form-control" step="0.01" min="0" id="emi_amount" required name="emi_amount">
+            </div>
+
             <div class="col-md-3 mb-3">
                 <label for="no_of_installments"><strong>No of Installment</strong></label>
                 <select class="form-control select2bs4" required id="no_of_installments" style="width: 100%;" name="no_of_installments">
@@ -205,7 +212,7 @@
             </div>
 
             <div class="col-md-3 mb-3">
-                <label for="loan_due_date"><strong>Loan Due Date</strong></label>
+                <label for="loan_due_date"><strong> Installment Due Date</strong></label>
                 <input type="date" class="form-control" id="loan_due_date" required
                        name="loan_due_date">
             </div>
@@ -266,7 +273,7 @@
             </div>
 
             <div class="col-md-3 mb-3">
-                <label for="branch_manager_name_while_sanctioning"><strong>Branch Manager Name</strong></label>
+                <label for="branch_manager_name_while_sanctioning"><strong>Sanctioning (Branch Manager)</strong></label>
                 <input type="text" class="form-control" id="branch_manager_name_while_sanctioning" required
                        name="branch_manager_name_while_sanctioning">
             </div>

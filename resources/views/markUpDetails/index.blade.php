@@ -39,7 +39,7 @@
             </div>
 
             <div class="col-md-3 mb-2">
-                <label for="markup_recovered_ac_2405"><strong>Mark-Up Recovered A/C (2405)</strong></label>
+                <label for="markup_recovered_ac_2405"><strong>Mark-Up Recovered A/C (2305)</strong></label>
                 <input type="number" step="0.01" class="form-control" id="markup_recovered_ac_2405" name="markup_recovered_ac_2405">
             </div>
 

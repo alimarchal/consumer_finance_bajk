@@ -55,6 +55,7 @@ return new class extends Migration
             $table->integer('tenure_of_loan_in_months')->nullable();
             //monthly_quarterly_lump_sump
             $table->string('installment_type')->nullable();
+            $table->decimal('emi_amount')->default(0.00);
 
             $table->string('no_of_installments')->nullable();
             $table->date('dac_issuance_date')->nullable();

@@ -46,7 +46,6 @@ class InstallmentController extends Controller
         try {
             $request->merge(['customer_id' => $customer->id]);
             $request->merge(['user_id' => auth()->user()->id]);
-            $request->merge(['date' => Carbon::now()->format('Y-m-d')]);
             $installment = Installment::create($request->all());
             $customer->principle_amount = $customer->principle_amount - $installment->principal_amount;
             $customer->last_installment_date = $request->date;

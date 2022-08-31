@@ -69,6 +69,7 @@ class Customer extends Model
         'sanction_date',
         'tenure_of_loan_in_months',
         'installment_type',
+        'emi_amount',
         'no_of_installments',
         'dac_issuance_date',
         'disbursement_date',
@@ -137,9 +138,15 @@ class Customer extends Model
     }
 
 
-    public function branch(): \Illuminate\Database\Eloquent\Relations\HasOne
+    public function interest(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
-        return $this->hasOne(Branch::class, 'id');
+        return $this->hasMany(Interest::class);
+    }
+
+
+    public function branch()
+    {
+        return $this->belongsTo(Branch::class);
     }
 
     public function product()

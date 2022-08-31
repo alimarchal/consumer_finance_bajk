@@ -14,5 +14,6 @@ class Insurance extends Model
         'date_of_insurance',
         'insurance_amount',
         'date_of_expiry_of_insurance',
+        'remarks',
     ];
 }

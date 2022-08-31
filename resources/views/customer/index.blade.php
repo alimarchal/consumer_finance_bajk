@@ -74,6 +74,10 @@
                     <input type="text" class="form-control" id="account_no" name="filter[account_cd_saving]" value="">
                 </div>
                 <div class="form-group col-md-3">
+                    <label for="manual_account">Manual Account No</label>
+                    <input type="text" class="form-control" id="manual_account" name="filter[manual_account]" value="">
+                </div>
+                <div class="form-group col-md-3">
                     <label for="gender">Gender</label>
                     <select class="form-control select2bs4" id="gender" name="filter[gender]" style="width:100%">
                         <option value="">None</option>
@@ -129,7 +133,7 @@
                     <a href="{{route('customer.profile',$customer->id)}}">{{$customer->name}}</a>
                 </td>
                 <td>{{$customer->customer_cnic}}</td>
-                <td>{{$customer->branch->code}}-{{$customer->account_cd_saving}}</td>
+                <td>{{$customer->account_cd_saving}}</td>
                 <td>{{$customer->product->product_name}}</td>
                 <td>{{$customer->secure_unsecure_loan}}</td>
                 <td>{{$customer->branch->name}}</td>

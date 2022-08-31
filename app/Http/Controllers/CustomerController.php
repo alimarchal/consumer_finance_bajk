@@ -8,6 +8,7 @@ use App\Models\Branch;
 use App\Models\BranchOutstanding;
 use App\Models\BranchOutstandingDaily;
 use App\Models\Customer;
+use App\Models\Interest;
 use App\Models\ProductWiseDaily;
 use App\Models\ProductWiseMonthly;
 use App\Models\User;
@@ -151,7 +152,8 @@ class CustomerController extends Controller
                     AllowedFilter::exact('customer_cnic'),
                     AllowedFilter::exact('branch_id'),
                     AllowedFilter::exact('account_cd_saving'),
-                    'gender'
+                    AllowedFilter::exact('gender'),
+                    AllowedFilter::exact('manual_account'),
                 ])->paginate(10)->withQueryString();
         } elseif (Auth::user()->hasRole('South Regional MIS Officer')) {
             $south_branches = Branch::where('region', 'South Region')->get('id');
@@ -166,7 +168,8 @@ class CustomerController extends Controller
                     AllowedFilter::exact('customer_cnic'),
                     AllowedFilter::exact('branch_id'),
                     AllowedFilter::exact('account_cd_saving'),
-                    'gender'
+                    AllowedFilter::exact('gender'),
+                    AllowedFilter::exact('manual_account'),
                 ])->paginate(10)->withQueryString();
         } elseif (Auth::user()->hasRole('North Regional MIS Officer')) {
 
@@ -182,7 +185,8 @@ class CustomerController extends Controller
                     AllowedFilter::exact('customer_cnic'),
                     AllowedFilter::exact('branch_id'),
                     AllowedFilter::exact('account_cd_saving'),
-                    'gender'
+                    AllowedFilter::exact('gender'),
+                    AllowedFilter::exact('manual_account'),
                 ])->paginate(10)->withQueryString();
         } elseif (Auth::user()->hasRole(['Head Office', 'Super-Admin'])) {
             $customers = QueryBuilder::for(Customer::with('branch', 'product', 'product_type'))
@@ -191,10 +195,10 @@ class CustomerController extends Controller
                     AllowedFilter::exact('customer_cnic'),
                     AllowedFilter::exact('branch_id'),
                     AllowedFilter::exact('account_cd_saving'),
-                    'gender'
+                    AllowedFilter::exact('gender'),
+                    AllowedFilter::exact('manual_account'),
                 ])->paginate(10)->withQueryString();
         }
-
 
         return view('customer.index', compact('customers'));
     }
@@ -218,7 +222,6 @@ class CustomerController extends Controller
     public function store(StoreCustomerRequest $request)
     {
 
-//        dd($request->all());
         $flag = true;
         DB::beginTransaction();
         try {
@@ -227,18 +230,13 @@ class CustomerController extends Controller
             $request->merge(['account_cd_saving' => $branch->code . '-' . $request->account_cd_saving]);
             $customer = Customer::create($request->all());
 
-//            $branch_outstanding_balance = Customer::where('branch_id', $request->branch_id)->sum('principle_amount');
-//            //disbursement_date
-//
-//            BranchOutstanding::create([
-//                'date' => $request->disbursement_date,
-//                'branch_id' => $request->branch_id,
-//                'customer_id' => $customer->id,
-//                'user_id' => \auth()->user()->id,
-//                'principal_outstanding_customer' => $customer->principle_amount,
-//                'branch_outstanding_balance' => $branch_outstanding_balance,
-//            ]);
-
+            $interest = Interest::create([
+                'customer_id' => $customer->id,
+                'date' => Carbon::now()->format('Y-m-d'),
+                'kibor' => $request->kibor_rate,
+                'bank_spread' => $request->bank_spread_rate,
+                'total' => $request->kibor_rate + $request->bank_spread_rate,
+            ]);
 
             DB::commit();
             // all good

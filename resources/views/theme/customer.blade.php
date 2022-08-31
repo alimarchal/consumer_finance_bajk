@@ -37,6 +37,11 @@
         <a href="{{route('markUpDetails.index', $customer->id)}}" class="nav-link  @if(request()->routeIs('markUpDetails.*')) active @endif  ">Mark-Up Details</a>
     </li>
 
+    <li class="nav-item">
+        <a href="{{route('interest.index', $customer->id)}}" class="nav-link  @if(request()->routeIs('interest.*')) active @endif  ">Interest</a>
+    </li>
+
+
 
 
 

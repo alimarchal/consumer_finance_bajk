@@ -77,5 +77,10 @@
 <!-- Bootstrap 4 -->
 <script src="{{url('AdminLTE/plugins/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
 
+<script>
+    $('form').submit(function(){
+        $(this).find(':submit').attr('disabled','disabled');
+    });
+</script>
 
 @yield('customFooterScripts')

@@ -1,6 +1,6 @@
 @extends('theme.main')
 @section('breadcrumb')
-    Borrower Profile / Installment
+    Borrower Profile / Interest
 @endsection
 @section('body')
     @if(session()->has('message'))
@@ -15,7 +15,7 @@
         </div>
     @endif
 
-    <form method="post" action="{{route('installment.store', $customer->id)}}">
+    <form method="post" action="{{route('interest.store', $customer->id)}}">
         @csrf
         @include('theme.customer')
 
@@ -25,93 +25,63 @@
 
 
             <div class="col-md-3 mb-2">
-                <label for="date"><strong>Principal</strong></label>
+                <label for="date"><strong>Date</strong></label>
                 <input type="date" required class="form-control" id="date" name="date">
             </div>
 
-            <div class="col-md-3 mb-3">
-                <label for="no_of_installment"><strong>No of Installment</strong></label>
-                @if($customer->installments->isNotEmpty())
-                    <input type="no_of_installment" value="{{($customer->installments->count() + 1)}}" readonly required class="form-control" id="no_of_installment" name="no_of_installment">
-                @else
-                    <input type="no_of_installment" value="1" required class="form-control" id="no_of_installment" name="no_of_installment" readonly>
-                @endif
-            </div>
-
-
-            <div class="col-md-3 mb-3">
-                <label for="days_passed_overdue"><strong>Days Passed Overdue</strong></label>
-                <select class="form-control select2bs4" required id="days_passed_overdue" style="width: 100%;" name="days_passed_overdue">
-                    <option value="">None</option>
-                    @for($i = 1; $i <= 240; $i++)
-                        <option value="{{$i}}">{{$i}}</option>
-                    @endfor
-                </select>
-            </div>
-
-
             <div class="col-md-3 mb-2">
-                <label for="principal_amount"><strong>Principal</strong></label>
-                <input type="number" step="0.01" value="0.00" required class="form-control" id="principal_amount" name="principal_amount">
-            </div>
-
-            <div class="col-md-3 mb-2">
-                <label for="mark_up_amount"><strong>Mark-Up</strong></label>
-                <input type="number" step="0.01" value="0.00" required class="form-control" id="mark_up_amount" name="mark_up_amount">
-            </div>
-
-            <div class="col-md-3 mb-2">
-                <label for="penalty_charges"><strong>Penalty Charges</strong></label>
-                <input type="number" step="0.01" value="0.00" required class="form-control" id="penalty_charges" name="penalty_charges">
+                <label for="date"><strong>KIBOR / Fixed</strong></label>
+                <input disabled class="form-control" value="@if($customer->kibor_or_fixed == "1") KIBOR @else Fixed @endif">
             </div>
 
 
-            <div class="col-md-3 mb-2">
-                <label for="total_principal_markup_penalty"><strong>Total</strong></label>
-                <input type="number" step="0.01" class="form-control" required readonly id="total_principal_markup_penalty" name="total_principal_markup_penalty">
-            </div>
+            @if($customer->kibor_or_fixed == "1")
+                <div class="col-md-3 mb-3">
+                    <label for="kibor"><strong>KIBOR Rate</strong></label>
+                    <input type="number" step="0.01" min="0.00" value="0.00" class="form-control" id="kibor" required name="kibor">
+                </div>
 
+                <div class="col-md-3 mb-3">
+                    <label for="bank_spread"><strong>Bank Spread Rate</strong></label>
+                    <input type="number" step="0.01" min="0.00" class="form-control" value="0.00" id="bank_spread" required name="bank_spread">
+                </div>
+            @else
+                <div class="col-md-3 mb-3">
+                    <label for="bank_spread"><strong>Bank Spread Rate</strong></label>
+                    <input type="number" step="0.01" min="0.00" class="form-control" value="0.00" id="bank_spread" required name="bank_spread">
+                </div>
+            @endif
 
-            <div class="col-md-3 mb-3">
-                <label for="category_of_default"><strong>Category</strong></label>
-                <input type="text" step="0.01" class="form-control" required readonly id="category_of_default" name="category_of_default">
-
-            </div>
         </div>
         <button class="btn btn-primary float-right" type="submit">Save</button>
     </form>
 
 
     <br>
-    @if($customer->installments->isNotEmpty())
+    @if($customer->interest->isNotEmpty())
         <h2 class="text-center" style="border-top: 1px solid red; border-bottom: 1px solid red; padding: 10px; margin-bottom: 30px; margin-top: 30px;">
-            Installment</h2>
+            Interest Rate</h2>
         <table class="table table-bordered border-collapse">
             <thead>
             <tr>
                 <th scope="col">#</th>
                 <th scope="col">Date</th>
-                <th scope="col">No of Installment</th>
-                <th scope="col">Days Passed Overdue</th>
-                <th scope="col">Principal</th>
-                <th scope="col">Mark-Up</th>
-                <th scope="col">Penalty Charges</th>
+                <th scope="col">KIBOR / Fixed</th>
+                <th scope="col">KIBOR</th>
+                <th scope="col">Bank Spread </th>
                 <th scope="col">Total</th>
-                <th scope="col">Category</th>
             </tr>
             </thead>
             <tbody>
-            @foreach($customer->installments as $co)
+            @foreach($customer->interest as $co)
                 <tr>
                     <th scope="row">{{$loop->iteration}}</th>
                     <td>{{\Carbon\Carbon::parse($co->date)->format('d-m-Y')}}</td>
-                    <td>{{number_format($co->no_of_installment,0)}}</td>
-                    <td>{{$co->days_passed_overdue}}</td>
-                    <td>{{$co->principal_amount}}</td>
-                    <td>{{$co->mark_up_amount}}</td>
-                    <td>{{$co->penalty_charges}}</td>
-                    <td>{{$co->total_principal_markup_penalty}}</td>
-                    <td>{{$co->category_of_default}}</td>
+                    <td>@if($customer->kibor_or_fixed == "1") KIBOR @else Fixed @endif</td>
+                    <td>{{number_format($co->kibor,2)}}</td>
+                    <td>{{number_format($co->bank_spread,2)}}</td>
+                    <td>{{number_format($co->total,2)}}</td>
+
                 </tr>
             @endforeach
 
@@ -172,14 +142,11 @@
                 $days_passed_overdue = parseFloat($(this).val(), 0);
                 if ($days_passed_overdue <= 30) {
                     $("#category_of_default").val('Regular');
-                }
-                else if ($days_passed_overdue > 30 && $days_passed_overdue <= 90) {
+                } else if ($days_passed_overdue > 30 && $days_passed_overdue <= 90) {
                     $("#category_of_default").val('Irregular');
-                }
-                else if ($days_passed_overdue >= 90 && $days_passed_overdue <= 180) {
+                } else if ($days_passed_overdue >= 90 && $days_passed_overdue <= 180) {
                     $("#category_of_default").val('Doubtful');
-                }
-                else if ($days_passed_overdue > 180) {
+                } else if ($days_passed_overdue > 180) {
                     $("#category_of_default").val('Loss');
                 }
 

@@ -33,6 +33,11 @@
                 <label><strong>Date of Expiry of Insurance</strong></label>
                 <input type="date" class="form-control" id="date_of_expiry_of_insurance" name="date_of_expiry_of_insurance">
             </div>
+
+            <div class="col-md-3 mb-3">
+                <label for="remarks"><strong>Remarks / Additional Details</strong></label>
+                <textarea class="form-control"  id="remarks" name="remarks" ></textarea>
+            </div>
         </div>
 
         <button class="btn btn-primary float-right" type="submit">Save Insurance</button>
@@ -49,6 +54,7 @@
                 <th scope="col">Date of Insurance</th>
                 <th scope="col">Insurance Amount</th>
                 <th scope="col">Date of Expiry of Insurance</th>
+                <th scope="col">Remarks / Additional Details</th>
             </tr>
             </thead>
             <tbody>
@@ -59,6 +65,7 @@
                     <td>{{$inu->date_of_insurance}}</td>
                     <td>{{$inu->insurance_amount}}</td>
                     <td>{{\Carbon\Carbon::parse($inu->date_of_expiry_of_insurance)->format('d-m-Y')}}</td>
+                    <td>{{$inu->remarks}}</td>
                 </tr>
             @endforeach
 
