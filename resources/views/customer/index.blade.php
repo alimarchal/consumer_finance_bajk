@@ -130,10 +130,10 @@
        <tr>
            <td scope="row"><strong>{{$loop->iteration}}</strong></td>
                 <td>
-                    <a href="{{route('customer.profile',$customer->id)}}">{{$customer->name}}</a>
+                    <a href="{{route('customer.profile',$customer->id)}}">{{ucwords(strtolower($customer->name))}}</a>
                 </td>
                 <td>{{$customer->customer_cnic}}</td>
-                <td>{{$customer->account_cd_saving}}</td>
+                <td>{{$customer->branch->code}}-{{$customer->account_cd_saving}}</td>
                 <td>{{$customer->product->product_name}}</td>
                 <td>{{$customer->secure_unsecure_loan}}</td>
                 <td>{{$customer->branch->name}}</td>

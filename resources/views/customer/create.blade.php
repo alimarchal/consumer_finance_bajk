@@ -77,7 +77,7 @@
                 <select class="form-control select2bs4" required id="gender" style="width: 100%;" name="gender">
                     <option value="">None</option>
                     <option value="Male">Male</option>
-                    <option value="Male">Female</option>
+                    <option value="Female">Female</option>
                 </select>
                 <div class="invalid-feedback">
                     Please select a Gender.

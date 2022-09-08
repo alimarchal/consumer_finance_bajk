@@ -76,7 +76,7 @@
                 <select class="form-control select2bs4" required id="gender" style="width: 100%;" name="gender">
                     <option value="">None</option>
                     <option value="Male" @if($customer->gender == "Male") selected @endif>Male</option>
-                    <option value="Male" @if($customer->gender == "Female") selected @endif>Female</option>
+                    <option value="Female" @if($customer->gender == "Female") selected @endif>Female</option>
                 </select>
             </div>
             <div class="col-md-3 mb-2">

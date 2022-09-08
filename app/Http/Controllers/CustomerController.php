@@ -227,7 +227,7 @@ class CustomerController extends Controller
         try {
 
             $branch = Branch::find($request->branch_id);
-            $request->merge(['account_cd_saving' => $branch->code . '-' . $request->account_cd_saving]);
+//            $request->merge(['account_cd_saving' => $branch->code . '-' . $request->account_cd_saving]);
             $customer = Customer::create($request->all());
 
             $interest = Interest::create([
@@ -296,7 +296,7 @@ class CustomerController extends Controller
      */
     public function update(UpdateCustomerRequest $request, Customer $customer)
     {
-
+/*
         $account_data = $request->account_cd_saving;
         $account_no_branch = explode("-", $account_data);
         if (count($account_no_branch) > 1) {
@@ -306,7 +306,7 @@ class CustomerController extends Controller
             $branch = Branch::find($request->branch_id);
             $request->merge(['account_cd_saving' => $branch->code . '-' . $account_data]);
         }
-
+*/
         $customer->update($request->all());
         session()->flash('message', 'Borrower successfully updated.');
         return to_route('customer.show', $customer->id);
