@@ -13,7 +13,7 @@ class StoreBranchTargetRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,9 @@ class StoreBranchTargetRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'branch_id' => 'required',
+            'amount' => 'required',
+            'year' => 'required',
         ];
     }
 }

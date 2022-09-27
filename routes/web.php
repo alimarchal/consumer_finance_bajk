@@ -116,6 +116,14 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
         Route::get('/report/product-wise-contribution-in-total-portfolio', 'productWiseContributionInTotalPortfolio')->name('report.productWiseContributionInTotalPortfolio');
     });
 
+
+    Route::controller(\App\Http\Controllers\BranchTargetController::class)->group(function () {
+        Route::get('/branchTarget', 'index')->name('branchTarget.index');
+        Route::get('/branchTarget/create', 'create')->name('branchTarget.create');
+        Route::post('/branchTarget', 'store')->name('branchTarget.store');
+        Route::get('/branchTarget/{branchTarget}/edit', 'edit')->name('branchTarget.edit');
+        Route::put('/branchTarget/{branchTarget}', 'update')->name('branchTarget.update');
+    });
 });
 
 

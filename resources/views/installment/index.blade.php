@@ -18,14 +18,10 @@
     <form method="post" action="{{route('installment.store', $customer->id)}}">
         @csrf
         @include('theme.customer')
-
         <br>
-
         <div class="form-row">
-
-
             <div class="col-md-3 mb-2">
-                <label for="date"><strong>Principal</strong></label>
+                <label for="date"><strong>Date</strong></label>
                 <input type="date" required class="form-control" id="date" name="date">
             </div>
 
