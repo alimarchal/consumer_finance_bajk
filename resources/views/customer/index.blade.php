@@ -85,6 +85,15 @@
                         <option value="Female" >Female</option>
                     </select>
                 </div>
+
+                <div class="form-group col-md-3">
+                    <label for="status">Adjusted/Non-Adjusted</label>
+                    <select class="form-control select2bs4" id="status" name="filter[status]" style="width:100%">
+                        <option value="">None</option>
+                        <option value="0" >Adjusted</option>
+                        <option value="1" >Non-Adjusted</option>
+                    </select>
+                </div>
             </div>
 
 

@@ -105,19 +105,19 @@
 
         <tr>
             <td class="font-weight-bold">Name</td>
-            <td colspan="2">{{$customer->name}}</td>
+            <td colspan="2">{{ucwords(strtolower($customer->name))}}</td>
             <td class="font-weight-bold">So/Do/Wo</td>
-            <td>{{$customer->son_daughter_wife}}</td>
+            <td>{{ucwords(strtolower($customer->son_daughter_wife))}}</td>
             <td class="font-weight-bold">Gender</td>
-            <td >{{$customer->gender}}</td>
+            <td >{{ucwords(strtolower($customer->gender))}}</td>
 
         </tr>
 
         <tr>
             <td class="font-weight-bold">Business/Department/Profession</td>
-            <td colspan="3">{{$customer->business_department_profession}}</td>
+            <td colspan="3">{{ucwords(strtolower($customer->business_department_profession))}}</td>
             <td class="font-weight-bold" >Designation</td>
-            <td  colspan="2">{{$customer->designation}}</td>
+            <td  colspan="2">{{ucwords(strtolower($customer->designation))}}</td>
         </tr>
         <tr>
             <td class="font-weight-bold">PP Number</td>
@@ -128,17 +128,17 @@
 
         <tr>
             <td class="font-weight-bold">Office/Business Address</td>
-            <td colspan="6">{{$customer->office_business_address}}</td>
+            <td colspan="6">{{ucwords(strtolower($customer->office_business_address))}}</td>
         </tr>
 
         <tr>
             <td class="font-weight-bold">Present Address</td>
-            <td colspan="6">{{$customer->present_address}}</td>
+            <td colspan="6">{{ucwords(strtolower($customer->present_address))}}</td>
         </tr>
 
         <tr>
             <td class="font-weight-bold">Permanent Address</td>
-            <td colspan="6">{{$customer->permanent_address}}</td>
+            <td colspan="6">{{ucwords(strtolower($customer->permanent_address))}}</td>
         </tr>
 
         <tr>
@@ -149,7 +149,9 @@
         </tr>
         <tr>
             <td class="font-weight-bold">Ac Number/CD/Saving</td>
-            <td colspan="6">{{$customer->account_cd_saving}}</td>
+            <td colspan="3">{{$customer->account_cd_saving}}</td>
+            <td class="font-weight-bold">Manual Account No</td>
+            <td colspan="3">{{$customer->manual_account}}</td>
         </tr>
 
 
@@ -159,16 +161,16 @@
 
         <tr>
             <td  class="font-weight-bold">Nature of facility Availed</td>
-            <td  colspan="3">{{$customer->product->product_name}}</td>
+            <td  colspan="3">{{ucwords(strtolower($customer->product->product_name))}}</td>
             <td class="font-weight-bold">Type of facility approved</td>
-            <td colspan="3">{{$customer->product_type->product_type}}</td>
+            <td colspan="3">{{ucwords(strtolower($customer->product_type->product_type))}}</td>
         </tr>
 
         <tr>
             <td  class="font-weight-bold">Renewal/Enhancement</td>
-            <td  colspan="3">{{$customer->renewal_enhancement_fresh_sanction}}</td>
+            <td  colspan="3">{{ucwords(strtolower($customer->renewal_enhancement_fresh_sanction))}}</td>
             <td class="font-weight-bold">Amount Sanctioned</td>
-            <td colspan="3">{{$customer->amount_sanctioned}}</td>
+            <td colspan="3">{{ucwords(strtolower($customer->amount_sanctioned))}}</td>
         </tr>
 
         <tr>
@@ -203,19 +205,30 @@
             <td  class="font-weight-bold">Expiry Date as per DAC</td>
             <td  colspan="3">{{\Carbon\Carbon::parse($customer->expiry_date_as_per_dac)->format('d-m-Y')}}</td>
             <td class="font-weight-bold">Facility (Secure/Unsecure Principal)</td>
-            <td colspan="3">{{$customer->secure_unsecure_loan}}</td>
+            <td colspan="3">{{ucwords(strtolower($customer->secure_unsecure_loan))}}</td>
         </tr>
 
         <tr>
-            <td  class="font-weight-bold">Branch Manager Name</td>
-            <td  colspan="3">{{$customer->branch_manager_name_while_sanctioning}}</td>
+            <td  class="font-weight-bold">Branch Manager/Credit Officer</td>
+            <td  colspan="3">{{ucwords(strtolower($customer->branch_manager_name_while_sanctioning))}}</td>
+            <td  class="font-weight-bold">KIBOR/FIXED</td>
+            <td  colspan="3">
+
+                @if($customer->kibor_or_fixed == 0)
+                    Fixed
+                @elseif($customer->kibor_or_fixed == 1)
+                    KIBOR
+                @endif
+               </td>
+
+        </tr>
+
+        <tr>
+
             <td  class="font-weight-bold">Total Markup Rate (KIBOR+SPREAD)</td>
-            <td  colspan="3">{{$customer->kibor_rate+$customer->bank_spread_rate}}</td>
-        </tr>
-
-        <tr>
+            <td  colspan="3">{{number_format($customer->kibor_rate,2)}} + {{number_format($customer->bank_spread_rate,2)}} = {{number_format($customer->kibor_rate+$customer->bank_spread_rate,2)}}</td>
             <td  class="font-weight-bold">Principal Outstanding</td>
-            <td  colspan="6">{{$customer->principle_amount}}</td>
+            <td  colspan="3">{{number_format($customer->principle_amount,2)}}</td>
         </tr>
 
 
@@ -241,6 +254,7 @@
                 <th scope="col">Ownership</th>
                 <th scope="col">Market Value</th>
                 <th scope="col">FSV</th>
+                <th scope="col">Description</th>
             </tr>
             </thead>
 
@@ -253,6 +267,7 @@
                     <td>{{$og->ownership}}</td>
                     <td>{{$og->market_value}}</td>
                     <td>{{$og->fsv}}</td>
+                    <td>{{$og->Remarks}}</td>
                 </tr>
             @endforeach
             </tbody>
@@ -309,8 +324,9 @@
                 <th scope="col">#</th>
                 <th scope="col">Insurance Company</th>
                 <th scope="col">Date of Insurance</th>
-                <th scope="col">Insurance Amount</th>
+                <th scope="col">Insured Amount</th>
                 <th scope="col">Date of Expiry of Insurance</th>
+                <th scope="col">Remarks</th>
             </tr>
             </thead>
             <tbody>
@@ -321,6 +337,7 @@
                     <td>{{\Carbon\Carbon::parse($inu->date_of_insurance)->format('d-m-Y')}}</td>
                     <td>{{$inu->insurance_amount}}</td>
                     <td>{{\Carbon\Carbon::parse($inu->date_of_expiry_of_insurance)->format('d-m-Y')}}</td>
+                    <td>{{$inu->remarks}}</td>
                 </tr>
             @endforeach
 
@@ -342,6 +359,7 @@
                 <th scope="col">Insurance Company</th>
                 <th scope="col">Claim Amount</th>
                 <th scope="col">Date of Claim</th>
+                <th scope="col">Remarks</th>
             </tr>
             </thead>
             <tbody>
@@ -351,6 +369,7 @@
                     <td>{{\App\Models\Insurance::find($co->insurance_id)->insurance_company}}</td>
                     <td>{{$co->claim_amount}}</td>
                     <td>{{\Carbon\Carbon::parse($co->date_of_claim)->format('d-m-Y')}}</td>
+                    <td>{{$co->remarks}}</td>
                 </tr>
             @endforeach
 
@@ -465,7 +484,7 @@
                 <th scope="col">Mark-Up Receivable (4600)</th>
                 <th scope="col">Mark-Up Recovered Till Date</th>
                 <th scope="col">Mark-Up Recovered A/C (5008)</th>
-                <th scope="col">Mark-Up Recovered A/C (2405)</th>
+                <th scope="col">Mark-Up Reserved A/C (2305)</th>
             </tr>
             </thead>
             <tbody>

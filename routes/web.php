@@ -91,6 +91,11 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
         Route::post('/interest/{customer}', 'store')->name('interest.store');
     });
 
+    Route::controller(\App\Http\Controllers\NplController::class)->group(function () {
+        Route::get('/customer/{customer}/npl', 'index')->name('npl.index');
+        Route::post('/npl/{customer}', 'store')->name('npl.store');
+    });
+
     Route::controller(\App\Http\Controllers\UserController::class)->group(function () {
         Route::get('/users', 'index')->name('users.index');
         Route::get('/users/create', 'create')->name('users.create');
@@ -124,6 +129,8 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
         Route::get('/branchTarget/{branchTarget}/edit', 'edit')->name('branchTarget.edit');
         Route::put('/branchTarget/{branchTarget}', 'update')->name('branchTarget.update');
     });
+
+
 });
 
 

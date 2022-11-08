@@ -21,5 +21,7 @@ class Installment extends Model
         'total_principal_markup_penalty',
         'principal_outstanding',
         'category_of_default',
+        'old_os',
+        'insurance_charges',
     ];
 }

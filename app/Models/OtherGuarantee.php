@@ -16,5 +16,6 @@ class OtherGuarantee extends Model
         'fsv',
         'ownership',
         'customer_id',
+        'remarks',
     ];
 }

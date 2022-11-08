@@ -143,6 +143,10 @@ class Customer extends Model
         return $this->hasMany(Interest::class);
     }
 
+    public function npl(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Npl::class);
+    }
 
     public function branch()
     {

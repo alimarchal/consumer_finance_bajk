@@ -49,7 +49,6 @@ class BranchList extends Component
     public function district($event)
     {
 
-
         if ($event != null) {
 //            DB::enableQueryLog();
             $this->districtValue = Branch::where('region', $this->rgn)->where('zone', $this->zne)->where('district', $event)->get();

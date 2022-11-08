@@ -14,45 +14,8 @@
 
         <br>
 
-        <div class="form-row">
-            <div class="col-md-3 mb-2">
-                <label for="primary"><strong>Primary</strong></label>
+        <livewire:security />
 
-                <select class="form-control select2bs4" id="primary" name="primary" required>
-                    <option value="">None</option>
-                    <option value="Hypothecation">Hypothecation</option>
-                    <option value="Lien">Lien</option>
-                    <option value="Pledge">Pledge</option>
-                    <option value="Mortgage">Mortgage</option>
-                    <option value="Mortgage">Personal Guarantee</option>
-                </select>
-            </div>
-            <div class="col-md-3 mb-3">
-                <label for="secondary"><strong>Secondary</strong></label>
-                <input type="text" class="form-control" id="secondary" name="secondary">
-            </div>
-
-
-
-            <div class="col-md-3 mb-3">
-                <label for="ownership"><strong>Ownership</strong></label>
-                <input type="text" class="form-control" id="ownership" name="ownership">
-            </div>
-
-
-            <div class="col-md-3 mb-2">
-                <label for="market_value"><strong>Market Value</strong></label>
-                <input type="number" step="0.01" min="0.00" class="form-control" id="market_value" name="market_value">
-            </div>
-
-            <div class="col-md-3 mb-2">
-                <label for="fsv"><strong>FSV</strong></label>
-                <input type="number" step="0.01" min="0.00" class="form-control" id="fsv" name="fsv">
-            </div>
-
-
-
-        </div>
         <button class="btn btn-primary float-right" type="submit">Save</button>
         <br>
     </form>
@@ -69,6 +32,7 @@
                 <th scope="col">Ownership</th>
                 <th scope="col">Market Value</th>
                 <th scope="col">FSV</th>
+                <th scope="col">Remarks</th>
             </tr>
             </thead>
 
@@ -81,6 +45,7 @@
                     <td>{{$og->ownership}}</td>
                     <td>{{$og->market_value}}</td>
                     <td>{{$og->fsv}}</td>
+                    <td>{{$og->remarks}}</td>
                 </tr>
             @endforeach
             </tbody>

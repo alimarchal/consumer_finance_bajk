@@ -39,7 +39,7 @@
             </div>
 
             <div class="col-md-3 mb-2">
-                <label for="markup_recovered_ac_2405"><strong>Mark-Up Recovered A/C (2305)</strong></label>
+                <label for="markup_recovered_ac_2405"><strong>Mark-Up Reserved A/C (2305)</strong></label>
                 <input type="number" step="0.01" class="form-control" id="markup_recovered_ac_2405" name="markup_recovered_ac_2405">
             </div>
 
@@ -62,7 +62,7 @@
                 <th scope="col">Mark-Up Receivable (4600)</th>
                 <th scope="col">Mark-Up Recovered Till Date</th>
                 <th scope="col">Mark-Up Recovered A/C (5008)</th>
-                <th scope="col">Mark-Up Recovered A/C (2405)</th>
+                <th scope="col">Mark-Up Reserved A/C (2305)</th>
             </tr>
             </thead>
             <tbody>

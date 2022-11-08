@@ -26,7 +26,7 @@
                 <input type="date" class="form-control" id="date_of_insurance" name="date_of_insurance">
             </div>
             <div class="col-md-3 mb-2">
-                <label><strong>Insurance Amount</strong></label>
+                <label><strong>Insured Amount</strong></label>
                 <input type="number" min="" class="form-control" id="insurance_amount" name="insurance_amount">
             </div>
             <div class="col-md-3 mb-3">
@@ -52,7 +52,7 @@
                 <th scope="col">#</th>
                 <th scope="col">Insurance Company</th>
                 <th scope="col">Date of Insurance</th>
-                <th scope="col">Insurance Amount</th>
+                <th scope="col">Insured Amount</th>
                 <th scope="col">Date of Expiry of Insurance</th>
                 <th scope="col">Remarks / Additional Details</th>
             </tr>

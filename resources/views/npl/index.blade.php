@@ -1,6 +1,6 @@
 @extends('theme.main')
 @section('breadcrumb')
-    Borrower Profile / Installment
+    Borrower Profile / NPL
 @endsection
 @section('body')
     @if(session()->has('message'))
@@ -15,107 +15,55 @@
         </div>
     @endif
 
-    <form method="post" action="{{route('installment.store', $customer->id)}}">
+    <form method="post" action="{{route('npl.store', $customer->id)}}">
         @csrf
         @include('theme.customer')
+
         <br>
+
         <div class="form-row">
+
             <div class="col-md-3 mb-2">
-                <label for="date"><strong>Date</strong></label>
-                <input type="date" required class="form-control" id="date" name="date">
-            </div>
+                <label for="primary"><strong>NPL Status Update</strong></label>
 
-            <div class="col-md-3 mb-3">
-                <label for="no_of_installment"><strong>No of Installment</strong></label>
-                @if($customer->installments->isNotEmpty())
-                    <input type="no_of_installment" value="{{($customer->installments->count() + 1)}}" readonly required class="form-control" id="no_of_installment" name="no_of_installment">
-                @else
-                    <input type="no_of_installment" value="1" required class="form-control" id="no_of_installment" name="no_of_installment" readonly>
-                @endif
-            </div>
-
-
-            <div class="col-md-3 mb-3">
-                <label for="days_passed_overdue"><strong>Days Passed Overdue</strong></label>
-                <select class="form-control select2bs4" required id="days_passed_overdue" style="width: 100%;" name="days_passed_overdue">
+                <select class="form-control" id="customer_status" name="customer_status" required>
                     <option value="">None</option>
-                    @for($i = 1; $i <= 240; $i++)
-                        <option value="{{$i}}">{{$i}}</option>
-                    @endfor
+                    <option value="Regular">Regular</option>
+                    <option value="Irregular">Irregular</option>
+                    <option value="OAEM">OAEM</option>
+                    <option value="Substandard">Substandard</option>
+                    <option value="Doubtful">Doubtful</option>
+                    <option value="Loss">Loss</option>
                 </select>
             </div>
 
 
-            <div class="col-md-3 mb-2">
-                <label for="principal_amount"><strong>Principal</strong></label>
-                <input type="number" step="0.01" value="0.00" required class="form-control" id="principal_amount" name="principal_amount">
-            </div>
-
-            <div class="col-md-3 mb-2">
-                <label for="mark_up_amount"><strong>Mark-Up</strong></label>
-                <input type="number" step="0.01" value="0.00" required class="form-control" id="mark_up_amount" name="mark_up_amount">
-            </div>
-
-            <div class="col-md-3 mb-2">
-                <label for="penalty_charges"><strong>Penalty Charges</strong></label>
-                <input type="number" step="0.01" value="0.00" required class="form-control" id="penalty_charges" name="penalty_charges">
-            </div>
-
-            <div class="col-md-3 mb-2">
-                <label for="insurance_charges"><strong>Insurance</strong></label>
-                <input type="number" step="0.01" value="0.00" required class="form-control" id="insurance_charges" name="insurance_charges">
-            </div>
-
-
-
-            <div class="col-md-3 mb-2">
-                <label for="total_principal_markup_penalty"><strong>Total</strong></label>
-                <input type="number" step="0.01" class="form-control" required readonly id="total_principal_markup_penalty" name="total_principal_markup_penalty">
-            </div>
-
-
-            <div class="col-md-3 mb-3">
-                <label for="category_of_default"><strong>Category</strong></label>
-                <input type="text" step="0.01" class="form-control" required readonly id="category_of_default" name="category_of_default">
-
-            </div>
         </div>
         <button class="btn btn-primary float-right" type="submit">Save</button>
     </form>
 
 
+    <h5 class="text-center text-bold">Existing NPL Status<br> <span class="text-red">{{$customer->customer_status}}</span></h5>
+    <hr>
+
     <br>
-    @if($customer->installments->isNotEmpty())
+    @if($customer->npl->isNotEmpty())
         <h2 class="text-center" style="border-top: 1px solid red; border-bottom: 1px solid red; padding: 10px; margin-bottom: 30px; margin-top: 30px;">
-            Installment</h2>
+            NPLs Status</h2>
         <table class="table table-bordered border-collapse">
             <thead>
             <tr>
                 <th scope="col">#</th>
                 <th scope="col">Date</th>
-                <th scope="col">No of Installment</th>
-                <th scope="col">Days Passed Overdue</th>
-                <th scope="col">Principal</th>
-                <th scope="col">Mark-Up</th>
-                <th scope="col">Penalty Charges</th>
-                <th scope="col">Insurance Charges</th>
-                <th scope="col">Total</th>
-                <th scope="col">Category</th>
+                <th scope="col">NPL Status</th>
             </tr>
             </thead>
             <tbody>
-            @foreach($customer->installments as $co)
+            @foreach($customer->npl as $co)
                 <tr>
                     <th scope="row">{{$loop->iteration}}</th>
-                    <td>{{\Carbon\Carbon::parse($co->date)->format('d-m-Y')}}</td>
-                    <td>{{number_format($co->no_of_installment,0)}}</td>
-                    <td>{{$co->days_passed_overdue}}</td>
-                    <td>{{$co->principal_amount}}</td>
-                    <td>{{$co->mark_up_amount}}</td>
-                    <td>{{$co->penalty_charges}}</td>
-                    <td>{{$co->insurance_charges}}</td>
-                    <td>{{$co->total_principal_markup_penalty}}</td>
-                    <td>{{$co->category_of_default}}</td>
+                    <td>{{\Carbon\Carbon::parse($co->created_at)->format('d-m-Y H:i:s')}}</td>
+                    <td>{{$co->customer_status}}</td>
                 </tr>
             @endforeach
 
@@ -133,8 +81,6 @@
             $principal_amount = 0;
             $mark_up_amount = 0;
             $penalty_charges = 0;
-            $insurance_charges = 0;
-
             $total_principal_markup_penalty = 0;
 
             $("#principal_amount").change(function () {
@@ -142,9 +88,8 @@
                 $principal_amount = parseFloat($(this).val(), 2);
                 $mark_up_amount = parseFloat($("#mark_up_amount").val(), 2);
                 $penalty_charges = parseFloat($("#penalty_charges").val(), 2);
-                $insurance_charges = parseFloat($("#insurance_charges").val(), 2);
 
-                $total_principal_markup_penalty = $principal_amount + $mark_up_amount + $penalty_charges + $insurance_charges;
+                $total_principal_markup_penalty = $principal_amount + $mark_up_amount + $penalty_charges;
 
                 $("#total_principal_markup_penalty").val(parseFloat($total_principal_markup_penalty));
             });
@@ -155,9 +100,8 @@
                 $principal_amount = parseFloat($("#principal_amount").val(), 2);
                 $mark_up_amount = parseFloat($(this).val(), 2);
                 $penalty_charges = parseFloat($("#penalty_charges").val(), 2);
-                $insurance_charges = parseFloat($("#insurance_charges").val(), 2);
 
-                $total_principal_markup_penalty = $principal_amount + $mark_up_amount + $penalty_charges + $insurance_charges;
+                $total_principal_markup_penalty = $principal_amount + $mark_up_amount + $penalty_charges;
 
                 $("#total_principal_markup_penalty").val(parseFloat($total_principal_markup_penalty));
             });
@@ -167,23 +111,9 @@
 
                 $principal_amount = parseFloat($("#principal_amount").val(), 2);
                 $mark_up_amount = parseFloat($("#mark_up_amount").val(), 2);
-                $insurance_charges = parseFloat($("#insurance_charges").val(), 2);
                 $penalty_charges = parseFloat($(this).val(), 2);
 
-                $total_principal_markup_penalty = $principal_amount + $mark_up_amount + $penalty_charges + $insurance_charges;
-
-                $("#total_principal_markup_penalty").val(parseFloat($total_principal_markup_penalty));
-            });
-
-
-            $("#insurance_charges").change(function () {
-
-                $principal_amount = parseFloat($("#principal_amount").val(), 2);
-                $mark_up_amount = parseFloat($("#mark_up_amount").val(), 2);
-                $insurance_charges =parseFloat($(this).val(), 2);
-                $penalty_charges = parseFloat($("#penalty_charges").val(), 2);
-
-                $total_principal_markup_penalty = $principal_amount + $mark_up_amount + $penalty_charges + $insurance_charges;
+                $total_principal_markup_penalty = $principal_amount + $mark_up_amount + $penalty_charges;
 
                 $("#total_principal_markup_penalty").val(parseFloat($total_principal_markup_penalty));
             });
@@ -194,14 +124,11 @@
                 $days_passed_overdue = parseFloat($(this).val(), 0);
                 if ($days_passed_overdue <= 30) {
                     $("#category_of_default").val('Regular');
-                }
-                else if ($days_passed_overdue > 30 && $days_passed_overdue <= 90) {
+                } else if ($days_passed_overdue > 30 && $days_passed_overdue <= 90) {
                     $("#category_of_default").val('Irregular');
-                }
-                else if ($days_passed_overdue >= 90 && $days_passed_overdue <= 180) {
+                } else if ($days_passed_overdue >= 90 && $days_passed_overdue <= 180) {
                     $("#category_of_default").val('Doubtful');
-                }
-                else if ($days_passed_overdue > 180) {
+                } else if ($days_passed_overdue > 180) {
                     $("#category_of_default").val('Loss');
                 }
 
