@@ -1,6 +1,10 @@
 <?php
 
+use App\Models\User;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
+use Spatie\Permission\Models\Role;
 
 /*
 |--------------------------------------------------------------------------
@@ -10,6 +14,35 @@ use Illuminate\Support\Facades\Route;
 | Here is where you can register web routes for your application. These
 | routes are loaded by the RouteServiceProvider within a group which
 | contains the "web" middleware group. Now create something great!
+
+
+//    for ($i = 2; $i <= 84; $i++) {
+//        $role = Role::where('name', 'Branch Manager')->first();
+//        if ($i <= 9) {
+//            $user = User::create([
+//                'name' => 'Manager 000',
+//                'email' => 'manager000' . $i . '@bankajk.com',
+//                'password' => Hash::make('manager000' . $i . '@2024'),
+//                'branch_id' => $i,
+//                'designation' => 'Branch Manager',
+//                'status' => 'Active',
+//            ]);
+//            $user->assignRole($role);
+//            Artisan::call('permission:cache-reset');
+//        } else {
+//            $user = User::create([
+//                'name' => 'Manager 00',
+//                'email' => 'manager00' . $i . '@bankajk.com',
+//                'password' => Hash::make('manager00' . $i . '@2024'),
+//                'branch_id' => $i,
+//                'designation' => 'Branch Manager',
+//                'status' => 'Active',
+//            ]);
+//            $user->assignRole($role);
+//            Artisan::call('permission:cache-reset');
+//        }
+//
+//    }
 |
 */
 
@@ -18,12 +51,7 @@ Route::get('/', function () {
 });
 
 Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified'])->group(function () {
-    Route::get('/dashboard', [\App\Http\Controllers\CustomerController::class,'dashboard'])->name('dashboard');
-
-
-//    Route::get('/dashboard', function () {
-//        return view('dashboard');
-//    })->name('dashboard');
+    Route::get('/dashboard', [\App\Http\Controllers\CustomerController::class, 'dashboard'])->name('dashboard');
 });
 
 
@@ -39,6 +67,9 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
         Route::get('/customer/create', 'create')->name('customer.create');
         Route::post('/customer', 'store')->name('customer.store');
         Route::get('/customer', 'index')->name('customer.index');
+
+        Route::get('/customer/export', 'export')->name('customer.export');
+
         Route::put('/customer/{customer}', 'update')->name('customer.update');
         Route::get('/customer/{customer}', 'show')->name('customer.show');
         Route::get('/customer/{customer}/profile', 'profile')->name('customer.profile');
@@ -81,6 +112,13 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
         Route::post('/installment/{customer}', 'store')->name('installment.store');
     });
 
+
+    Route::controller(\App\Http\Controllers\OverDueInstallmentController::class)->group(function () {
+        Route::get('/customer/{customer}/over-due-installment', 'index')->name('over-due-installment.index');
+        Route::post('/over-due-installment/{customer}', 'store')->name('over-due-installment.store');
+    });
+
+
     Route::controller(\App\Http\Controllers\MarkUpDetailsController::class)->group(function () {
         Route::get('/customer/{customer}/markUpDetails', 'index')->name('markUpDetails.index');
         Route::post('/markUpDetails/{customer}', 'store')->name('markUpDetails.store');
@@ -95,6 +133,18 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
         Route::get('/customer/{customer}/npl', 'index')->name('npl.index');
         Route::post('/npl/{customer}', 'store')->name('npl.store');
     });
+
+    Route::controller(\App\Http\Controllers\EnhancementController::class)->group(function () {
+        Route::get('/customer/{customer}/enhancement', 'index')->name('enhancement.index');
+        Route::post('/enhancement/{customer}', 'store')->name('enhancement.store');
+    });
+
+
+    Route::controller(\App\Http\Controllers\AdjustedController::class)->group(function () {
+        Route::get('/customer/{customer}/adjusted', 'index')->name('adjusted.index');
+        Route::post('/adjusted/{customer}', 'store')->name('adjusted.store');
+    });
+
 
     Route::controller(\App\Http\Controllers\UserController::class)->group(function () {
         Route::get('/users', 'index')->name('users.index');

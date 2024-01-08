@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\CustomerExport;
 use App\Http\Requests\StoreCustomerRequest;
 use App\Http\Requests\UpdateCustomerRequest;
 use App\Models\Branch;
@@ -9,25 +10,27 @@ use App\Models\BranchOutstanding;
 use App\Models\BranchOutstandingDaily;
 use App\Models\Customer;
 use App\Models\Installment;
+use App\Models\Insurance;
 use App\Models\Interest;
+use App\Models\MarkUpDetails;
+use App\Models\OverDueInstallment;
 use App\Models\ProductWiseDaily;
 use App\Models\ProductWiseMonthly;
 use App\Models\Test;
 use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
+use Maatwebsite\Excel\Facades\Excel;
+
 
 class CustomerController extends Controller
 {
     public function dashboard()
     {
-
-
-
-
 
         // Consumer Finance First Category
 //        $consumer_loan_first_cat = Customer::where('product_id', 1)->whereIn('product_type_id',[2,3,6])->where('status', 1)->get();
@@ -131,8 +134,6 @@ class CustomerController extends Controller
 //                $cl->save();
 //            }
 //        }
-
-
 
 
 //
@@ -255,8 +256,8 @@ class CustomerController extends Controller
             $npl_accounts_amount = Customer::where('branch_id', \auth()->user()->branch_id)->where('customers.status', '=', 1)->whereNotIn('customers.customer_status', ['Regular', 'Irregular'])->sum('principle_amount');
 
 
-        } elseif (Auth::user()->hasRole('South Regional MIS Officer')) {
-            $south_branches = Branch::where('region', 'South Region')->get('id');
+        } elseif (Auth::user()->hasRole('MIRPUR REGION')) {
+            $south_branches = Branch::where('region', 'MIRPUR')->get('id');
             $branches = [];
             foreach ($south_branches as $item) {
                 $branches[] = $item->id;
@@ -281,9 +282,33 @@ class CustomerController extends Controller
             $npl_accounts = Customer::whereIn('branch_id', $branches)->where('customers.status', '=', 1)->whereNotIn('customers.customer_status', ['Regular', 'Irregular'])->count();
             $npl_accounts_amount = Customer::whereIn('branch_id', $branches)->where('customers.status', '=', 1)->whereNotIn('customers.customer_status', ['Regular', 'Irregular'])->sum('principle_amount');
 
-        } elseif (Auth::user()->hasRole('North Regional MIS Officer')) {
+        } elseif (Auth::user()->hasRole('MUZAFFARABAD REGION')) {
+            $north_branches = Branch::where('region', 'MUZAFFARABAD')->get('id');
+            $branches = [];
+            foreach ($north_branches as $item) {
+                $branches[] = $item->id;
+            }
 
-            $north_branches = Branch::where('region', 'North Region')->get('id');
+            $total_borrower = Customer::whereIn('branch_id', $branches)->where('status', 1)->count();
+            $total_amount_outstanding = Customer::whereIn('branch_id', $branches)->sum('principle_amount');
+            $total_active_user = User::whereIn('branch_id', $branches)->where('status', 'Active')->count();
+            // Financing Cards
+            $consumer_financing_outstanding = Customer::whereIn('branch_id', $branches)->where('product_id', '1')->sum('principle_amount');
+            $commercial_sme_financing = Customer::whereIn('branch_id', $branches)->where('product_id', '2')->sum('principle_amount');
+            $micro_financing = Customer::whereIn('branch_id', $branches)->where('product_id', '3')->sum('principle_amount');
+            $agriculture_financing = Customer::whereIn('branch_id', $branches)->where('product_id', '4')->sum('principle_amount');
+
+            $consumer_financing_outstanding_noa = Customer::whereIn('branch_id', $branches)->where('product_id', '1')->count();
+            $commercial_sme_financing_noa = Customer::whereIn('branch_id', $branches)->where('product_id', '2')->count();
+            $micro_financing_noa = Customer::whereIn('branch_id', $branches)->where('product_id', '3')->count();
+            $agriculture_financing_noa = Customer::whereIn('branch_id', $branches)->where('product_id', '4')->count();
+
+            $npl_accounts = Customer::whereIn('branch_id', $branches)->where('customers.status', '=', 1)->whereNotIn('customers.customer_status', ['Regular', 'Irregular'])->count();
+            $npl_accounts_amount = Customer::whereIn('branch_id', $branches)->where('customers.status', '=', 1)->whereNotIn('customers.customer_status', ['Regular', 'Irregular'])->sum('principle_amount');
+
+        } elseif (Auth::user()->hasRole('RAWALAKOT REGION')) {
+
+            $north_branches = Branch::where('region', 'RAWALAKOT')->get('id');
             $branches = [];
             foreach ($north_branches as $item) {
                 $branches[] = $item->id;
@@ -340,23 +365,32 @@ class CustomerController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $customers = null;
+        $per_page_count = $request->input('per_page_count', 10);
+
         if (Auth::user()->hasRole(['Credit Officer', 'Branch Manager'])) {
-//            dd(auth()->user()->getRoleNames());
-            $customers = QueryBuilder::for(Customer::with('branch', 'product', 'product_type')->where('branch_id', \auth()->user()->branch_id))
+
+            $customers = QueryBuilder::for(Customer::with('branch', 'product', 'product_type', 'guarantee')->where('branch_id', \auth()->user()->branch_id))
                 ->allowedFilters([
+                    AllowedFilter::scope('starts_before'),
                     AllowedFilter::scope('search_string'),
                     AllowedFilter::exact('customer_cnic'),
+                    AllowedFilter::exact('guarantee.cnic'),
+                    AllowedFilter::exact('branch_id'),
+                    AllowedFilter::exact('product_id'),
+                    AllowedFilter::exact('product_type_id'),
+                    AllowedFilter::scope('customer_status_custom'),
+                    AllowedFilter::exact('customer_status'),
                     AllowedFilter::exact('branch_id'),
                     AllowedFilter::exact('account_cd_saving'),
                     AllowedFilter::exact('gender'),
                     AllowedFilter::exact('manual_account'),
                     AllowedFilter::exact('status'),
-                ])->paginate(10)->withQueryString();
-        } elseif (Auth::user()->hasRole('South Regional MIS Officer')) {
-            $south_branches = Branch::where('region', 'South Region')->get('id');
+                ])->paginate($per_page_count)->withQueryString();
+        } elseif (Auth::user()->hasRole('MUZAFFARABAD REGION')) {
+            $south_branches = Branch::where('region', 'MUZAFFARABAD')->get('id');
             $branches = [];
             foreach ($south_branches as $item) {
                 $branches[] = $item->id;
@@ -364,17 +398,54 @@ class CustomerController extends Controller
 
             $customers = QueryBuilder::for(Customer::with('branch', 'product', 'product_type')->whereIn('branch_id', $branches))
                 ->allowedFilters([
+                    AllowedFilter::scope('starts_before'),
                     AllowedFilter::scope('search_string'),
-                    AllowedFilter::exact('customer_cnic'),
+                    AllowedFilter::exact('product_id'),
                     AllowedFilter::exact('branch_id'),
+                    AllowedFilter::exact('customer_cnic'),
+                    AllowedFilter::exact('product_type_id'),
+                    AllowedFilter::exact('customer_status'),
+                    AllowedFilter::exact('branch_id'),
+                    AllowedFilter::exact('guarantee.cnic'),
                     AllowedFilter::exact('account_cd_saving'),
                     AllowedFilter::exact('gender'),
+                    AllowedFilter::exact('customer_status'),
                     AllowedFilter::exact('manual_account'),
                     AllowedFilter::exact('status'),
-                ])->paginate(10)->withQueryString();
-        } elseif (Auth::user()->hasRole('North Regional MIS Officer')) {
 
-            $north_branches = Branch::where('region', 'North Region')->get('id');
+                ])->paginate($per_page_count)->withQueryString();
+        }
+        elseif (Auth::user()->hasRole('MIRPUR REGION')) {
+            $south_branches = Branch::where('region', 'MIRPUR')->get('id');
+            $branches = [];
+            foreach ($south_branches as $item) {
+                $branches[] = $item->id;
+            }
+
+            $customers = QueryBuilder::for(Customer::with('branch', 'product', 'product_type')->whereIn('branch_id', $branches))
+                ->allowedFilters([
+                    AllowedFilter::scope('starts_before'),
+                    AllowedFilter::scope('search_string'),
+                    AllowedFilter::exact('product_id'),
+                    AllowedFilter::exact('branch_id'),
+                    AllowedFilter::exact('customer_cnic'),
+                    AllowedFilter::exact('product_type_id'),
+                    AllowedFilter::exact('customer_status'),
+                    AllowedFilter::exact('branch_id'),
+                    AllowedFilter::exact('guarantee.cnic'),
+                    AllowedFilter::exact('account_cd_saving'),
+                    AllowedFilter::exact('gender'),
+                    AllowedFilter::exact('customer_status'),
+                    AllowedFilter::exact('manual_account'),
+                    AllowedFilter::exact('status'),
+
+                ])->paginate($per_page_count)->withQueryString();
+        }
+
+
+        elseif (Auth::user()->hasRole('RAWALAKOT REGION')) {
+
+            $north_branches = Branch::where('region', 'RAWALAKOT')->get('id');
             $branches = [];
             foreach ($north_branches as $item) {
                 $branches[] = $item->id;
@@ -382,28 +453,47 @@ class CustomerController extends Controller
 
             $customers = QueryBuilder::for(Customer::with('branch', 'product', 'product_type')->whereIn('branch_id', $branches))
                 ->allowedFilters([
+                    AllowedFilter::scope('starts_before'),
+                    AllowedFilter::exact('branch_id'),
+                    AllowedFilter::exact('product_id'),
                     AllowedFilter::scope('search_string'),
                     AllowedFilter::exact('customer_cnic'),
+                    AllowedFilter::exact('product_type_id'),
+                    AllowedFilter::exact('customer_status'),
                     AllowedFilter::exact('branch_id'),
+                    AllowedFilter::exact('guarantee.cnic'),
                     AllowedFilter::exact('account_cd_saving'),
                     AllowedFilter::exact('gender'),
                     AllowedFilter::exact('manual_account'),
+                    AllowedFilter::exact('customer_status'),
                     AllowedFilter::exact('status'),
-                ])->paginate(10)->withQueryString();
+                ])->paginate($per_page_count)->withQueryString();
         } elseif (Auth::user()->hasRole(['Head Office', 'Super-Admin'])) {
-            $customers = QueryBuilder::for(Customer::with('branch', 'product', 'product_type'))
+            $customers = QueryBuilder::for(Customer::with('branch', 'product', 'guarantee', 'product_type'))
                 ->allowedFilters([
+                    AllowedFilter::scope('starts_before'),
                     AllowedFilter::scope('search_string'),
+                    AllowedFilter::exact('branch_id'),
+                    AllowedFilter::exact('product_id'),
                     AllowedFilter::exact('customer_cnic'),
+                    AllowedFilter::exact('guarantee.cnic'),
+                    AllowedFilter::exact('product_type_id'),
+                    AllowedFilter::exact('customer_status'),
                     AllowedFilter::exact('branch_id'),
                     AllowedFilter::exact('account_cd_saving'),
                     AllowedFilter::exact('gender'),
                     AllowedFilter::exact('manual_account'),
                     AllowedFilter::exact('status'),
-                ])->paginate(10)->withQueryString();
+                ])->paginate($per_page_count)->withQueryString();
         }
 
         return view('customer.index', compact('customers'));
+    }
+
+    public function export(Request $request)
+    {
+        $filename = 'customer_data.xlsx'; // Set your desired filename
+        return Excel::download(new CustomerExport, $filename);
     }
 
     /**
@@ -424,13 +514,15 @@ class CustomerController extends Controller
      */
     public function store(StoreCustomerRequest $request)
     {
-
         $flag = true;
+        $customer = null;
         DB::beginTransaction();
         try {
 
             $branch = Branch::find($request->branch_id);
-//            $request->merge(['account_cd_saving' => $branch->code . '-' . $request->account_cd_saving]);
+
+            $request->merge(['no_of_installments' => $request->tenure_of_loan_in_months]);
+
             $customer = Customer::create($request->all());
 
             $interest = Interest::create([
@@ -444,6 +536,7 @@ class CustomerController extends Controller
             DB::commit();
             // all good
         } catch (\Exception $e) {
+
             DB::rollback();
             $flag = false;
             // something went wrong
@@ -457,8 +550,6 @@ class CustomerController extends Controller
             session()->flash('error', 'Something went wrong!.');
             return to_route('customer.show', $customer->id);
         }
-
-
     }
 
     /**
@@ -469,6 +560,11 @@ class CustomerController extends Controller
      */
     public function show(Customer $customer)
     {
+        if (Auth::user()->hasRole(['Credit Officer', 'Branch Manager'])) {
+            if ($customer->branch_id != \auth()->user()->branch_id) {
+                abort(401);
+            }
+        }
         return view('customer.show', compact('customer'));
     }
 

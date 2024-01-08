@@ -146,7 +146,7 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1 class="m-0">Dashboard</h1>
+                        <h1 class="m-0">Dashboard as of {{ date('d-M-Y') }}</h1>
                     </div><!-- /.col -->
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
@@ -233,6 +233,9 @@
                             <div class="icon">
                                 <i class="fas fa-coins"></i>
                             </div>
+                            @role('Super-Admin|Head Office')
+                                <a href="{{ route('customer.index', ['filter[product_id]' => 1, 'per_page_count' => 10000]) }}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                            @endrole
                         </div>
                     </div>
                     <!-- ./col -->
@@ -249,6 +252,9 @@
                             <div class="icon">
                                 <i class="fas fa-coins"></i>
                             </div>
+                            @role('Super-Admin|Head Office')
+                                <a href="{{ route('customer.index', ['filter[product_id]' => 2, 'per_page_count' => 10000]) }}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                            @endrole
                         </div>
                     </div>
                     <!-- ./col -->
@@ -265,6 +271,9 @@
                             <div class="icon">
                                 <i class="fas fa-coins"></i>
                             </div>
+                            @role('Super-Admin|Head Office')
+                                <a href="{{ route('customer.index', ['filter[product_id]' => 3, 'per_page_count' => 10000]) }}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                            @endrole
                         </div>
                     </div>
                     <!-- ./col -->
@@ -275,10 +284,14 @@
                                 <h3>{{number_format($agriculture_financing/1000000,3)}}M</h3>
 
                                 <p>Agriculture Financing<br>No of Accounts: {{$agriculture_financing_noa}}</p>
+
                             </div>
                             <div class="icon">
                                 <i class="fas fa-coins"></i>
                             </div>
+                            @role('Super-Admin|Head Office')
+                                <a href="{{ route('customer.index', ['filter[product_id]' => 5, 'per_page_count' => 10000]) }}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                            @endrole
                         </div>
 
                     </div>
@@ -293,7 +306,16 @@
                         <div class="small-box bg-info">
                             <div class="inner">
                                 <h3>{{number_format($npl_accounts_amount,2)}}</h3>
-                                <p>Total NPL No of Accounts: {{$npl_accounts}}</p>
+                                <p>
+        @if(Auth::user()->hasRole(['Credit Officer', 'Branch Manager']))
+    <a href="{{ route('customer.index',["filter[customer_status_custom]=Regular,Irregular&per_page_count=500"]) }}" class="text-white hover:underline">
+        Total NPL No of Accounts: {{$npl_accounts}}
+    </a>
+@else
+    Total NPL No of Accounts: {{$npl_accounts}}
+@endif
+
+                                </p>
                             </div>
                             <div class="icon">
                                 <i class="fas fa-coins"></i>
@@ -301,6 +323,7 @@
                             @can('Full Access')
                                 <a href="{{route('report.branchWiseNplPosition')}}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                             @endcan
+
                         </div>
                     </div>
                     <!-- ./col -->

@@ -107,12 +107,16 @@
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
+
+                        @role('Branch Manager|Credit Officer|Head Office|Super-Admin')
                         <li class="nav-item">
                             <a href="{{route('customer.create')}}" class="nav-link @if(request()->routeIs('customer.create')) active @endif">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Create New Borrower</p>
                             </a>
                         </li>
+                        @endrole
+
                         <li class="nav-item">
                             <a href="{{route('customer.index')}}" class="nav-link   @if(request()->routeIs(['customer.index','customer.profile'])) active @endif ">
                                 <i class="far fa-circle nav-icon"></i>
@@ -185,11 +189,11 @@
                                 </a>
                             </li>
 
-                            <li class="nav-item">
-                                <a href="{{route('report.outstandingAdvancesProductWise')}}" class="nav-link @if(request()->routeIs('report.outstandingAdvancesProductWise')) active @endif">
-                                    <p><span style="font-size: 14px;"> Summary Outstanding Advances Product Wise </span></p>
-                                </a>
-                            </li>
+{{--                            <li class="nav-item">--}}
+{{--                                <a href="{{route('report.outstandingAdvancesProductWise')}}" class="nav-link @if(request()->routeIs('report.outstandingAdvancesProductWise')) active @endif">--}}
+{{--                                    <p><span style="font-size: 14px;"> Summary Outstanding Advances Product Wise </span></p>--}}
+{{--                                </a>--}}
+{{--                            </li>--}}
 
                             <li class="nav-item">
                                 <a href="{{route('report.creditGrowth')}}" class="nav-link @if(request()->routeIs('report.creditGrowth')) active @endif">

@@ -33,19 +33,31 @@
         <a href="{{route('installment.index', $customer->id)}}" class="nav-link  @if(request()->routeIs('installment.*')) active @endif  ">Installment</a>
     </li>
 
+
+ <li class="nav-item">
+        <a href="{{route('over-due-installment.index', $customer->id)}}" class="nav-link  @if(request()->routeIs('over-due-installment.*')) active @endif  ">Over Due Installment</a>
+    </li>
+
     <li class="nav-item">
         <a href="{{route('markUpDetails.index', $customer->id)}}" class="nav-link  @if(request()->routeIs('markUpDetails.*')) active @endif  ">Mark-Up Details</a>
     </li>
 
     <li class="nav-item">
-        <a href="{{route('interest.index', $customer->id)}}" class="nav-link  @if(request()->routeIs('interest.*')) active @endif  ">Interest</a>
+        <a href="{{route('interest.index', $customer->id)}}" class="nav-link  @if(request()->routeIs('interest.*')) active @endif  ">Rate of Markup</a>
     </li>
 
-    @hasanyrole('Credit Officer|Branch Manager')
+{{--    @hasanyrole('Credit Officer|Branch Manager')--}}
     <li class="nav-item">
         <a href="{{route('npl.index', $customer->id)}}" class="nav-link  @if(request()->routeIs('npl.*')) active @endif  ">NPLs</a>
     </li>
-    @endrole
+{{--    @endrole--}}
 
+    <li class="nav-item">
+        <a href="{{route('enhancement.index', $customer->id)}}" class="nav-link  @if(request()->routeIs('enhancement.*')) active @endif  ">Enhancements</a>
+    </li>
+
+    <li class="nav-item">
+        <a href="{{route('adjusted.index', $customer->id)}}" class="nav-link  @if(request()->routeIs('adjusted.*')) active @endif  ">Adjustment</a>
+    </li>
 
 </ul>

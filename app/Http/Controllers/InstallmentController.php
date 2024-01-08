@@ -46,14 +46,17 @@ class InstallmentController extends Controller
         try {
             $request->merge(['customer_id' => $customer->id]);
             $request->merge(['user_id' => auth()->user()->id]);
+
             $installment = Installment::create($request->all());
             $customer->principle_amount = $customer->principle_amount - $installment->principal_amount;
             $customer->last_installment_date = $request->date;
             $customer->save();
 
-            $installment_object = Installment::find($installment->id);
-            $installment_object->principal_outstanding = $customer->principle_amount;
-            $installment_object->save();
+
+//            $installment_object = Installment::find($installment->id);
+            $installment->principal_outstanding = $customer->principle_amount;
+            $installment->save();
+//            dd($installment);
 
             DB::commit();
             // all good

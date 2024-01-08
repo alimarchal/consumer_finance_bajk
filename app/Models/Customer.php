@@ -6,10 +6,20 @@ use App\Http\Controllers\ValuationController;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Crypt;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class Customer extends Model
 {
     use HasFactory;
+    use LogsActivity;
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logOnly(['*']);
+    }
 
 
     /*
@@ -20,6 +30,42 @@ class Customer extends Model
         5 => Doubtful
         6 => Loss
      */
+
+
+    public function scopeStartsBefore(Builder $query, $date): Builder
+    {
+        if (!empty($date)) {
+            $datetime1 = null;
+            $datetime2 = null;
+
+            if (isset($date) && !empty($date)) {
+                $dates = explode(' – ', $date); // Ensure you are using a proper '–' character (en dash).
+                $fdate = @$dates[0];
+                $tdate = @$dates[1];
+                if (!empty($fdate) && !empty($tdate)) {
+                    $datetime1 = \DateTime::createFromFormat('d/m/Y', trim($fdate));
+                    $datetime2 = \DateTime::createFromFormat('d/m/Y', trim($tdate));
+                }
+            }
+
+            $date_from = null;
+            $date_to = null;
+
+            if (!empty($datetime1) && !empty($datetime2)) {
+                $date_from = $datetime1->format('Y-m-d');
+                $date_to = $datetime2->format('Y-m-d');
+            }
+        }
+        return $query->whereBetween('created_at', [$date_from, $date_to]);
+    }
+
+
+
+    public function scopeCustomerStatusCustom(Builder $query, $value1, $value2): Builder
+    {
+        $values = [$value1, $value2];
+        return $query->whereNotIn('customer_status', $values);
+    }
 
     public function scopeSearchString(Builder $query, $search): Builder
     {
@@ -92,6 +138,12 @@ class Customer extends Model
         'loan_due_date',
         'last_installment_date',
         'status',
+        'mark_up_date',
+        'mark_up_receivable',
+        'mark_up_recovered_till_date',
+        'mark_up_recoverable',
+        'mark_up_reserve',
+
     ];
 
 
@@ -132,6 +184,12 @@ class Customer extends Model
         return $this->hasMany(Installment::class);
     }
 
+
+    public function overDueInstallments(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(OverDueInstallment::class);
+    }
+
     public function markup_details(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(MarkUpDetails::class);
@@ -162,5 +220,25 @@ class Customer extends Model
     {
         return $this->belongsTo(ProductType::class);
     }
+
+    public function enhancement(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Enhancement::class);
+    }
+
+    public function adjusted(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Adjusted::class);
+    }
+
+//    public function getRouteKeyName()
+//    {
+//        return 'encrypted_id';
+//    }
+//
+//    public function resolveRouteBinding($value, $field = null)
+//    {
+//        return $this->where($field ?? $this->getRouteKey(), Crypt::decrypt($value))->firstOrFail();
+//    }
 
 }

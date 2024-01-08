@@ -21,43 +21,24 @@
         <br>
         <div class="form-row">
             <div class="col-md-3 mb-2">
-                <label for="date"><strong>Date</strong></label>
+                <label for="date"><strong>Payment Date</strong></label>
                 <input type="date" required class="form-control" id="date" name="date">
             </div>
 
-            <div class="col-md-3 mb-3">
-                <label for="no_of_installment"><strong>No of Installment</strong></label>
-                @if($customer->installments->isNotEmpty())
-                    <input type="no_of_installment" value="{{($customer->installments->count() + 1)}}" readonly required class="form-control" id="no_of_installment" name="no_of_installment">
-                @else
-                    <input type="no_of_installment" value="1" required class="form-control" id="no_of_installment" name="no_of_installment" readonly>
-                @endif
-            </div>
-
-
-            <div class="col-md-3 mb-3">
-                <label for="days_passed_overdue"><strong>Days Passed Overdue</strong></label>
-                <select class="form-control select2bs4" required id="days_passed_overdue" style="width: 100%;" name="days_passed_overdue">
-                    <option value="">None</option>
-                    @for($i = 1; $i <= 240; $i++)
-                        <option value="{{$i}}">{{$i}}</option>
-                    @endfor
-                </select>
-            </div>
 
 
             <div class="col-md-3 mb-2">
-                <label for="principal_amount"><strong>Principal</strong></label>
+                <label for="principal_amount"><strong>Principal Paid</strong></label>
                 <input type="number" step="0.01" value="0.00" required class="form-control" id="principal_amount" name="principal_amount">
             </div>
 
             <div class="col-md-3 mb-2">
-                <label for="mark_up_amount"><strong>Mark-Up</strong></label>
+                <label for="mark_up_amount"><strong>Markup Paid</strong></label>
                 <input type="number" step="0.01" value="0.00" required class="form-control" id="mark_up_amount" name="mark_up_amount">
             </div>
 
             <div class="col-md-3 mb-2">
-                <label for="penalty_charges"><strong>Penalty Charges</strong></label>
+                <label for="penalty_charges"><strong>Penalty Charges  (If any)</strong></label>
                 <input type="number" step="0.01" value="0.00" required class="form-control" id="penalty_charges" name="penalty_charges">
             </div>
 
@@ -73,12 +54,6 @@
                 <input type="number" step="0.01" class="form-control" required readonly id="total_principal_markup_penalty" name="total_principal_markup_penalty">
             </div>
 
-
-            <div class="col-md-3 mb-3">
-                <label for="category_of_default"><strong>Category</strong></label>
-                <input type="text" step="0.01" class="form-control" required readonly id="category_of_default" name="category_of_default">
-
-            </div>
         </div>
         <button class="btn btn-primary float-right" type="submit">Save</button>
     </form>
@@ -93,29 +68,25 @@
             <tr>
                 <th scope="col">#</th>
                 <th scope="col">Date</th>
-                <th scope="col">No of Installment</th>
-                <th scope="col">Days Passed Overdue</th>
                 <th scope="col">Principal</th>
                 <th scope="col">Mark-Up</th>
-                <th scope="col">Penalty Charges</th>
-                <th scope="col">Insurance Charges</th>
+                <th scope="col">Penalty</th>
+                <th scope="col">Insurance</th>
                 <th scope="col">Total</th>
-                <th scope="col">Category</th>
+                <th scope="col">Principal OS</th>
             </tr>
             </thead>
             <tbody>
             @foreach($customer->installments as $co)
                 <tr>
                     <th scope="row">{{$loop->iteration}}</th>
-                    <td>{{\Carbon\Carbon::parse($co->date)->format('d-m-Y')}}</td>
-                    <td>{{number_format($co->no_of_installment,0)}}</td>
-                    <td>{{$co->days_passed_overdue}}</td>
+                    <td>{{\Carbon\Carbon::parse($co->date)->format('d-M-Y')}}</td>
                     <td>{{$co->principal_amount}}</td>
                     <td>{{$co->mark_up_amount}}</td>
                     <td>{{$co->penalty_charges}}</td>
                     <td>{{$co->insurance_charges}}</td>
                     <td>{{$co->total_principal_markup_penalty}}</td>
-                    <td>{{$co->category_of_default}}</td>
+                    <td>{{$co->principal_outstanding}}</td>
                 </tr>
             @endforeach
 
