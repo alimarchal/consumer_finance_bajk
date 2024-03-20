@@ -72,8 +72,10 @@
                     <option value="">None</option>
                     <option value="Credit Officer">Credit Officer</option>
                     <option value="Branch Manager">Branch Manager</option>
-                    <option value="South Regional MIS Officer">South Regional MIS Officer</option>
-                    <option value="North Regional MIS Officer">North Regional MIS Officer</option>
+                    <option value="MUZAFFARABAD REGION">MUZAFFARABAD Region</option>
+                    <option value="MIRPUR REGION">MIRPUR Region</option>
+                    <option value="RAWALAKOT REGION">RAWALAKOT Region</option>
+                    <option value="KOTLI">KOTLI Region</option>
                     <option value="Head Office">Head Office</option>
                     <option value="Super-Admin">Super-Admin</option>
                 </select>

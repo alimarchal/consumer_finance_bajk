@@ -142,7 +142,7 @@ class ReportController extends Controller
 
         foreach ($principal_outstanding_last_year as $bo) {
             $data[$bo->branch_id][$last_year->format('F')] = $bo->branch_outstanding_balance;
-            $data_total[$last_year->format('F')] = $data_total[$last_year->format('F')] + $bo->principle_amount;
+            $data_total[$last_year->format('F')] = $data_total[$last_year->format('F')] + $bo->principle_outstanding;
         }
 
         return view('reports.index', compact('data', 'data_total', 'last_year', 'previous_month', 'month', 'zone_data'));
@@ -841,7 +841,7 @@ class ReportController extends Controller
             $data_total[$bo->region][$last_year->format('F')]['no_of_accounts'] = $product_wise_principal_outstanding->where('region', $bo->region)->sum('no_of_accounts');
         }
 //
-//        dd($data);
+
         return view('reports.branchWiseNPLPosition', compact('data', 'month', 'last_year', 'data_total'));
 
     }

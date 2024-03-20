@@ -128,18 +128,26 @@
                 @endphp
                 @foreach($value as $k => $v)
                         <tr>
-                            <td colspan="9"><strong>{{$k}} Zone</strong></td>
+                            <td colspan="9"><strong>{{$k}}</strong></td>
                         </tr>
 
                         @foreach($v as $x => $y)
                             <tr>
                                 <td class="text-center">{{$i}}</td>
                                 <td class="text-left">{{$x}}</td>
-                                <td class="text-right">{{$y[$last_year->format('F')]['no_of_accounts']}}</td>
-                                <td class="text-right">{{number_format($y[$last_year->format('F')]['amount'],2)}}</td>
+                                <td class="text-right">
+{{--                                    {{$y[$last_year->format('F')]['no_of_accounts']}}--}}
+                                </td>
+                                <td class="text-right">
+{{--                                    {{number_format($y[$last_year->format('F')]['amount'],2)}}--}}
+                                </td>
 
-                                <td class="text-right">{{$y[$month->format('F')]['no_of_accounts']}}</td>
-                                <td class="text-right">{{number_format($y[$month->format('F')]['amount'],2)}}</td>
+                                <td class="text-right">
+{{--                                    {{$y[$month->format('F')]['no_of_accounts']}}--}}
+                                </td>
+                                <td class="text-right">
+{{--                                    {{number_format($y[$month->format('F')]['amount'],2)}}--}}
+                                </td>
 
                                 <td class="text-right">0</td>
                                 <td class="text-right">0.00</td>
@@ -149,23 +157,23 @@
                             @endphp
                         @endforeach
 
-                        <tr>
-                            <td class="text-center" colspan="2">{{$k}} Zone Total</td>
-                            <td class="text-right">
-                                {{$data_total[$key][$k][$last_year->format('F')]['no_of_accounts']}}
-                            </td>
-                            <td class="text-right">
-                                {{$data_total[$key][$k][$last_year->format('F')]['amount']}}
-                            </td>
-                            <td class="text-right">
-                                {{$data_total[$key][$k][$month->format('F')]['no_of_accounts']}}
-                            </td>
-                            <td class="text-right">
-                                {{$data_total[$key][$k][$month->format('F')]['amount']}}
-                            </td>
-                            <td class="text-right">**</td>
-                            <td class="text-right">**</td>
-                        </tr>
+{{--                        <tr>--}}
+{{--                            <td class="text-center" colspan="2">{{$k}} Zone Total</td>--}}
+{{--                            <td class="text-right">--}}
+{{--                                {{$data_total[$key][$k][$last_year->format('F')]['no_of_accounts']}}--}}
+{{--                            </td>--}}
+{{--                            <td class="text-right">--}}
+{{--                                {{$data_total[$key][$k][$last_year->format('F')]['amount']}}--}}
+{{--                            </td>--}}
+{{--                            <td class="text-right">--}}
+{{--                                {{$data_total[$key][$k][$month->format('F')]['no_of_accounts']}}--}}
+{{--                            </td>--}}
+{{--                            <td class="text-right">--}}
+{{--                                {{$data_total[$key][$k][$month->format('F')]['amount']}}--}}
+{{--                            </td>--}}
+{{--                            <td class="text-right">**</td>--}}
+{{--                            <td class="text-right">**</td>--}}
+{{--                        </tr>--}}
                 @endforeach
             @endif
 

@@ -80,6 +80,7 @@
                     <option value="MUZAFFARABAD REGION">MUZAFFARABAD Region</option>
                     <option value="MIRPUR REGION">MIRPUR Region</option>
                     <option value="RAWALAKOT REGION">RAWALAKOT Region</option>
+                    <option value="KOTLI">KOTLI Region</option>
                     <option value="Head Office">Head Office</option>
                     <option value="Super-Admin">Super-Admin</option>
                 </select>
